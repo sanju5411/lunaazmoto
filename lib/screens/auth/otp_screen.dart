@@ -225,7 +225,6 @@ class _OtpScreenState extends State<OtpScreen> {
 
     Register register =
         await ApiService.register(jsonInput: jsonEncode(jsonInput));
-    print("register >>>>>>>>>>>>=> ${register}");
 
     if (register.status == "success") {
       if (register.token != null) {
