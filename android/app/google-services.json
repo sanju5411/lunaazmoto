@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "45632310138",
+    "project_id": "lunaazmoto",
+    "storage_bucket": "lunaazmoto.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:45632310138:android:71d7423e920f20b9f464c3",
+        "android_client_info": {
+          "package_name": "com.lunaazmoto.lunaaz_moto"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "45632310138-l79cl6hl815ciqsvecccvbjh163enrc4.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD_HMMYqWi-YvNGku1inAnKqTki21j-hqU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "45632310138-l79cl6hl815ciqsvecccvbjh163enrc4.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
