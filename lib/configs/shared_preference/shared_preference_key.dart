@@ -11,5 +11,4 @@ class SharedPreferencesKey {
 
   static const String isFirst = "is_first";
   static const String isLoggedIn = "is_logged_in";
-  static const String isRegistered = "is_registered";
 }

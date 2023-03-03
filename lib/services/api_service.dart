@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart';
@@ -7,11 +6,8 @@ import 'package:lunaaz_moto/configs/api_config.dart';
 import 'package:lunaaz_moto/models/auth/login/login.dart';
 import 'package:lunaaz_moto/models/auth/login/login_check.dart';
 import 'package:lunaaz_moto/models/customer/dashboard_model.dart';
-import 'package:lunaaz_moto/models/profile/profile_model.dart';
 import 'package:lunaaz_moto/models/register/register.dart';
 import 'package:lunaaz_moto/services/shared_preferences_service.dart';
-import 'package:path/path.dart';
-import 'package:profile/profile.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 Map<String, String> headers = {
@@ -64,63 +60,6 @@ class ApiService {
       return Login();
     }
   }
-
-  static Future<Login> updateProfile({required String name, String? email, File? avatar,String? mobile}) async {
-    Uri uri = Uri.parse("${ApiConfig.apiV1}/${ApiConfig.updateProfile}");
-    String token = await SharedPreferencesService.getApiToken();
-    headers.addAll({'Authorization': 'Bearer $token'});
-    var request = MultipartRequest("POST", uri);
-
-    request.headers.addAll(headers);
-    request.fields['name'] = name;
-    if (email != null) {
-      request.fields['email'] = email;
-    }
-
-    if (avatar != null) {
-      var bytes = avatar.readAsBytesSync();
-      var stream = ByteStream.fromBytes(bytes);
-      var length = await avatar.length();
-      var multipartFile = MultipartFile("avatar", stream, length,
-      filename: basename(avatar.path));
-
-      request.files.add(multipartFile);
-    }
-
-    try {
-      var response = await request.send();
-
-      var responseData = await response.stream.toBytes();
-      var responseString = String.fromCharCodes(responseData);
-      var json = jsonDecode(responseString);
-      return Login.fromJson(json);
-    } catch (e) {
-      print(e.toString());
-      return Login();
-    }
-  }
-
-
-  static Future<ProfileModel> profile() async {
- //.   String lang = await SharedPreferencesService.getActiveLanguage();
-    Uri uri = Uri.parse(
-        '${ApiConfig.apiV1}/${ApiConfig.profile}');
-    String token = await SharedPreferencesService.getApiToken();
-    headers.addAll({'Authorization': 'Bearer $token'});
-
-    try {
-      var res = await get(
-        uri,
-        headers: headers,
-      );
-      var json = jsonDecode(res.body);
-      return ProfileModel.fromJson(json);
-    } catch (e) {
-      print("PROFILE_API_ERROR>>> $e");
-      return ProfileModel();
-    }
-  }
-
   static Future<Register> register({required Object jsonInput}) async {
     Uri uri = Uri.parse('${ApiConfig.apiV1}/${ApiConfig.registration}');
     try {

@@ -1,6 +1,5 @@
 import 'dart:convert';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
@@ -38,7 +37,7 @@ class _LoginScreenState extends State<LoginScreen> {
   bool _isLoading = false;
 
   List<String> _userTypes = [];
-  String userType = "customer";
+  String userType = "";
   bool multiUserType = false;
 
   TextEditingController phoneController = TextEditingController();
@@ -48,251 +47,148 @@ class _LoginScreenState extends State<LoginScreen> {
   String verificationIDRecived = "";
 
   @override
-  void initState() {
-    SharedPreferencesService.setFirstFalse();
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
     Size screenSize = MediaQuery.of(context).size;
     return Scaffold(
       backgroundColor: CustomColor.backgroundLightColor,
-      body: Stack(
-        children: [
-          SingleChildScrollView(
-            child: Stack(
-              children: [
-                Container(
-                  height: screenSize.height,
-                  width: screenSize.width,
-                  alignment: Alignment.center,
-                  child: SingleChildScrollView(
-                    child: Column(
-                      children: [
-                        const SizedBox(
-                          height: 10,
+      body: SingleChildScrollView(
+        child: Stack(
+          children: [
+            Container(
+              height: screenSize.height,
+              width: screenSize.width,
+              alignment: Alignment.center,
+              child: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    SizedBox(
+                      height: 150,
+                      child: Image.asset("assets/images/loginback.png"),
+                    ),
+                    const SizedBox(
+                      height: 35,
+                    ),
+                    const Text(
+                      "Customer Log In",
+                      style: TextStyle(
+                          fontSize: 24,
+                          color: CustomColor.primaryColor,
+                          fontWeight: FontWeight.w800),
+                    ),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 25),
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: CustomColor.whiteColor,
+                          borderRadius: BorderRadius.circular(15),
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(
+                              vertical: 2.0, horizontal: 20.0),
+                          child: TextField(
+                            controller: phoneController,
+                            decoration: const InputDecoration(
+                                hintText: "Enter Mobile Number",
+                                hintStyle:
+                                    TextStyle(color: CustomColor.primaryColor),
+                                border: InputBorder.none),
+                            onChanged: (phone) {
+                              setState(() {
+                                _isLoading = false;
+                                _mobileTextError = "";
+                              });
+                              if (phone.length > 10) {
+                                setState(() {
+                                  _mobileTextError = "Invalid Mobile Number";
+                                });
+                              }
+                              if (phone.length == 10) {
+                                setState(() {
+                                  _mobileNumber = phone;
+                                });
+                              }
+                            },
+                            keyboardType: TextInputType.phone,
+                          ),
+                          //IntlPhoneField(
+                          //   showDropdownIcon: false,
+                          //   style: TextStyle(fontSize: 16),
+                          //   controller: phoneController,
+                          //   decoration: InputDecoration(
+                          //     hintText: "Phone Number",
+                          //       counterText: "",
+                          //     border: InputBorder.none
+                          //   ),
+                          //   initialCountryCode: 'IN',
+                          //   onChanged: (phone) {
+                          //     print(phone.completeNumber);
+                          //   },
+                          //   // onCountryChanged: (country) {
+                          //   //   setState(() {
+                          //   //     _countryCode = country.completeNumber;
+                          //   //   });
+                          //   // },
+                          // )
+                        ),
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 30,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 40),
+                      child: CustomButton(
+                       // loading: _isLoading,
+                        onTap: () async {
+
+
+                         // verifyNumber();
+                          _loginCheck();
+                        },
+                        text: "Log In",
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: const [
+                        Text(
+                          "Don’t  have an account?",
+                          style: TextStyle(fontSize: 17),
                         ),
                         SizedBox(
-                          height: 150,
-                          child: Image.asset("assets/images/loginback.png"),
+                          width: 3,
                         ),
-                        const SizedBox(
-                          height: 35,
-                        ),
-                        const Text(
-                          "Customer Log In",
+                        Text(
+                          "Register",
                           style: TextStyle(
-                              fontSize: 24,
                               color: CustomColor.primaryColor,
-                              fontWeight: FontWeight.w800),
-                        ),
-                        const SizedBox(
-                          height: 20,
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 25),
-                          child: Container(
-                            decoration: BoxDecoration(
-                              color: CustomColor.whiteColor,
-                              borderRadius: BorderRadius.circular(15),
-                            ),
-                            child: Padding(
-                              padding: const EdgeInsets.symmetric(
-                                  vertical: 2.0, horizontal: 20.0),
-                              child: TextField(
-                                controller: phoneController,
-                                decoration: const InputDecoration(
-                                    hintText: "Enter Mobile Number",
-                                    hintStyle:
-                                    TextStyle(color: CustomColor.primaryColor),
-                                    border: InputBorder.none),
-                                onChanged: (phone) {
-                                  setState(() {
-                                    _isLoading = false;
-                                    _mobileTextError = "";
-                                  });
-                                  if (phone.length > 10) {
-                                    setState(() {
-                                      _mobileTextError = "Invalid Mobile Number";
-                                    });
-                                  }
-                                  if (phone.length == 10) {
-                                    setState(() {
-                                      _mobileNumber = phone;
-                                    });
-                                  }
-                                },
-                                keyboardType: TextInputType.phone,
-                              ),
-                              //IntlPhoneField(
-                              //   showDropdownIcon: false,
-                              //   style: TextStyle(fontSize: 16),
-                              //   controller: phoneController,
-                              //   decoration: InputDecoration(
-                              //     hintText: "Phone Number",
-                              //       counterText: "",
-                              //     border: InputBorder.none
-                              //   ),
-                              //   initialCountryCode: 'IN',
-                              //   onChanged: (phone) {
-                              //     print(phone.completeNumber);
-                              //   },
-                              //   // onCountryChanged: (country) {
-                              //   //   setState(() {
-                              //   //     _countryCode = country.completeNumber;
-                              //   //   });
-                              //   // },
-                              // )
-                            ),
-                          ),
-                        ),
-                        const SizedBox(
-                          height: 30,
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 40),
-                          child: CustomButton(
-                            loading: _isLoading,
-                            onTap: () async {
-                              // verifyNumber();
-                              _loginCheck();
-                            },
-                            text: "Log In",
-                          ),
-                        ),
-                        const SizedBox(
-                          height: 20,
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: const [
-                            Text(
-                              "Don’t  have an account?",
-                              style: TextStyle(fontSize: 17),
-                            ),
-                            SizedBox(
-                              width: 3,
-                            ),
-                            Text(
-                              "Register",
-                              style: TextStyle(
-                                  color: CustomColor.primaryColor,
-                                  fontWeight: FontWeight.w800,
-                                  fontSize: 17),
-                            )
-                          ],
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-                Positioned(
-                  bottom: 0,
-                  right: 0,
-                  left: 0,
-                  child:
-                  Image.asset("assets/images/login_bc.png", fit: BoxFit.cover),
-                ),
-              ],
-            ),
-          ),
-          multiUserType
-              ? Container(
-            width: screenSize.width,
-            height: screenSize.height,
-            color: Colors.black87,
-            child: Center(
-              child: Container(
-                width: double.infinity,
-                margin: const EdgeInsets.symmetric(horizontal: 20),
-                padding: const EdgeInsets.all(20),
-                decoration: const BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.all(Radius.circular(20)),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.white,
-                        blurRadius: 2,
-                        spreadRadius: 3,
-                      ),
-                    ]),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    const Text(
-                      "Login With",
-                      style: CustomStyle.primaryTextStyle,
-                    ),
-                    const Text(
-                      "It's seem that you have multiple accounts with this mobile number",
-                      textAlign: TextAlign.center,
-                      style: CustomStyle.secondaryTextStyle,
-                    ),
-                    ListView.builder(
-                        shrinkWrap: true,
-                        physics: const NeverScrollableScrollPhysics(),
-                        itemCount: _userTypes.length,
-                        itemBuilder: (BuildContext context, index) {
-                          return InkWell(
-                            onTap: () => setState(() {
-                              userType = _userTypes[index];
-                            }),
-                            child: Container(
-                              padding: const EdgeInsets.all(10),
-                              decoration: BoxDecoration(
-                                color: userType == _userTypes[index]
-                                    ? CustomColor.accentColor
-                                    .withBlue(200)
-                                    .withAlpha(150)
-                                    : Colors.white,
-                              ),
-                              child: Text(
-                                _userTypes[index]
-                                    .toUpperCase()
-                                    .replaceAll("_", " "),
-                                textAlign: TextAlign.center,
-                              ),
-                            ),
-                          );
-                        }),
-                    const SizedBox(height: 20),
-                    Row(
-                      children: [
-                        Flexible(
-                          flex: 1,
-                          child: CustomButton(
-                            onTap: () {
-                              setState(() {
-                                multiUserType = false;
-                              });
-                              _login();
-                            },
-                            text: "Login",
-                            enabled: userType.isNotEmpty,
-                          ),
-                        ),
-                        SizedBox(width: 10),
-                        Flexible(
-                          flex: 1,
-                          child: CustomButton(
-                            onTap: () => setState(() {
-                              userType = "";
-                              multiUserType = false;
-                            }),
-                            text: "Cancel",
-                            variant: Variant.cancel,
-                          ),
-                        ),
+                              fontWeight: FontWeight.w800,
+                              fontSize: 17),
+                        )
                       ],
                     ),
                   ],
                 ),
               ),
             ),
-          )
-              : const SizedBox(),
-        ],
+            Positioned(
+              bottom: 0,
+              right: 0,
+              left: 0,
+              child:
+                  Image.asset("assets/images/login_bc.png", fit: BoxFit.cover),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -314,14 +210,10 @@ class _LoginScreenState extends State<LoginScreen> {
     setState(() {
       _isLoading = true;
     });
+    print("loginCheck called");
     LoginCheck loginCheck = await ApiService.loginCheck(jsonInput: jsonEncode(jsonInput));
-    print("login check api>>>>>${jsonEncode(loginCheck)}");
-    if (loginCheck.status == "not-registered") {
-      SharedPreferencesService.setRegistered(registered: false);
 
-      sendOtp();
-      return;
-    }
+    print("LOGIN_CHECK>>, ${jsonEncode(loginCheck)}");
     if (loginCheck.status == "success") {
       if (loginCheck.userTypes != null && loginCheck.userTypes!.isNotEmpty)   {
         if (loginCheck.userTypes!.length > 1) {
@@ -329,7 +221,8 @@ class _LoginScreenState extends State<LoginScreen> {
             _userTypes = loginCheck.userTypes ?? [];
             multiUserType = true;
             _isLoading = false;
-          });
+          },
+          );
           return;
         } else {
           setState(() {
@@ -357,19 +250,6 @@ class _LoginScreenState extends State<LoginScreen> {
     _login();
   }
 
-  sendOtp () {
-    Map<String, String> data = {
-      'country_code': _countryCode,
-      'mobile': _mobileNumber,
-      'user_type': userType,
-    };
-    Navigator.pushNamed(context, OtpScreen.routeName, arguments: data).then((value) {
-      setState(() {
-        _isLoading = false;
-      });
-    });
-  }
-
   _login() async {
     if (_mobileNumber.isEmpty) {
       Fluttertoast.showToast(msg: "Enter mobile number");
@@ -379,8 +259,8 @@ class _LoginScreenState extends State<LoginScreen> {
     Map<String, String> jsonInput = {
       'country_code': _countryCode,
       'mobile': _mobileNumber,
-      'device_id': DeviceInfoService.deviceId ?? "",
-      'device_type': DeviceInfoService.deviceType ?? "",
+      'device_id': DeviceInfoService.deviceId ?? "35868e",
+      'device_type': DeviceInfoService.deviceType ?? "android",
       'fcm_token': _fcmToken,
       'user_type': userType,
     };
@@ -400,15 +280,15 @@ class _LoginScreenState extends State<LoginScreen> {
         await SharedPreferencesService.setAuthUser(authUser: login.user!);
       }
       if (!mounted) return;
-      String routeName = DashboardScreen.routeName;
+      String routeName = FillformScreen.routeName;
 
       if (login.user!.userType == "customer") {
-        routeName = DashboardScreen.routeName;
+        routeName = FillformScreen.routeName;
       }
-      if (login.user!.userType == "service_center") {
+      if (login.user!.userType == "service_centre") {
         routeName = ServiceDashboard.routeName;
       }
-      if (login.user!.userType == "driver") {
+      if (login.user!.userType == "Driver") {
         routeName = DeliveryDashboard.routeName;
       }
       Navigator.pushNamedAndRemoveUntil(context, routeName, (route) => false);
@@ -417,13 +297,10 @@ class _LoginScreenState extends State<LoginScreen> {
         setState(() {
           _isLoading = false;
         });
-        SharedPreferencesService.setRegistered(registered: false);
-
-        sendOtp();
+       verifyNumber();
       }
       return;
-    }
-    else if (login.status == 'unauthorize') {
+    } else if (login.status == 'unauthorize') {
       showDialog(
         context: context,
         builder: (context) => AlertDialog(
@@ -431,11 +308,11 @@ class _LoginScreenState extends State<LoginScreen> {
             "Access Denied",
             style: CustomStyle.primaryTextStyle.copyWith(fontSize: 24),
           ),
-          // icon: const Icon(
-          //   Icons.warning_amber_rounded,
-          //   color: CustomColor.primaryColor,
-          //   size: 60,
-          // ),
+          icon: const Icon(
+            Icons.warning_amber_rounded,
+            color: CustomColor.primaryColor,
+            size: 60,
+          ),
           content: Text(
             login.message ?? "",
             style: CustomStyle.secondaryTextStyle,
@@ -443,24 +320,37 @@ class _LoginScreenState extends State<LoginScreen> {
           ),
         ),
       );
-    }
-    else if(login.status == 'device-not-register') {
-      if (mounted) {
-        setState(() {
-          _isLoading = false;
-        });
-        SharedPreferencesService.setRegistered(registered: true);
-        sendOtp();
-      }
-      return;
-    }
-    else {
+    } else {
       setState(() {
         _isLoading = false;
       });
     }
+
     setState(() {
       _isLoading = false;
     });
   }
+
+   void verifyNumber() {
+     auth.verifyPhoneNumber(
+         phoneNumber: _countryCode + phoneController.text,
+         verificationCompleted: (PhoneAuthCredential credential) async {
+           await auth
+               .signInWithCredential(credential)
+               .then((value) => {print("You are logged in successfully>>>>>>${value}")});
+         },
+         verificationFailed: (FirebaseAuthException exception) {
+           print(exception.message);
+         },
+         codeSent: (String verificationID, int? resendToken) {
+           verificationIDRecived = verificationID;
+           Navigator.push(context, MaterialPageRoute(builder: (context) => OtpScreen(mobile: phoneController.toString(), verificationId: verificationIDRecived, resendToken: resendToken, countryCode: _countryCode.toString(),  userType: userType, otpCode: '',),),);
+           // Navigator.pushNamed(context, OtpScreen.routeName,
+           //     arguments: {"mobile": _mobileNumber,"verificationId": verificationIDRecived, });
+
+           setState(() {});
+         },
+         codeAutoRetrievalTimeout: (String verificationID) {});
+   }
+
 }

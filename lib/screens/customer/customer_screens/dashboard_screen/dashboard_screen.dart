@@ -61,7 +61,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                     children:   [
                       Icon(Icons.menu,color: CustomColor.whiteColor,),
                       Spacer(),
-                      Text("LunaazMoto ",style:
+                      Text("LunaazMoto",style:
                       const TextStyle(fontSize: 20,fontWeight: FontWeight.w800,color: CustomColor.whiteColor),
                       ),
                       Spacer(),
