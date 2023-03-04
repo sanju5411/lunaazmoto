@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
@@ -298,7 +299,8 @@ class _LoginScreenState extends State<LoginScreen> {
        verifyNumber();
       }
       return;
-    } else if (login.status == 'unauthorize') {
+    }
+    else if (login.status == 'unauthorize') {
       showDialog(
         context: context,
         builder: (context) => AlertDialog(
@@ -318,7 +320,8 @@ class _LoginScreenState extends State<LoginScreen> {
           ),
         ),
       );
-    } else {
+    }
+    else {
       setState(() {
         _isLoading = false;
       });
@@ -329,7 +332,8 @@ class _LoginScreenState extends State<LoginScreen> {
     });
   }
 
-   void verifyNumber() {
+   void verifyNumber() async{
+
      auth.verifyPhoneNumber(
          phoneNumber: _countryCode + phoneController.text,
          verificationCompleted: (PhoneAuthCredential credential) async {
@@ -342,11 +346,13 @@ class _LoginScreenState extends State<LoginScreen> {
          },
          codeSent: (String verificationID, int? resendToken) {
            verificationIDRecived = verificationID;
-           Navigator.push(context, MaterialPageRoute(builder: (context) => OtpScreen(mobile: phoneController.toString(), verificationId: verificationIDRecived, resendToken: resendToken, countryCode: _countryCode.toString(),  userType: userType, otpCode: '',),),);
+           Navigator.push(context, MaterialPageRoute(builder: (context) =>
+               OtpScreen(mobile: phoneController.toString(), verificationId: verificationID,
+                 resendToken: resendToken, countryCode: _countryCode.toString(),  userType: userType, otpCode: '',),),);
            // Navigator.pushNamed(context, OtpScreen.routeName,
            //     arguments: {"mobile": _mobileNumber,"verificationId": verificationIDRecived, });
 
-           setState(() {});
+
          },
          codeAutoRetrievalTimeout: (String verificationID) {});
    }
