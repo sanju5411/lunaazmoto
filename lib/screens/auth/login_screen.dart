@@ -144,7 +144,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 40),
                       child: CustomButton(
-                        // loading: _isLoading,
+                        loading: _isLoading,
                         onTap: () async {
                           // verifyNumber();
                           _loginCheck();
@@ -192,6 +192,7 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   _loginCheck() async {
+    _isLoading = true;
     if (_isLoading) return;
     print("_loginCheck() called");
     if (_mobileNumber.isEmpty) {
