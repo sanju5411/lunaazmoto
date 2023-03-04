@@ -144,10 +144,8 @@ class _LoginScreenState extends State<LoginScreen> {
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 40),
                       child: CustomButton(
-                       // loading: _isLoading,
+                        loading: _isLoading,
                         onTap: () async {
-
-
                          // verifyNumber();
                           _loginCheck();
                         },
@@ -308,11 +306,11 @@ class _LoginScreenState extends State<LoginScreen> {
             "Access Denied",
             style: CustomStyle.primaryTextStyle.copyWith(fontSize: 24),
           ),
-          icon: const Icon(
-            Icons.warning_amber_rounded,
-            color: CustomColor.primaryColor,
-            size: 60,
-          ),
+          // icon: const Icon(
+          //   Icons.warning_amber_rounded,
+          //   color: CustomColor.primaryColor,
+          //   size: 60,
+          // ),
           content: Text(
             login.message ?? "",
             style: CustomStyle.secondaryTextStyle,
