@@ -186,32 +186,41 @@ class _OtpScreenState extends State<OtpScreen> {
   }
 
   void verifyCode() async {
-    _isLoading = true;
-    FirebaseAuth auth = FirebaseAuth.instance;
-    print("auth=>${widget.verificationId}");
-    PhoneAuthCredential credential = PhoneAuthProvider.credential(
-        verificationId: widget.verificationId,
-        smsCode: _pinEditingController.text);
-    try {
-      await auth.signInWithCredential(credential);
-      print("register function calledddddd>>>>>>>>>>>>>>>>>>>");
+    print("verifyCode caling--- ${widget.verificationId}--${_pinEditingController.text.toString()}");
+    AuthCredential phoneAuthCredential = PhoneAuthProvider.credential(verificationId: widget.verificationId, smsCode: smsCode);
+
+    UserCredential userCredential = await FirebaseAuth.instance.signInWithCredential(phoneAuthCredential);
+    print("userCredential--- ${userCredential}");
+    if(userCredential.user != null){
       _register();
-    } catch (e) {
-      setState(() {
-        _isLoading = false;
-      });
+    }else{
       Fluttertoast.showToast(msg: "Enter valid otp");
     }
-    await auth.signInWithCredential(credential).then((value) {
-      print("Your are Logged in Successfully>>>");
-
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => FillformScreen(),
-        ),
-      );
-    });
+    // FirebaseAuth auth = FirebaseAuth.instance;
+    // print("auth=>${widget.verificationId}");
+    // PhoneAuthCredential credential = PhoneAuthProvider.credential(
+    //     verificationId: widget.verificationId,
+    //     smsCode: _pinEditingController.text);
+    // try {
+    //   await auth.signInWithCredential(credential);
+    //   print("register function calledddddd>>>>>>>>>>>>>>>>>>>");
+    //   _register();
+    // } catch (e) {
+    //   setState(() {
+    //     _isLoading = false;
+    //   });
+    //   Fluttertoast.showToast(msg: "Enter valid otp");
+    // }
+    // await auth.signInWithCredential(credential).then((value) {
+    //   print("Your are Logged in Successfully>>>");
+    //
+    //   Navigator.push(
+    //     context,
+    //     MaterialPageRoute(
+    //       builder: (context) => FillformScreen(),
+    //     ),
+    //   );
+    // });
   }
 
   _register() async {
