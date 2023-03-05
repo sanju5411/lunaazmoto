@@ -347,8 +347,9 @@ class _LoginScreenState extends State<LoginScreen> {
          codeSent: (String verificationID, int? resendToken) {
            verificationIDRecived = verificationID;
            Navigator.push(context, MaterialPageRoute(builder: (context) =>
-               OtpScreen(mobile: phoneController.toString(), verificationId: verificationID,
-                 resendToken: resendToken, countryCode: _countryCode.toString(),  userType: userType, otpCode: '',),),);
+               OtpScreen(mobile: phoneController.text.toString(), verificationId: verificationID,
+                 resendToken: resendToken, countryCode: _countryCode.toString(),
+                 userType: userType, otpCode: '',),),);
            // Navigator.pushNamed(context, OtpScreen.routeName,
            //     arguments: {"mobile": _mobileNumber,"verificationId": verificationIDRecived, });
 

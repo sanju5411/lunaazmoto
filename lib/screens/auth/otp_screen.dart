@@ -232,6 +232,8 @@ class _OtpScreenState extends State<OtpScreen> {
       'user_type': widget.userType,
     };
 
+    print("Register Data--->$jsonInput");
+
     Register register =
         await ApiService.register(jsonInput: jsonEncode(jsonInput));
 
@@ -259,6 +261,7 @@ class _OtpScreenState extends State<OtpScreen> {
         (route) => false,
       );
     } else {
+      print("Register issue--->${register.message}");
       Fluttertoast.showToast(msg: register.message ?? "Something went wrong");
     }
 
