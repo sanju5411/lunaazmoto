@@ -160,7 +160,7 @@ class _OtpScreenState extends State<OtpScreen> {
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 40),
                       child: CustomButton(
-                        loading: _isLoading,
+                    loading: _isLoading,
                         onTap: () => verifyCode(),
                         text: "VERIFY",
                       ),
@@ -186,48 +186,40 @@ class _OtpScreenState extends State<OtpScreen> {
   }
 
   void verifyCode() async {
-    print("verifyCode caling--- ${widget.verificationId}--${_pinEditingController.text.toString()}");
-    AuthCredential phoneAuthCredential = PhoneAuthProvider.credential(verificationId: widget.verificationId, smsCode: smsCode);
+    _isLoading = true;
+    FirebaseAuth auth = FirebaseAuth.instance;
+    print("auth=>${widget.verificationId}");
+    PhoneAuthCredential credential = PhoneAuthProvider.credential(
+        verificationId: widget.verificationId,
+        smsCode: _pinEditingController.text);
+         try {
+         await auth.signInWithCredential(credential);
+         print("register function calledddddd>>>>>>>>>>>>>>>>>>>");
+        _register();
+         } catch (e) {
+         setState(() {
+         _isLoading = false;
+         });
+         Fluttertoast.showToast(msg: "Enter valid otp");
+         }
+    await auth.signInWithCredential(credential).then((value) {
+      print("Your are Logged in Successfully>>>");
 
-    UserCredential userCredential = await FirebaseAuth.instance.signInWithCredential(phoneAuthCredential);
-    print("userCredential--- ${userCredential}");
-    if(userCredential.user != null){
-      _register();
-    }else{
-      Fluttertoast.showToast(msg: "Enter valid otp");
-    }
-    // FirebaseAuth auth = FirebaseAuth.instance;
-    // print("auth=>${widget.verificationId}");
-    // PhoneAuthCredential credential = PhoneAuthProvider.credential(
-    //     verificationId: widget.verificationId,
-    //     smsCode: _pinEditingController.text);
-    // try {
-    //   await auth.signInWithCredential(credential);
-    //   print("register function calledddddd>>>>>>>>>>>>>>>>>>>");
-    //   _register();
-    // } catch (e) {
-    //   setState(() {
-    //     _isLoading = false;
-    //   });
-    //   Fluttertoast.showToast(msg: "Enter valid otp");
-    // }
-    // await auth.signInWithCredential(credential).then((value) {
-    //   print("Your are Logged in Successfully>>>");
-    //
-    //   Navigator.push(
-    //     context,
-    //     MaterialPageRoute(
-    //       builder: (context) => FillformScreen(),
-    //     ),
-    //   );
-    // });
+   Navigator.push(
+     context,
+     MaterialPageRoute(
+       builder: (context) => FillformScreen(),
+     ),
+   );
+
+    });
   }
 
   _register() async {
     Map<String, String> jsonInput = {
       'country_code': widget.countryCode,
       'mobile': widget.mobile,
-      'device_id': DeviceInfoService.deviceId ?? "35868e",
+        'device_id': DeviceInfoService.deviceId ?? "35868e",
       'device_type': DeviceInfoService.deviceType ?? "android",
       'user_type': widget.userType,
     };
@@ -269,4 +261,31 @@ class _OtpScreenState extends State<OtpScreen> {
       _isLoading = false;
     });
   }
+
+ // void verifyCodee() async {
+ //   FirebaseAuth auth = FirebaseAuth.instance;
+ //   print("auth=>${widget.verificationId}");
+ //   PhoneAuthCredential credential = PhoneAuthProvider.credential(
+ //       verificationId: widget.verificationId,
+ //       smsCode: _pinEditingController.toString());
+ //  // try {
+ //  //   await auth.signInWithCredential(credential);
+ //  //   print("register function calledddddd>>>>>>>>>>>>>>>>>>>");
+ //  // // _register(); >>>>>>>>>>>>>>>>>>>>>
+ //  // } catch (e) {
+ //  //   setState(() {
+ //  //     _isLoading = false;
+ //  //   });
+ //  //   Fluttertoast.showToast(msg: "Enter valid otp");
+ //  // }
+ //   await auth.signInWithCredential(credential).then((value) {
+ //     print("Your are Logged in Successfully>>>");
+ //     Navigator.push(
+ //       context,
+ //       MaterialPageRoute(
+ //         builder: (context) => FillformScreen(),
+ //       ),
+ //     );
+ //   });
+ // }
 }
