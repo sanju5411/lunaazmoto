@@ -72,7 +72,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       height: 35,
                     ),
                     const Text(
-                      "Customer Log In",
+                      "Welcome to LunaazMoto",
                       style: TextStyle(
                           fontSize: 24,
                           color: CustomColor.primaryColor,
@@ -92,6 +92,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           padding: const EdgeInsets.symmetric(
                               vertical: 2.0, horizontal: 20.0),
                           child: TextField(
+                            // maxLength: 10,
                             controller: phoneController,
                             decoration: const InputDecoration(
                                 hintText: "Enter Mobile Number",
@@ -149,31 +150,31 @@ class _LoginScreenState extends State<LoginScreen> {
                          // verifyNumber();
                           _loginCheck();
                         },
-                        text: "Log In",
+                        text: "Get Verification Code",
                       ),
                     ),
                     const SizedBox(
                       height: 20,
                     ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: const [
-                        Text(
-                          "Don’t  have an account?",
-                          style: TextStyle(fontSize: 17),
-                        ),
-                        SizedBox(
-                          width: 3,
-                        ),
-                        Text(
-                          "Register",
-                          style: TextStyle(
-                              color: CustomColor.primaryColor,
-                              fontWeight: FontWeight.w800,
-                              fontSize: 17),
-                        )
-                      ],
-                    ),
+                    // Row(
+                    //   mainAxisAlignment: MainAxisAlignment.center,
+                    //   children: const [
+                    //     Text(
+                    //       "Don’t  have an account?",
+                    //       style: TextStyle(fontSize: 17),
+                    //     ),
+                    //     SizedBox(
+                    //       width: 3,
+                    //     ),
+                    //     Text(
+                    //       "Register",
+                    //       style: TextStyle(
+                    //           color: CustomColor.primaryColor,
+                    //           fontWeight: FontWeight.w800,
+                    //           fontSize: 17),
+                    //     )
+                    //   ],
+                    // ),
                   ],
                 ),
               ),

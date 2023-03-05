@@ -154,7 +154,7 @@ class _OtpScreenState extends State<OtpScreen> {
                         )
                       ],
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 25,
                     ),
                     Padding(
@@ -185,6 +185,16 @@ class _OtpScreenState extends State<OtpScreen> {
     );
   }
 
+//   void verifyCode() async {
+//       AuthCredential phoneAuthCredential = await PhoneAuthProvider.credential(
+//       verificationId: widget.verificationId,
+//       smsCode: _pinEditingController.text
+// );
+//       print("phoneCred>>>>>>>>>>>>>${phoneAuthCredential}");
+//
+// UserCredential userCredential = await FirebaseAuth.instance.signInWithCredential(phoneAuthCredential);
+//  print("userCred<><><>>>>>>>>>>>${userCredential}");
+//   }
   void verifyCode() async {
     _isLoading = true;
     FirebaseAuth auth = FirebaseAuth.instance;
@@ -192,6 +202,7 @@ class _OtpScreenState extends State<OtpScreen> {
     PhoneAuthCredential credential = PhoneAuthProvider.credential(
         verificationId: widget.verificationId,
         smsCode: _pinEditingController.text);
+    print("credential=>>>>>>>>>${credential}");
     try {
       await auth.signInWithCredential(credential);
       print("register function calledddddd>>>>>>>>>>>>>>>>>>>");
@@ -222,6 +233,7 @@ class _OtpScreenState extends State<OtpScreen> {
       'device_type': DeviceInfoService.deviceType ?? "android",
       'user_type': widget.userType,
     };
+    print("jeson Map>>>>>>>${jsonEncode(jsonInput)}");
 
     Register register =
         await ApiService.register(jsonInput: jsonEncode(jsonInput));
