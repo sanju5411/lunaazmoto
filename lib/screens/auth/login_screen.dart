@@ -73,7 +73,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       height: 35,
                     ),
                     const Text(
-                      "Welcome to LunaazMoto",
+                      "Customer Log In",
                       style: TextStyle(
                           fontSize: 24,
                           color: CustomColor.primaryColor,
@@ -93,7 +93,6 @@ class _LoginScreenState extends State<LoginScreen> {
                           padding: const EdgeInsets.symmetric(
                               vertical: 2.0, horizontal: 20.0),
                           child: TextField(
-                            // maxLength: 10,
                             controller: phoneController,
                             decoration: const InputDecoration(
                                 hintText: "Enter Mobile Number",
@@ -151,31 +150,31 @@ class _LoginScreenState extends State<LoginScreen> {
                          // verifyNumber();
                           _loginCheck();
                         },
-                        text: "Get Verification Code",
+                        text: "Log In",
                       ),
                     ),
                     const SizedBox(
                       height: 20,
                     ),
-                    // Row(
-                    //   mainAxisAlignment: MainAxisAlignment.center,
-                    //   children: const [
-                    //     Text(
-                    //       "Don’t  have an account?",
-                    //       style: TextStyle(fontSize: 17),
-                    //     ),
-                    //     SizedBox(
-                    //       width: 3,
-                    //     ),
-                    //     Text(
-                    //       "Register",
-                    //       style: TextStyle(
-                    //           color: CustomColor.primaryColor,
-                    //           fontWeight: FontWeight.w800,
-                    //           fontSize: 17),
-                    //     )
-                    //   ],
-                    // ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: const [
+                        Text(
+                          "Don’t  have an account?",
+                          style: TextStyle(fontSize: 17),
+                        ),
+                        SizedBox(
+                          width: 3,
+                        ),
+                        Text(
+                          "Register",
+                          style: TextStyle(
+                              color: CustomColor.primaryColor,
+                              fontWeight: FontWeight.w800,
+                              fontSize: 17),
+                        )
+                      ],
+                    ),
                   ],
                 ),
               ),
@@ -211,19 +210,17 @@ class _LoginScreenState extends State<LoginScreen> {
       _isLoading = true;
     });
     print("loginCheck called");
-    LoginCheck loginCheck =
-        await ApiService.loginCheck(jsonInput: jsonEncode(jsonInput));
+    LoginCheck loginCheck = await ApiService.loginCheck(jsonInput: jsonEncode(jsonInput));
 
     print("LOGIN_CHECK>>, ${jsonEncode(loginCheck)}");
     if (loginCheck.status == "success") {
-      if (loginCheck.userTypes != null && loginCheck.userTypes!.isNotEmpty) {
+      if (loginCheck.userTypes != null && loginCheck.userTypes!.isNotEmpty)   {
         if (loginCheck.userTypes!.length > 1) {
-          setState(
-            () {
-              _userTypes = loginCheck.userTypes ?? [];
-              multiUserType = true;
-              _isLoading = false;
-            },
+          setState(() {
+            _userTypes = loginCheck.userTypes ?? [];
+            multiUserType = true;
+            _isLoading = false;
+          },
           );
           return;
         } else {
@@ -261,7 +258,7 @@ class _LoginScreenState extends State<LoginScreen> {
     Map<String, String> jsonInput = {
       'country_code': _countryCode,
       'mobile': _mobileNumber,
-      'device_id': DeviceInfoService.deviceId ?? "viju",
+      'device_id': DeviceInfoService.deviceId ?? "35868e",
       'device_type': DeviceInfoService.deviceType ?? "android",
       'fcm_token': _fcmToken,
       'user_type': userType,
@@ -272,7 +269,7 @@ class _LoginScreenState extends State<LoginScreen> {
     });
     Login login = await ApiService.login(jsonInput: jsonEncode(jsonInput));
 
-    print('LOGIN_RES >>>>${jsonEncode(login)}');
+    print('LOGIN_RES ${jsonEncode(login)}');
 
     if (login.status == "success") {
       if (login.token != null) {
@@ -281,34 +278,29 @@ class _LoginScreenState extends State<LoginScreen> {
       if (login.user != null) {
         await SharedPreferencesService.setAuthUser(authUser: login.user!);
       }
-      print("USERTYPE++++>${login.user!.userType}");
       if (!mounted) return;
-      String routeName = DashboardScreen.routeName;
+      String routeName = FillformScreen.routeName;
 
       if (login.user!.userType == "customer") {
-        routeName = DashboardScreen.routeName;
-        print('route name c = ${routeName}');
+        routeName = FillformScreen.routeName;
       }
-      if (login.user!.userType == "service_center") {
+      if (login.user!.userType == "service_centre") {
         routeName = ServiceDashboard.routeName;
-        print('route name s = ${routeName}');
       }
-      if (login.user!.userType == "driver") {
+      if (login.user!.userType == "Driver") {
         routeName = DeliveryDashboard.routeName;
-        print('route name d = ${routeName}');
-
       }
-      print("routeName==>>>>>>${routeName}");
       Navigator.pushNamedAndRemoveUntil(context, routeName, (route) => false);
     } else if (login.status == "warning") {
       if (mounted) {
         setState(() {
           _isLoading = false;
         });
-        verifyNumber();
+       verifyNumber();
       }
       return;
-    } else if (login.status == 'unauthorize') {
+    }
+    else if (login.status == 'unauthorize') {
       showDialog(
         context: context,
         builder: (context) => AlertDialog(
@@ -316,11 +308,11 @@ class _LoginScreenState extends State<LoginScreen> {
             "Access Denied",
             style: CustomStyle.primaryTextStyle.copyWith(fontSize: 24),
           ),
-          icon: const Icon(
-            Icons.warning_amber_rounded,
-            color: CustomColor.primaryColor,
-            size: 60,
-          ),
+          // icon: const Icon(
+          //   Icons.warning_amber_rounded,
+          //   color: CustomColor.primaryColor,
+          //   size: 60,
+          // ),
           content: Text(
             login.message ?? "",
             style: CustomStyle.secondaryTextStyle,
@@ -328,7 +320,8 @@ class _LoginScreenState extends State<LoginScreen> {
           ),
         ),
       );
-    } else {
+    }
+    else {
       setState(() {
         _isLoading = false;
       });
@@ -339,36 +332,30 @@ class _LoginScreenState extends State<LoginScreen> {
     });
   }
 
-  void verifyNumber() {
-    auth.verifyPhoneNumber(
-        phoneNumber: _countryCode + phoneController.text,
-        verificationCompleted: (PhoneAuthCredential credential) async {
-          await auth.signInWithCredential(credential).then((value) =>
-              {print("You are logged in successfully>>>>>>${value}")});
-        },
-        verificationFailed: (FirebaseAuthException exception) {
-          print(exception.message);
-        },
-        codeSent: (String verificationID, int? resendToken) {
-          verificationIDRecived = verificationID;
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => OtpScreen(
-                mobile: phoneController.toString(),
-                verificationId: verificationIDRecived,
-                resendToken: resendToken,
-                countryCode: _countryCode.toString(),
-                userType: userType,
-                otpCode: '',
-              ),
-            ),
-          );
-          // Navigator.pushNamed(context, OtpScreen.routeName,
-          //     arguments: {"mobile": _mobileNumber,"verificationId": verificationIDRecived, });
+   void verifyNumber() async{
 
-          setState(() {});
-        },
-        codeAutoRetrievalTimeout: (String verificationID) {});
-  }
+     auth.verifyPhoneNumber(
+         phoneNumber: _countryCode + phoneController.text,
+         verificationCompleted: (PhoneAuthCredential credential) async {
+           await auth
+               .signInWithCredential(credential)
+               .then((value) => {print("You are logged in successfully>>>>>>${value}")});
+         },
+         verificationFailed: (FirebaseAuthException exception) {
+           print(exception.message);
+         },
+         codeSent: (String verificationID, int? resendToken) {
+           verificationIDRecived = verificationID;
+           Navigator.push(context, MaterialPageRoute(builder: (context) =>
+               OtpScreen(mobile: phoneController.text.toString(), verificationId: verificationID,
+                 resendToken: resendToken, countryCode: _countryCode.toString(),
+                 userType: userType, otpCode: '',),),);
+           // Navigator.pushNamed(context, OtpScreen.routeName,
+           //     arguments: {"mobile": _mobileNumber,"verificationId": verificationIDRecived, });
+
+
+         },
+         codeAutoRetrievalTimeout: (String verificationID) {});
+   }
+
 }
