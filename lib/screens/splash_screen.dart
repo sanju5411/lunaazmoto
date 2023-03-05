@@ -66,7 +66,7 @@ class SplashScreenState extends State<SplashScreen> {
     var sharedPref = await SharedPreferences.getInstance();
     var isLoggedIn = sharedPref.getBool(KEYLOGIN);
     var isFormFill = sharedPref.getBool(KEYFORMFILLED);
-    Timer(  Duration(seconds: 5), (){
+    Timer(  Duration(seconds: 5), () {
       if(isLoggedIn!=null){
         if(isLoggedIn){
           Navigator.pushReplacement(context,
@@ -76,6 +76,7 @@ class SplashScreenState extends State<SplashScreen> {
           Navigator.pushReplacement(context,
             MaterialPageRoute(builder: (context) =>  LoginScreen(),),);
         }
+
         if(isFormFill!=null){
           Navigator.pushReplacement(context,
             MaterialPageRoute(builder: (context) => DashboardScreen(),),);

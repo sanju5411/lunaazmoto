@@ -11,7 +11,7 @@ import 'package:lunaaz_moto/screens/auth/login_screen.dart';
 import 'package:lunaaz_moto/screens/bike_delivery/delivery_dashboard/delivery_dashboard.dart';
 import 'package:lunaaz_moto/screens/customer/customer_screens/dashboard_screen/dashboard_screen.dart';
 import 'package:lunaaz_moto/screens/customer/customer_screens/fill_form/fill_out_form.dart';
-import 'package:lunaaz_moto/screens/service_centre/screens/service_dashboard.dart';
+import 'package:lunaaz_moto/screens/service_centre/screens/dashboard_screen.dart';
 import 'package:lunaaz_moto/services/api_service.dart';
 import 'package:lunaaz_moto/services/device_info_service.dart';
 import 'package:lunaaz_moto/services/shared_preferences_service.dart';
@@ -154,7 +154,7 @@ class _OtpScreenState extends State<OtpScreen> {
                         )
                       ],
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 25,
                     ),
                     Padding(
@@ -185,42 +185,44 @@ class _OtpScreenState extends State<OtpScreen> {
     );
   }
 
+//   void verifyCode() async {
+//       AuthCredential phoneAuthCredential = await PhoneAuthProvider.credential(
+//       verificationId: widget.verificationId,
+//       smsCode: _pinEditingController.text
+// );
+//       print("phoneCred>>>>>>>>>>>>>${phoneAuthCredential}");
+//
+// UserCredential userCredential = await FirebaseAuth.instance.signInWithCredential(phoneAuthCredential);
+//  print("userCred<><><>>>>>>>>>>>${userCredential}");
+//   }
   void verifyCode() async {
-    print("verifyCode caling--- ${widget.verificationId}--${_pinEditingController.text.toString()}");
-    AuthCredential phoneAuthCredential = PhoneAuthProvider.credential(verificationId: widget.verificationId, smsCode: smsCode);
-
-    UserCredential userCredential = await FirebaseAuth.instance.signInWithCredential(phoneAuthCredential);
-    print("userCredential--- ${userCredential}");
-    if(userCredential.user != null){
+    _isLoading = true;
+    FirebaseAuth auth = FirebaseAuth.instance;
+    print("auth=>${widget.verificationId}");
+    PhoneAuthCredential credential = PhoneAuthProvider.credential(
+        verificationId: widget.verificationId,
+        smsCode: _pinEditingController.text);
+    print("credential=>>>>>>>>>${credential}");
+    try {
+      await auth.signInWithCredential(credential);
+      print("register function calledddddd>>>>>>>>>>>>>>>>>>>");
       _register();
-    }else{
+    } catch (e) {
+      setState(() {
+        _isLoading = false;
+      });
       Fluttertoast.showToast(msg: "Enter valid otp");
     }
-    // FirebaseAuth auth = FirebaseAuth.instance;
-    // print("auth=>${widget.verificationId}");
-    // PhoneAuthCredential credential = PhoneAuthProvider.credential(
-    //     verificationId: widget.verificationId,
-    //     smsCode: _pinEditingController.text);
-    // try {
-    //   await auth.signInWithCredential(credential);
-    //   print("register function calledddddd>>>>>>>>>>>>>>>>>>>");
-    //   _register();
-    // } catch (e) {
-    //   setState(() {
-    //     _isLoading = false;
-    //   });
-    //   Fluttertoast.showToast(msg: "Enter valid otp");
-    // }
-    // await auth.signInWithCredential(credential).then((value) {
-    //   print("Your are Logged in Successfully>>>");
-    //
-    //   Navigator.push(
-    //     context,
-    //     MaterialPageRoute(
-    //       builder: (context) => FillformScreen(),
-    //     ),
-    //   );
-    // });
+    await auth.signInWithCredential(credential).then((value) {
+      print("Your are Logged in Successfully>>>");
+
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => FillformScreen(),
+        ),
+      );
+    });
   }
 
   _register() async {
@@ -231,6 +233,7 @@ class _OtpScreenState extends State<OtpScreen> {
       'device_type': DeviceInfoService.deviceType ?? "android",
       'user_type': widget.userType,
     };
+    print("jeson Map>>>>>>>${jsonEncode(jsonInput)}");
 
     Register register =
         await ApiService.register(jsonInput: jsonEncode(jsonInput));
