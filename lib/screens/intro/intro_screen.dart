@@ -16,9 +16,7 @@ class _IntroScreenState extends State<IntroScreen> {
   final introKey = GlobalKey<IntroductionScreenState>();
 
   void _onIntroEnd(context) {
-    Navigator.of(context).push(
-      MaterialPageRoute(builder: (_) => LoginScreen()),
-    );
+    Navigator.pushReplacementNamed(context, LoginScreen.routeName);
   }
 
   Widget _buildImage(String assetName, [double width = 250]) {

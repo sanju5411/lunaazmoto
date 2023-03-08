@@ -56,11 +56,13 @@ dependencies:
   #local database hive library
   hive: ^2.2.3
   hive_flutter: ^1.1.0
-  path_provider: ^2.0.12
+  #path_provider: ^2.0.12
+  path: ^1.8.2
   http: ^0.13.5
   firebase_messaging: ^14.2.2
   device_info_plus: ^8.1.0
   platform_device_id: ^1.0.1
+  image_picker: ^0.8.6+4
 
 dev_dependencies:
   flutter_test:

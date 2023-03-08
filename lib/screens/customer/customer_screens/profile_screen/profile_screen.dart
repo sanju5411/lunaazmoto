@@ -1,8 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:lunaaz_moto/common/widgets/custom_button.dart';
+import 'package:lunaaz_moto/configs/api_config.dart';
 import 'package:lunaaz_moto/constants/global_variables.dart';
+import 'package:lunaaz_moto/models/auth/user/user.dart';
+import 'package:lunaaz_moto/models/profile/profile_model.dart';
+import 'package:lunaaz_moto/models/profile/user_data.dart';
 import 'package:lunaaz_moto/screens/auth/login_screen.dart';
 import 'package:lunaaz_moto/screens/customer/customer_screens/fill_form/fill_out_form.dart';
+import 'package:lunaaz_moto/services/api_service.dart';
+import 'package:lunaaz_moto/services/shared_preferences_service.dart';
 import 'package:profile/profile.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -35,86 +41,117 @@ class ProfileScreen extends StatefulWidget {
 
 
 class ProfileScreenState extends State<ProfileScreen> {
-  static var  nameValue = "Name";
-  static var  emailValue = "Email";
-  static var  dobValue = "Date of Birth";
+  UserData? _userData;
+  AuthUser? _authUser;
 
-  void refreshData(){
-    nameValue.toString();
-    emailValue.toString();
-    dobValue.toString();
-  }
+  // void refreshData(){
+  //   nameValue.toString();
+  //   emailValue.toString();
+  //   dobValue.toString();
+  // }
 
   @override
   void initState() {
-    // TODO: implement initState
+    getProfileData();
     super.initState();
-    refreshData();
+    //refreshData();
+  }
+
+  getProfileData() async {
+    AuthUser authUser = await SharedPreferencesService.getAuthUserData();
+    setState(() {
+      _authUser = authUser;
+    });
+    ProfileModel profile = await ApiService.profile();
+    if (profile.status != null && profile.status == "success") {
+      if (profile.user != null) {
+        setState(() {
+          _userData = profile.user!;
+        });
+      }
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: CustomColor.primaryColor,
         leading: Container(),
         leadingWidth: 0,
-        title: Text('5sw5hw4'),
+        title: Text('Profile'),
       ),
       body: SingleChildScrollView(
         child: Column(
           children: [
-            Container(
-              margin: const EdgeInsets.all(20),
-              padding: const EdgeInsets.all(10),
-              decoration: const BoxDecoration(
-                color: Colors.white,
-                boxShadow: [
-                  BoxShadow(blurRadius: 1),
-                ],
-                borderRadius: BorderRadius.all(Radius.circular(20)),
+            ProfileOptionContainer(
+              onTap: () => Navigator.pushNamed(
+                  context, FillformScreen.routeName,
+                  arguments: _userData)
+                  .then((value) => getProfileData()),
+              leading: Container(
+                width: 40,
+                height: 40,
+                decoration: const BoxDecoration(
+                    color: Color.fromRGBO(250, 244, 225, 1.0),
+                    borderRadius: BorderRadius.all(Radius.circular(50)),
+                    boxShadow: [
+                      BoxShadow(color: Colors.black38, blurRadius: 1)
+                    ]),
+                child: Padding(
+                  padding: const EdgeInsets.all(2.0),
+                  child: ClipRRect(
+                    borderRadius:
+                    const BorderRadius.all(Radius.circular(50)),
+                    child: (_authUser != null &&
+                        _authUser!.avatar != null &&
+                        _authUser!.avatar!.isNotEmpty)
+                        ? Image.network(
+                      '${ApiConfig.baseUrl}${_authUser!.avatar}',
+                      fit: BoxFit.cover,
+                    )
+                        : Icon(Icons.person)
+                  ),
+                ),
               ),
-              child: Column(
+              title: _authUser != null
+                  ? Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-
-                  Divider(
-                    thickness: 1,
-                    color: Colors.grey[300],
-                  ),
-
-
-
-                  Divider(
-                    thickness: 1,
-                    color: Colors.grey[300],
-                  ),
-
-
-                  Divider(
-                    thickness: 1,
-                    color: Colors.grey[300],
-                  ),
-                  Divider(
-                    thickness: 1,
-                    color: Colors.grey[300],
+                  Text(
+                    _authUser!.name ?? "",
+                    style: CustomStyle.displayTextStyle,
                   ),
                   Text(
-                    "V 1.0.0.1",
-                    style: const TextStyle(
-                        fontWeight: FontWeight.w300, fontSize: 13),
+                    _authUser!.mobile ?? "",
+                    style: CustomStyle.secondaryTextStyle,
                   ),
                 ],
-              ),
+              )
+                  : Text("Edit Proile"),
+              trailingIcon: Icons.edit,
             ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20.0),
-              child: CustomButton(
-                onTap: () {
-                  Navigator.of(context).pushNamedAndRemoveUntil(
-                      LoginScreen.routeName, (route) => false);
-                },
-
-              ),
-            )
+            Divider(
+              thickness: 1,
+              color: Colors.grey[300],
+            ),
+            Divider(
+              thickness: 1,
+              color: Colors.grey[300],
+            ),
+            Divider(
+              thickness: 1,
+              color: Colors.grey[300],
+            ),
+            Divider(
+              thickness: 1,
+              color: Colors.grey[300],
+            ),
+            Text(
+              "V 1.0.0.0",
+              style: const TextStyle(
+                  fontWeight: FontWeight.w300, fontSize: 13),
+            ),
           ],
         ),
       ),
@@ -153,6 +190,7 @@ class ProfileScreenState extends State<ProfileScreen> {
 
 
 }
+
 
 class ProfileOptionContainer extends StatelessWidget {
   final bool leadingSpace;
@@ -219,3 +257,4 @@ class ProfileOptionContainer extends StatelessWidget {
     );
   }
 }
+
