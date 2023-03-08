@@ -22,20 +22,8 @@ import 'package:pin_input_text_field/pin_input_text_field.dart';
 class OtpScreen extends StatefulWidget {
   static const String routeName = '/otp_screen';
 
-  final String mobile, verificationId, countryCode;
-  final int? resendToken;
-  final String userType;
-  final String otpCode;
-
   const OtpScreen(
-      {Key? key,
-      required,
-      required this.mobile,
-      required this.verificationId,
-      required this.otpCode,
-      required this.resendToken,
-      required this.countryCode,
-      required this.userType})
+      {Key? key})
       : super(key: key);
 
   @override
@@ -43,33 +31,72 @@ class OtpScreen extends StatefulWidget {
 }
 
 class _OtpScreenState extends State<OtpScreen> {
+  bool isInitLoaded = false;
   bool loading = true;
   int initialTimer = 40;
   String otpCode = "";
   bool _isLoading = false;
   Timer? resentTimer;
   int resetTimerSeconds = 50;
+  String mobile = "";
+  String countryCode = "";
+  String userType = "customer";
 
   String smsCode = "";
-
   TextEditingController _pinEditingController = TextEditingController();
-
   FirebaseAuth auth = FirebaseAuth.instance;
 
   String verificationIDReceived = "";
-  //dynamic argument = "";
+
+  bool isRegistered = false;
+
 
   @override
   void initState() {
-    setState(() {
-      verificationIDReceived = widget.verificationId;
-    });
+    getIsRegistered();
     super.initState();
+  }
+
+  getIsRegistered () async {
+    bool isRegi = await SharedPreferencesService.isRegistered();
+    setState(() {
+      isRegistered = isRegi;
+    });
+  }
+
+
+  initLoad(data) {
+    if(isInitLoaded) return;
+    if(data['mobile'] != "") {
+      setState(() {
+        isInitLoaded = true;
+        mobile = data['mobile'];
+        countryCode = data['country_code'];
+        userType = data['user_type'];
+      });
+      sendOTP();
+    }
+  }
+
+  sendOTP() async {
+    auth.verifyPhoneNumber(
+        phoneNumber: '$countryCode$mobile',
+        verificationCompleted: (PhoneAuthCredential credential) async {
+
+        },
+        verificationFailed: (FirebaseAuthException exception) {
+          print(exception.message);
+        },
+        codeSent: (String verificationID, int? resendToken) {
+          verificationIDReceived = verificationID;
+        },
+        codeAutoRetrievalTimeout: (String verificationID) {});
   }
 
   @override
   Widget build(BuildContext context) {
-    final args = ModalRoute.of(context)!.settings.arguments;
+    Map<String, String> data = ModalRoute.of(context)!.settings.arguments as Map<String, String>;
+    initLoad(data);
 
     Size screenSize = MediaQuery.of(context).size;
     return Scaffold(
@@ -96,7 +123,7 @@ class _OtpScreenState extends State<OtpScreen> {
                     ),
                     InkWell(
                       onTap: () {
-                        // resend otp function
+// resend otp function
                       },
                       child: const Text(
                         "VERIFY OTP",
@@ -139,7 +166,7 @@ class _OtpScreenState extends State<OtpScreen> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: const [
                         Text(
-                          "Don’t recieve the otp?",
+                          "Don’t receive the otp?",
                           style: TextStyle(fontSize: 17),
                         ),
                         SizedBox(
@@ -160,7 +187,7 @@ class _OtpScreenState extends State<OtpScreen> {
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 40),
                       child: CustomButton(
-                    loading: _isLoading,
+                        loading: _isLoading,
                         onTap: () => verifyCode(),
                         text: "VERIFY",
                       ),
@@ -185,49 +212,20 @@ class _OtpScreenState extends State<OtpScreen> {
     );
   }
 
-  void verifyCode() async {
-    _isLoading = true;
-    FirebaseAuth auth = FirebaseAuth.instance;
-    print("auth=>${widget.verificationId}");
-    PhoneAuthCredential credential = PhoneAuthProvider.credential(
-        verificationId: widget.verificationId,
-        smsCode: _pinEditingController.text);
-         try {
-         await auth.signInWithCredential(credential);
-         print("register function calledddddd>>>>>>>>>>>>>>>>>>>");
-        _register();
-         } catch (e) {
-         setState(() {
-         _isLoading = false;
-         });
-         Fluttertoast.showToast(msg: "Enter valid otp");
-         }
-    await auth.signInWithCredential(credential).then((value) {
-      print("Your are Logged in Successfully>>>");
-
-   Navigator.push(
-     context,
-     MaterialPageRoute(
-       builder: (context) => FillformScreen(),
-     ),
-   );
-
-    });
-  }
-
   _register() async {
     Map<String, String> jsonInput = {
-      'country_code': widget.countryCode,
-      'mobile': widget.mobile,
-        'device_id': DeviceInfoService.deviceId ?? "35868e",
-      'device_type': DeviceInfoService.deviceType ?? "android",
-      'user_type': widget.userType,
+      'country_code': countryCode,
+      'mobile': mobile,
+      'device_id': DeviceInfoService.deviceId ?? "",
+      'device_type': DeviceInfoService.deviceType ?? "",
+      'user_type': userType,
     };
 
     print("Register Data--->$jsonInput");
 
     Register register =
         await ApiService.register(jsonInput: jsonEncode(jsonInput));
+    print("register api call>l>>>>>${register}");
 
     if (register.status == "success") {
       if (register.token != null) {
@@ -240,11 +238,12 @@ class _OtpScreenState extends State<OtpScreen> {
       if (!mounted) return;
 
       String routeName = DashboardScreen.routeName;
-      if (widget.userType == "customer") {
-        routeName = DashboardScreen.routeName;
-      } else if (widget.userType == "service_center") {
+      if (userType == "customer") {
+
+        routeName = isRegistered ? DashboardScreen.routeName : FillformScreen.routeName;
+      } else if (userType == "service_center") {
         routeName = ServiceDashboard.routeName;
-      } else if (widget.userType == "driver") {
+      } else if (userType == "driver") {
         routeName = DeliveryDashboard.routeName;
       }
       Navigator.pushNamedAndRemoveUntil(
@@ -262,30 +261,28 @@ class _OtpScreenState extends State<OtpScreen> {
     });
   }
 
- // void verifyCodee() async {
- //   FirebaseAuth auth = FirebaseAuth.instance;
- //   print("auth=>${widget.verificationId}");
- //   PhoneAuthCredential credential = PhoneAuthProvider.credential(
- //       verificationId: widget.verificationId,
- //       smsCode: _pinEditingController.toString());
- //  // try {
- //  //   await auth.signInWithCredential(credential);
- //  //   print("register function calledddddd>>>>>>>>>>>>>>>>>>>");
- //  // // _register(); >>>>>>>>>>>>>>>>>>>>>
- //  // } catch (e) {
- //  //   setState(() {
- //  //     _isLoading = false;
- //  //   });
- //  //   Fluttertoast.showToast(msg: "Enter valid otp");
- //  // }
- //   await auth.signInWithCredential(credential).then((value) {
- //     print("Your are Logged in Successfully>>>");
- //     Navigator.push(
- //       context,
- //       MaterialPageRoute(
- //         builder: (context) => FillformScreen(),
- //       ),
- //     );
- //   });
- // }
+  void verifyCode() async {
+    if (_isLoading) return;
+    if (smsCode.isEmpty) return;
+    setState(() {
+      _isLoading = true;
+    });
+    PhoneAuthCredential credential = PhoneAuthProvider.credential(
+        verificationId: verificationIDReceived,
+        smsCode:_pinEditingController.text);
+    try {
+      await auth.signInWithCredential(credential);
+      print("register function calledddddd>>>>>>>>>>>>>>>>>>>");
+      _register();
+    } catch (e) {
+      setState(() {
+        _isLoading = false;
+      });
+      Fluttertoast.showToast(msg: "${e}   Enter valid otp");
+      print("JSON>>>>>${e}");
+    }
+
+  }
+
+
 }

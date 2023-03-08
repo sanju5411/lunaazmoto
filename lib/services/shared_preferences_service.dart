@@ -24,6 +24,17 @@ class SharedPreferencesService {
     return prefs.getBool(SharedPreferencesKey.isLoggedIn) ?? false;
   }
 
+
+  static Future<void> setRegistered({required bool registered}) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setBool(SharedPreferencesKey.isRegistered, registered);
+  }
+
+  static Future<bool> isRegistered() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.getBool(SharedPreferencesKey.isRegistered) ?? false;
+  }
+
   static Future<void> setApiToken({required String apiToken}) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.setString(SharedPreferencesKey.apiToken, apiToken);
@@ -46,6 +57,20 @@ class SharedPreferencesService {
       await FirebaseMessaging.instance.subscribeToTopic(topic);
     }
   }
+
+  static Future<AuthUser> getAuthUserData() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    AuthUser authUser = AuthUser(
+      id: prefs.getInt(SharedPreferencesKey.authUserId),
+      name: prefs.getString(SharedPreferencesKey.authUserName),
+      mobile: prefs.getString(SharedPreferencesKey.authUserMobile),
+      email: prefs.getString(SharedPreferencesKey.authUserEmail),
+      avatar: prefs.getString(SharedPreferencesKey.authUserAvatar),
+      userType: '${prefs.getString(SharedPreferencesKey.authUserType)}',
+    );
+    return authUser;
+  }
+
 
   static Future<void> setAuthUser({required AuthUser authUser}) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();

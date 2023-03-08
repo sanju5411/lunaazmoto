@@ -28,7 +28,7 @@ Route<dynamic> generateRoute(RouteSettings routeSettings) {
 
     case OtpScreen.routeName:
       return CustomPageRoute(
-        child:   OtpScreen(mobile: '', verificationId: '', countryCode: '', resendToken: null, userType: '', otpCode: '',),
+        child: const OtpScreen(),
         routeSettings: routeSettings,
       );
 

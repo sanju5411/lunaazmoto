@@ -7,10 +7,8 @@ class ApiConfig {
   static const String registration = "register";
   static const String dashboard = "dashboard";
    // static const String updateFCMToken = "update_fcm_token";
-  // static const String menus = "menus";
-  // static const String orders = "orders";
-  // static const String profile = "user-profile";
-  // static const String updateProfile = "user-profile/update";
+  static const String profile = "user-profile";
+  static const String updateProfile = "user-profile/update";
   // static const String addressSave = "address/save";
   // static const String address = "address";
   // static const String deliveryAddresses = "addresses";

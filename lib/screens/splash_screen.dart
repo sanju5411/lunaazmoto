@@ -7,6 +7,8 @@ import 'package:lunaaz_moto/screens/auth/login_screen.dart';
 import 'package:lunaaz_moto/screens/customer/customer_screens/dashboard_screen/dashboard_screen.dart';
 import 'package:lunaaz_moto/screens/customer/customer_screens/fill_form/fill_out_form.dart';
 import 'package:lunaaz_moto/screens/intro/intro_screen.dart';
+import 'package:lunaaz_moto/services/device_info_service.dart';
+import 'package:lunaaz_moto/services/shared_preferences_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -21,12 +23,19 @@ class SplashScreenState extends State<SplashScreen> {
 
    static  const String KEYLOGIN = "login";
    static  const String KEYFORMFILLED = "formFilled";
+   final DeviceInfoService deviceInfoService = DeviceInfoService();
+   final Duration _splashTimer = const Duration(seconds: 5);
+   Timer? timer;
 
   @override
   void initState() {
+    deviceInfo();
+    getStarted();
     super.initState();
-    whereToGo();
   }
+   deviceInfo() async {
+     await deviceInfoService.initPlatformState();
+   }
 
   @override
   Widget build(BuildContext context) {
@@ -62,36 +71,30 @@ class SplashScreenState extends State<SplashScreen> {
     );
   }
 
-  void whereToGo() async {
-    var sharedPref = await SharedPreferences.getInstance();
-    var isLoggedIn = sharedPref.getBool(KEYLOGIN);
-    var isFormFill = sharedPref.getBool(KEYFORMFILLED);
-    Timer(  Duration(seconds: 5), () {
-      if(isLoggedIn!=null){
-        if(isLoggedIn){
-          Navigator.pushReplacement(context,
-            MaterialPageRoute(builder: (context) => FillformScreen(),),);
+  void getStarted() async {
+    String routeName = IntroScreen.routeName;
+    if (!await SharedPreferencesService.isFirst()) {
+      if(await SharedPreferencesService.isLoggedIn()) {
+        if(await SharedPreferencesService.isRegistered()) {
+          routeName = DashboardScreen.routeName;
+        } else {
+          routeName = FillformScreen.routeName;
         }
-        else{
-          Navigator.pushReplacement(context,
-            MaterialPageRoute(builder: (context) =>  LoginScreen(),),);
-        }
-
-        if(isFormFill!=null){
-          Navigator.pushReplacement(context,
-            MaterialPageRoute(builder: (context) => DashboardScreen(),),);
-        }
-      }
-      else{
-        Navigator.pushReplacement(context,
-          MaterialPageRoute(builder: (context) =>  IntroScreen()),);
+      } else {
+        routeName = LoginScreen.routeName;
       }
     }
-    );
+    timer = Timer.periodic(_splashTimer, (timer) {
+      Navigator.pushReplacementNamed(context, routeName);
+    });
+  }
 
-
-
-
+  @override
+  void dispose() {
+    if(timer != null) {
+      timer!.cancel();
+    }
+    super.dispose();
   }
 }
 
