@@ -1,11 +1,17 @@
+import 'dart:convert';
 import 'dart:core';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:lunaaz_moto/common/widgets/custom_button.dart';
 import 'package:lunaaz_moto/constants/global_variables.dart';
+import 'package:lunaaz_moto/models/customer/banner/banner_image.dart';
+import 'package:lunaaz_moto/models/customer/dashboard_model.dart';
+import 'package:lunaaz_moto/models/customer/happy_customer/happy_customer.dart';
+import 'package:lunaaz_moto/models/customer/service/service_model.dart';
 import 'package:lunaaz_moto/models/happyclient_model/happy_client_model.dart';
 import 'package:lunaaz_moto/screens/customer/customer_screens/booking_screen/booking_screen.dart';
 import 'package:lunaaz_moto/screens/customer/customer_screens/profile_screen/profile_screen.dart';
+import 'package:lunaaz_moto/services/api_service.dart';
 
 class DashboardScreen extends StatefulWidget {
   static const String routeName = '/dashboard_screen';
@@ -16,6 +22,13 @@ class DashboardScreen extends StatefulWidget {
 }
 
 class _DashboardScreenState extends State<DashboardScreen> {
+
+  int? totalBookings;
+  int? todayBookings;
+  List<HappyCustomer>? happyCustomers;
+  List<BannerImage>? banners;
+  List<ServiceModel>? serviceModel;
+
 
   static List<String>  clientname  = [
     'vijay',
@@ -43,6 +56,30 @@ class _DashboardScreenState extends State<DashboardScreen> {
    ];
 
   final List<HappyClientModel> happy_client_data = List.generate(clientname.length, (index) => HappyClientModel('${clientname[index]}', '${clientimage[index]}'),);
+
+
+  @override
+  void initState() {
+    getDashboardData();
+    super.initState();
+    //refreshData();
+  }
+
+  getDashboardData() async {
+
+    Dashboard dashboard = await ApiService.dashboard("customer");
+    print("Dasboard data---${(dashboard.status)}");
+    setState(() {
+      totalBookings = dashboard.totalBookings;
+      todayBookings = dashboard.todayBookings;
+      banners = dashboard.banners;
+      serviceModel = dashboard.serviceModel;
+      happyCustomers = dashboard.happyCustomers;
+    });
+
+  }
+
+
   @override
   Widget build(BuildContext context) {
     Size screenSize = MediaQuery.of(context).size;
@@ -183,7 +220,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                             SizedBox(height: 10,),
                             CircleAvatar(
                               backgroundColor: CustomColor.whiteColor,
-                              child: Text("9",style: TextStyle(color: Color(0xffD72F81),fontSize: 18,fontWeight: FontWeight.w600),),
+                              child: Text("$totalBookings",style: TextStyle(color: Color(0xffD72F81),fontSize: 18,fontWeight: FontWeight.w600),),
                             )
                           ],),
                       ), //total service
@@ -210,7 +247,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                             SizedBox(height: 10,),
                             CircleAvatar(
                               backgroundColor: CustomColor.whiteColor,
-                              child: Text("9",style: TextStyle(color: Color(0xffCF8849),fontSize: 18,fontWeight: FontWeight.w600),),
+                              child: Text("$todayBookings",style: TextStyle(color: Color(0xffCF8849),fontSize: 18,fontWeight: FontWeight.w600),),
                             )
                           ],),
                       ), //today service

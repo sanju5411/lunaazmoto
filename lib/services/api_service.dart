@@ -103,7 +103,6 @@ class ApiService {
 
 
   static Future<ProfileModel> profile() async {
- //.   String lang = await SharedPreferencesService.getActiveLanguage();
     Uri uri = Uri.parse(
         '${ApiConfig.apiV1}/${ApiConfig.profile}');
     String token = await SharedPreferencesService.getApiToken();
@@ -139,8 +138,9 @@ class ApiService {
   }
 
   static Future<Dashboard> dashboard(userType) async {
-    Uri uri = Uri.parse('${ApiConfig.apiV1}/');
+    Uri uri = Uri.parse('${ApiConfig.apiV1}/customers/dashboard');
     String token = await SharedPreferencesService.getApiToken();
+    print("Bearer $token");
     headers.addAll({'Authorization': 'Bearer $token'});
 
     try {
