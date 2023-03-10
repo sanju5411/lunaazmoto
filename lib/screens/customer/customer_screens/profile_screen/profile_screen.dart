@@ -82,77 +82,103 @@ class ProfileScreenState extends State<ProfileScreen> {
         title: Text('Profile'),
       ),
       body: SingleChildScrollView(
-        child: Column(
-          children: [
-            ProfileOptionContainer(
-              onTap: () => Navigator.pushNamed(
-                  context, FillformScreen.routeName,
-                  arguments: _userData)
-                  .then((value) => getProfileData()),
-              leading: Container(
-                width: 40,
-                height: 40,
-                decoration: const BoxDecoration(
-                    color: Color.fromRGBO(250, 244, 225, 1.0),
-                    borderRadius: BorderRadius.all(Radius.circular(50)),
-                    boxShadow: [
-                      BoxShadow(color: Colors.black38, blurRadius: 1)
-                    ]),
-                child: Padding(
-                  padding: const EdgeInsets.all(2.0),
-                  child: ClipRRect(
-                    borderRadius:
-                    const BorderRadius.all(Radius.circular(50)),
-                    child: (_authUser != null &&
-                        _authUser!.avatar != null &&
-                        _authUser!.avatar!.isNotEmpty)
-                        ? Image.network(
-                      '${ApiConfig.baseUrl}${_authUser!.avatar}',
-                      fit: BoxFit.cover,
-                    )
-                        : Icon(Icons.person)
-                  ),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 17),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              SizedBox(height: 23,),
+              InkWell(
+                  onTap: () => Navigator.pushNamed(
+                      context, FillformScreen.routeName,
+                      arguments: _userData)
+                      .then((value) => getProfileData()),
+                child: Container(
+                  width: 60,
+                  height: 60,
+                  decoration: const BoxDecoration(
+                      color: Color.fromRGBO(250, 244, 225, 1.0),
+                      borderRadius: BorderRadius.all(Radius.circular(50)),
+                      boxShadow: [
+                        BoxShadow(color: Colors.black38, blurRadius: 1)
+                      ]),
+                  child:
+                  _authUser != null ?
+                  Padding(
+                    padding: const EdgeInsets.all(2.0),
+                    child: ClipRRect(
+                        borderRadius:
+                        const BorderRadius.all(Radius.circular(50)),
+                        child: (_authUser != null &&
+                            _authUser!.avatar != null &&
+                            _authUser!.avatar!.isNotEmpty)
+                            ? Image.network(
+                          '${ApiConfig.baseUrl}${_authUser!.avatar}',
+                          fit: BoxFit.cover,
+                        )
+                            : Icon(Icons.person)
+                    ),
+                  ) : Icon(Icons.edit),
+
                 ),
               ),
-              title: _authUser != null
-                  ? Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+              SizedBox(height: 20,),
+
+         //  _authUser != null ?
+              Row(
                 children: [
+                  Icon(Icons.person,color: CustomColor.primaryColor,),
+                  SizedBox(width: 20,),
                   Text(
                     _authUser!.name ?? "",
-                    style: CustomStyle.displayTextStyle,
-                  ),
-                  Text(
-                    _authUser!.mobile ?? "",
-                    style: CustomStyle.secondaryTextStyle,
+                    style: CustomStyle.primaryTextStyle,
                   ),
                 ],
-              )
-                  : Text("Edit Proile"),
-              trailingIcon: Icons.edit,
-            ),
-            Divider(
-              thickness: 1,
-              color: Colors.grey[300],
-            ),
-            Divider(
-              thickness: 1,
-              color: Colors.grey[300],
-            ),
-            Divider(
-              thickness: 1,
-              color: Colors.grey[300],
-            ),
-            Divider(
-              thickness: 1,
-              color: Colors.grey[300],
-            ),
-            Text(
-              "V 1.0.0.0",
-              style: const TextStyle(
-                  fontWeight: FontWeight.w300, fontSize: 13),
-            ),
-          ],
+              ),
+              Divider(
+                thickness: 1,
+                color: Colors.grey[300],
+              ),
+              SizedBox(height: 20,),
+              Row(
+                children: [
+                  Icon(Icons.phone,color: CustomColor.primaryColor,),
+                  SizedBox(width: 20,),
+                  Text(
+                    _authUser!.mobile ?? "",
+                    style: CustomStyle.primaryTextStyle,
+                  ),
+                ],
+              ),
+              Divider(
+                thickness: 1,
+                color: Colors.grey[300],
+              ),
+              SizedBox(height: 20,),
+              Row(
+                children: [
+                  Image.asset("assets/images/my_servicess.png"),
+                  SizedBox(width: 20,),
+                  Text("My Services",style: CustomStyle.primaryTextStyle,),
+                ],
+              ),
+              Divider(
+                thickness: 1,
+                color: Colors.grey[300],
+              ),
+              SizedBox(height: 20,),
+
+              CustomButton(
+                  onTap: (){
+                    Navigator.of(context).pushNamedAndRemoveUntil(
+                        LoginScreen.routeName, (route) => false);
+                  },
+                text: "Log Out",
+
+              ),
+
+            ],
+          ),
         ),
       ),
     );

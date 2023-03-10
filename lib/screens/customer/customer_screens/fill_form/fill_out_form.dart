@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -347,11 +348,13 @@ class FillformScreenState extends State<FillformScreen> {
       if (mounted) {
         await SharedPreferencesService.setAuthUser(authUser: login.user!);
         Fluttertoast.showToast(msg: login.message ?? "Update successfully")
-            .then((value) => Navigator.pushNamed(context, DashboardScreen.routeName));
+            .then((value) =>  Navigator.pushNamed(context, DashboardScreen.routeName));
+        SharedPreferencesService.setRegistered(registered: true);
+
       }
     } else {
-      Navigator.pushNamedAndRemoveUntil(context, DashboardScreen.routeName, (route) => false);
       Fluttertoast.showToast(msg: "Failed to save address, Try again..");
+
 
     }
   }
