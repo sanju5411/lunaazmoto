@@ -10,12 +10,10 @@ import 'package:lunaaz_moto/screens/customer/customer_screens/profile_screen/pro
 class DashboardScreen extends StatefulWidget {
   static const String routeName = '/dashboard_screen';
 
-  const DashboardScreen({Key? key}) : super(key: key);
 
   @override
   State<DashboardScreen> createState() => _DashboardScreenState();
 }
-
 
 class _DashboardScreenState extends State<DashboardScreen> {
 

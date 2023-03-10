@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:lunaaz_moto/common/widgets/custom_button.dart';
 import 'package:lunaaz_moto/configs/api_config.dart';
@@ -67,6 +69,7 @@ class ProfileScreenState extends State<ProfileScreen> {
       if (profile.user != null) {
         setState(() {
           _userData = profile.user!;
+          print("profile data>>>>>>>${jsonEncode(_authUser)}");
         });
       }
     }

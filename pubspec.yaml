@@ -63,6 +63,8 @@ dependencies:
   device_info_plus: ^8.1.0
   platform_device_id: ^1.0.1
   image_picker: ^0.8.6+4
+  hidden_drawer_menu: ^3.0.1
+
 
 dev_dependencies:
   flutter_test:

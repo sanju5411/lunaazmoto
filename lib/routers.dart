@@ -36,7 +36,7 @@ Route<dynamic> generateRoute(RouteSettings routeSettings) {
 
     case DashboardScreen.routeName:
       return CustomPageRoute(
-        child:  const DashboardScreen(),
+        child:   DashboardScreen(),
         routeSettings: routeSettings,
       );
 
