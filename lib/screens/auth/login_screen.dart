@@ -323,6 +323,7 @@ class _LoginScreenState extends State<LoginScreen> {
       return;
     }
     if (loginCheck.status == "success") {
+      SharedPreferencesService.setLoggedIn(loggedIn: true);
       if (loginCheck.userTypes != null && loginCheck.userTypes!.isNotEmpty)   {
         if (loginCheck.userTypes!.length > 1) {
           setState(() {
@@ -393,17 +394,19 @@ class _LoginScreenState extends State<LoginScreen> {
     print('LOGIN_RES ${jsonEncode(login)}');
 
     if (login.status == "success") {
+
       if (login.token != null) {
         await SharedPreferencesService.setApiToken(apiToken: login.token!);
       }
       if (login.user != null) {
         await SharedPreferencesService.setAuthUser(authUser: login.user!);
+
       }
       if (!mounted) return;
       String routeName = DashboardScreen.routeName;
-
       if (login.user!.userType == "customer") {
         routeName = DashboardScreen.routeName;
+       SharedPreferencesService.setRegistered(registered: true);
       }
       if (login.user!.userType == "service_center") {
         routeName = ServiceDashboard.routeName;
@@ -417,7 +420,7 @@ class _LoginScreenState extends State<LoginScreen> {
         setState(() {
           _isLoading = false;
         });
-        SharedPreferencesService.setRegistered(registered: false);
+        // SharedPreferencesService.setRegistered(registered: false);
 
         sendOtp();
       }

@@ -39,7 +39,7 @@ class CustomStyle {
   static const TextStyle displayTextStyle = TextStyle(
     color: CustomColor.primaryTextColor,
     fontWeight: FontWeight.w600,
-    fontSize: 16,
+    fontSize: 18,
   );
   static const TextStyle darkTextStyle = TextStyle(
     color: Colors.black87,
@@ -50,13 +50,13 @@ class CustomStyle {
   static const TextStyle primaryTextStyle = TextStyle(
     color: CustomColor.primaryColor,
     fontWeight: FontWeight.w600,
-    fontSize: 16,
+    fontSize: 21,
   );
 
   static const TextStyle secondaryTextStyle = TextStyle(
     color: CustomColor.secondaryTextColor,
-    fontWeight: FontWeight.w400,
-    fontSize: 14,
+    fontWeight: FontWeight.w500,
+    fontSize: 19,
   );
   static const TextStyle errorTextStyle = TextStyle(
     color: CustomColor.errorColor,

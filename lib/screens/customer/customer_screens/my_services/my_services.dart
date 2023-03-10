@@ -76,7 +76,7 @@ class _MyServicesScreenState extends State<MyServicesScreen> {
                    ],),
                     const SizedBox(height: 20,),
                     const BookingServiceCard(),
-                    const SizedBox(height: 100,),
+                    const SizedBox(height: 90,),
                     const Text("Last Services",style: TextStyle(
                         fontWeight: FontWeight.w800,
                         fontSize: 30
@@ -85,14 +85,18 @@ class _MyServicesScreenState extends State<MyServicesScreen> {
 
 
                 SizedBox(
-                  width: 350,
                   height: screenSize.height,
-                  child: ListView.builder(
-                      physics: NeverScrollableScrollPhysics(),
+                child:
+                ListView.builder(
+                      physics: const NeverScrollableScrollPhysics(),
                       itemCount: 6,
                       itemBuilder: (_, index) {
-                        return   const BookingServiceCard();
+                        return  const Padding(
+                          padding:  EdgeInsets.symmetric(vertical: 20),
+                          child:  BookingServiceCard(),
+                        );
                       }),
+
                 ),
 
                   ],
