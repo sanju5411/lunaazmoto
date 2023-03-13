@@ -1,6 +1,6 @@
 import 'package:lunaaz_moto/models/customer/banner/banner_image.dart';
 import 'package:lunaaz_moto/models/customer/happy_customer/happy_customer.dart';
-import 'package:lunaaz_moto/models/customer/service/service_model.dart';
+import 'package:lunaaz_moto/models/customer/service_model/service_model.dart';
 
 class Dashboard {
   Dashboard({
@@ -38,10 +38,10 @@ class Dashboard {
         : List<BannerImage>.from(
         json["banners"].map((x) => BannerImage.fromJson(x))),
 
-    serviceModel: json["last_service"] == null
+    serviceModel: json["last_services"] == null
           ? null
           : List<ServiceModel>.from(
-          json["last_service"].map((x) => ServiceModel.fromJson(x))),
+          json["last_services"].map((x) => ServiceModel.fromJson(x))),
 
 
   );

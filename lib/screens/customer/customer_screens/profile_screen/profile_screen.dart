@@ -173,8 +173,7 @@ class ProfileScreenState extends State<ProfileScreen> {
 
               CustomButton(
                   onTap: (){
-                    Navigator.of(context).pushNamedAndRemoveUntil(
-                        LoginScreen.routeName, (route) => false);
+                  _logiout();
                   },
                 text: "Log Out",
 
@@ -185,6 +184,13 @@ class ProfileScreenState extends State<ProfileScreen> {
         ),
       ),
     );
+  }
+
+  void _logiout() {
+  SharedPreferencesService.setLoggedIn(loggedIn: false);
+    Navigator.of(context).pushNamedAndRemoveUntil(
+        LoginScreen.routeName, (route) => false);
+
   }
 
 
