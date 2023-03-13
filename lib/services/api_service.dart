@@ -6,7 +6,9 @@ import 'package:http/http.dart';
 import 'package:lunaaz_moto/configs/api_config.dart';
 import 'package:lunaaz_moto/models/auth/login/login.dart';
 import 'package:lunaaz_moto/models/auth/login/login_check.dart';
+import 'package:lunaaz_moto/models/auth/user/user.dart';
 import 'package:lunaaz_moto/models/customer/dashboard_model.dart';
+import 'package:lunaaz_moto/models/customer/service_model/package_model/package_model.dart';
 import 'package:lunaaz_moto/models/profile/profile_model.dart';
 import 'package:lunaaz_moto/models/register/register.dart';
 import 'package:lunaaz_moto/services/shared_preferences_service.dart';
@@ -36,12 +38,9 @@ class ApiService {
   static Future<Login> login({required Object jsonInput}) async {
     Uri uri = Uri.parse('${ApiConfig.apiV1}/${ApiConfig.login}');
     try {
-      var res = await post(
-        uri,
-        headers: headers,
-        body: jsonInput,
-      );
+      var res = await post(uri,headers: headers,body: jsonInput,);
       var json = jsonDecode(res.body);
+      print('Object >>>>>${json}');
       return Login.fromJson(json);
     } catch (e) {
       debugPrint("LOGIN_API_ERROR>>> $e");
@@ -139,7 +138,7 @@ class ApiService {
   }
 
   static Future<Dashboard> dashboard(userType) async {
-    Uri uri = Uri.parse('${ApiConfig.apiV1}/');
+    Uri uri = Uri.parse('${ApiConfig.apiV1}/${userType}/${ApiConfig.dashboard}');
     String token = await SharedPreferencesService.getApiToken();
     headers.addAll({'Authorization': 'Bearer $token'});
 
@@ -153,6 +152,27 @@ class ApiService {
     } catch (e) {
       print("DASHBOARD_API_ERROR>>> $e");
       return Dashboard();
+    }
+  }
+
+
+  static Future<BookingPackage> packages({required Object jsonInput}) async {
+   // AuthUser userType = await SharedPreferencesService.getAuthUserData();
+    Uri uri = Uri.parse('${ApiConfig.apiV1}/${ApiConfig.packages}');
+    String token = await SharedPreferencesService.getApiToken();
+    headers.addAll({'Authorization': 'Bearer $token'});
+
+    try {
+      var res = await post(
+        uri,
+        headers: headers,
+        body: jsonInput,
+      );
+      var json = jsonDecode(res.body);
+      return BookingPackage.fromJson(json);
+    } catch (e) {
+      print("PACKAGES_API_ERROR>>> $e");
+      return BookingPackage();
     }
   }
 

@@ -4,6 +4,8 @@ import 'package:lunaaz_moto/constants/global_variables.dart';
 import 'package:lunaaz_moto/screens/customer/customer_screens/book_form/booking_form.dart';
 
 class MyServicesScreen extends StatefulWidget {
+  static const String routeName = '/my_services_screen';
+
   const MyServicesScreen({Key? key}) : super(key: key);
   @override
   State<MyServicesScreen> createState() => _MyServicesScreenState();

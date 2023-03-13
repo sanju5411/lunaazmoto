@@ -6,7 +6,7 @@ class ApiConfig {
   static const String resendOtp = "resend_otp";
   static const String registration = "register";
   static const String dashboard = "dashboard";
-   // static const String updateFCMToken = "update_fcm_token";
+   static const String packages = "packages";
   static const String profile = "user-profile";
   static const String updateProfile = "user-profile/update";
   // static const String addressSave = "address/save";

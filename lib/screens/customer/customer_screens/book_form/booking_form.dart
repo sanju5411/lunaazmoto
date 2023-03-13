@@ -23,8 +23,23 @@ class _BookingFormState extends State<BookingForm> {
 
   @override
   void initState() {
+    _serviceDateController.text = "";
     super.initState();
 
+  }
+
+  DateTime _dateTime = DateTime.now();
+  void _showDatePicker() {
+    showDatePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime(2000),
+      lastDate: DateTime(2025),
+    ).then((value) {
+      setState(() {
+        _dateTime = value!;
+      });
+    });
   }
 
   String radioButtonItem = 'ONE';
@@ -180,6 +195,7 @@ class _BookingFormState extends State<BookingForm> {
                             ),
                           ),
                         ),
+
                       ),
                     ),
                     SizedBox(height: 25,),
@@ -196,16 +212,23 @@ class _BookingFormState extends State<BookingForm> {
                         borderRadius: BorderRadius.circular(15.0),
                       ),
                       child: TextFormField(
+                        controller: _serviceDateController,
                         obscureText: true,
                         decoration: InputDecoration(
-
                           fillColor: Colors.white,
                           filled: true,
-                          suffixIcon: const Icon(
-                            Icons.calendar_today,
-                            color: Color(0xff224597),
+                          suffixIcon: InkWell(
+                            onTap: (){
+                              _showDatePicker();
+                            },
+                            child: const Icon(
+                              Icons.calendar_today,
+                              color: Color(0xff224597),
+
+                            ),
                           ),
                           hintText: 'MM-DD-YY',
+
 
                           enabledBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(15.0),
@@ -215,8 +238,15 @@ class _BookingFormState extends State<BookingForm> {
                             ),
                           ),
                         ),
+                        readOnly: true,
+                        onTap: (){
+                          _showDatePicker();
+                          setState(() {
+                            _serviceDateController.text = _dateTime.toString();
+                          });
+                        },
                       ),
-                    ),
+                    ), //date>>>>>>>
                     SizedBox(height: 25,),
                     Text("Service Time",style: TextStyle(fontSize: 25,fontWeight: FontWeight.w600),),
                     SizedBox(height: 10,),
