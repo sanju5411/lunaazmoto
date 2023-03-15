@@ -4,9 +4,12 @@ import 'package:flutter/material.dart';
 import 'package:lunaaz_moto/common/widgets/custom_plan_card.dart';
 import 'package:lunaaz_moto/common/widgets/wheler_popup.dart';
 import 'package:lunaaz_moto/constants/global_variables.dart';
+import 'package:lunaaz_moto/models/customer/dashboard_model.dart';
 import 'package:lunaaz_moto/models/customer/service_model/package_model/package_model.dart';
 import 'package:lunaaz_moto/screens/customer/customer_screens/book_form/booking_form.dart';
 import 'package:lunaaz_moto/services/api_service.dart';
+
+import '../../../../models/customer/service_model/package_model/package_main_model.dart';
 
 class BookingScreen extends StatefulWidget {
   const BookingScreen({Key? key}) : super(key: key);
@@ -16,6 +19,20 @@ class BookingScreen extends StatefulWidget {
 }
 
 class _BookingScreenState extends State<BookingScreen> {
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    getAllPackagesList();
+  }
+
+  getAllPackagesList() async{
+    PackagesMainModel packagesModel = await ApiService.packages();
+  }
+
+
+
   @override
   Widget build(BuildContext context) {
     Size screenSize = MediaQuery.of(context).size;
@@ -28,7 +45,7 @@ class _BookingScreenState extends State<BookingScreen> {
           onTap: () {
             Navigator.pop(context);
           },
-          child: Icon(
+          child: const Icon(
             Icons.arrow_back,
             color: CustomColor.whiteColor,
           ),
@@ -40,7 +57,7 @@ class _BookingScreenState extends State<BookingScreen> {
           child: Column(
             children: [
               Padding(
-                padding: EdgeInsets.symmetric(horizontal: 10),
+                padding: const EdgeInsets.symmetric(horizontal: 10),
                 child: SingleChildScrollView(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -72,7 +89,7 @@ class _BookingScreenState extends State<BookingScreen> {
                                 onTap: () {
                                   //here we add let long
                                 },
-                                child: Icon(
+                                child: const Icon(
                                   Icons.location_on,
                                   color: CustomColor.primaryColor,
                                 )),
@@ -88,7 +105,7 @@ class _BookingScreenState extends State<BookingScreen> {
                   ),
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 30,
               ),
               Container(
@@ -105,15 +122,15 @@ class _BookingScreenState extends State<BookingScreen> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      SizedBox(
+                      const SizedBox(
                         height: 10,
                       ),
-                      Text(
+                      const Text(
                         "Select your Package",
                         style: TextStyle(
                             fontWeight: FontWeight.w600, fontSize: 25),
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 20,
                       ),
                       SizedBox(

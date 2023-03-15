@@ -8,6 +8,7 @@ import 'package:lunaaz_moto/models/auth/login/login.dart';
 import 'package:lunaaz_moto/models/auth/login/login_check.dart';
 import 'package:lunaaz_moto/models/auth/user/user.dart';
 import 'package:lunaaz_moto/models/customer/dashboard_model.dart';
+import 'package:lunaaz_moto/models/customer/service_model/package_model/package_main_model.dart';
 import 'package:lunaaz_moto/models/customer/service_model/package_model/package_model.dart';
 import 'package:lunaaz_moto/models/profile/profile_model.dart';
 import 'package:lunaaz_moto/models/register/register.dart';
@@ -156,8 +157,7 @@ class ApiService {
   }
 
 
-  static Future<BookingPackage> packages({required Object jsonInput}) async {
-   // AuthUser userType = await SharedPreferencesService.getAuthUserData();
+  static Future<PackagesMainModel> packages() async {
     Uri uri = Uri.parse('${ApiConfig.apiV1}/${ApiConfig.packages}');
     String token = await SharedPreferencesService.getApiToken();
     headers.addAll({'Authorization': 'Bearer $token'});
@@ -166,72 +166,17 @@ class ApiService {
       var res = await post(
         uri,
         headers: headers,
-        body: jsonInput,
       );
       var json = jsonDecode(res.body);
-      return BookingPackage.fromJson(json);
+      return PackagesMainModel.fromJson(json);
     } catch (e) {
       print("PACKAGES_API_ERROR>>> $e");
-      return BookingPackage();
+      return PackagesMainModel();
     }
   }
 
 
 
-  // static Future<Register> register({required Object jsonInput}) async {
-  //   Uri uri = Uri.parse('${ApiConfig.apiV1}/${ApiConfig.registration}');
-  //   try {
-  //     var res = await post(
-  //       uri,
-  //       headers: headers,
-  //       body: jsonInput,
-  //     );
-  //     var json = jsonDecode(res.body);
-  //     return Register.fromJson(json);
-  //   } catch (e) {
-  //     debugPrint("REGISTER_API_ERROR>>> $e");
-  //     return Register();
-  //   }
-  // }
-  //
-  // static Future<Dashboard> dashboard() async {
-  //   String lang = await SharedPreferencesService.getActiveLanguage();
-  //   Uri uri = Uri.parse(
-  //       '${lang == 'en' ? ApiConfig.apiEn : ApiConfig.apiHi}${ApiConfig.dashboard}');
-  //   String token = await SharedPreferencesService.getApiToken();
-  //   headers.addAll({'Authorization': 'Bearer $token'});
-  //
-  //   try {
-  //     var res = await get(
-  //       uri,
-  //       headers: headers,
-  //     );
-  //     var json = jsonDecode(res.body);
-  //     return Dashboard.fromJson(json);
-  //   } catch (e) {
-  //     print("DASHBOARD_API_ERROR>>> $e");
-  //     return Dashboard();
-  //   }
-  // }
-  //
-  // static Future<ApiResponse> updateFCMToken({required Object jsonInput}) async {
-  //   String lang = await SharedPreferencesService.getActiveLanguage();
-  //   String? token = await SharedPreferencesService.getApiToken();
-  //   headers.addAll({'Authorization': 'Bearer $token'});
-  //   Uri uri = Uri.parse(
-  //       '${lang == 'en' ? ApiConfig.apiEn : ApiConfig.apiHi}${ApiConfig.updateFCMToken}');
-  //   try {
-  //     var res = await post(
-  //       uri,
-  //       headers: headers,
-  //       body: jsonInput,
-  //     );
-  //     var json = jsonDecode(res.body);
-  //     return ApiResponse.fromJson(json);
-  //   } catch (e) {
-  //     print("updateFCMToken API ERROR>>> $e");
-  //     return ApiResponse();
-  //   }
-  // }
-  //
+
+
 }
