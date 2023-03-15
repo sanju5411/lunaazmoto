@@ -107,6 +107,7 @@ class ProfileScreenState extends State<ProfileScreen> {
                       ]),
                   child:
                   _authUser != null ?
+
                   Padding(
                     padding: const EdgeInsets.all(2.0),
                     child: ClipRRect(
@@ -133,7 +134,7 @@ class ProfileScreenState extends State<ProfileScreen> {
                   Icon(Icons.person,color: CustomColor.primaryColor,),
                   SizedBox(width: 20,),
                   Text(
-                    _authUser!.name ?? "",
+                    _authUser!.name ??  _authUser!.name.toString(),
                     style: CustomStyle.primaryTextStyle,
                   ),
                 ],

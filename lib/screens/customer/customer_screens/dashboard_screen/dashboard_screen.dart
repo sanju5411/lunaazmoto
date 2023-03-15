@@ -120,7 +120,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Container(
-                height:screenSize.height * 0.30,
                 width: screenSize.width,
                 decoration:const  BoxDecoration(
                   color: CustomColor.primaryColor,
@@ -129,22 +128,25 @@ class _DashboardScreenState extends State<DashboardScreen> {
                     bottomRight: Radius.circular(25),
                   ),),
                 child: bannerSliders.isNotEmpty
-                    ? CarouselSlider(
+                    ? Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 10),
+                      child: CarouselSlider(
                   options: CarouselOptions(
-                    enlargeCenterPage: true,
-                    autoPlay: true,
-                    aspectRatio: 2,
-                    viewportFraction: 0.83,
-                    scrollDirection:
-                    Axis.horizontal,
-                    autoPlayInterval:
-                    const Duration(seconds: 5),
-                    autoPlayAnimationDuration:
-                    const Duration(
-                        milliseconds: 500),
+                      enlargeCenterPage: true,
+                      autoPlay: true,
+                      aspectRatio: 2,
+                      viewportFraction: 0.83,
+                      scrollDirection:
+                      Axis.horizontal,
+                      autoPlayInterval:
+                      const Duration(seconds: 5),
+                      autoPlayAnimationDuration:
+                      const Duration(
+                          milliseconds: 500),
                   ),
                   items: bannerSliders,
-                )
+                ),
+                    )
                     : const SizedBox(),
               ),
               const SizedBox(height: 10,),
@@ -276,8 +278,10 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                 begin: Alignment.topRight,
                                 end: Alignment.bottomLeft,
                                 colors: [
+
                                   Color(0xffEC5FA3),
                                   Color(0xffD72F81),
+
                                 ],
                               ),
                               borderRadius: BorderRadius.circular(15),
@@ -295,7 +299,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
                           ), //total service
                           Spacer(),
                           Container(
-
                             height:screenSize.height * 0.2,
                             width: screenSize.width * 0.4,
                             decoration: BoxDecoration(
@@ -320,7 +323,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                 )
                               ],),
                           ), //today service
-
                         ],
                       ),
                     ),
@@ -328,10 +330,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 20),
                       child: CustomButton(
-
-                        textWidget: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Text('Book Now',style: TextStyle(fontSize: 20,color: CustomColor.whiteColor),),
+                        textWidget: const Padding(
+                          padding:  EdgeInsets.all(8.0),
+                          child: Text('Book Now', style: TextStyle(fontSize: 20,color: CustomColor.whiteColor),),
                         ),
                         variant: Variant.booknowbtn,
                         onTap: () {
@@ -375,7 +376,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                             return Padding(
                               padding: const EdgeInsets.symmetric(horizontal: 20,vertical: 16),
                               child: Container(
-                                height: screenSize.height * 0.18,
+                                //height: screenSize.height * 0.18,
                                 width: screenSize.width,
                                 decoration:  BoxDecoration(
                                     color: CustomColor.whiteColor,

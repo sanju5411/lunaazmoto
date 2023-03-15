@@ -5,6 +5,8 @@ import 'package:lunaaz_moto/constants/global_variables.dart';
 import 'package:lunaaz_moto/screens/customer/customer_screens/my_services/my_services.dart';
 
 class BookingForm extends StatefulWidget {
+  static const String routeName = '/booking_form_screen';
+
   const BookingForm({Key? key}) : super(key: key);
 
   @override
@@ -136,7 +138,7 @@ class _BookingFormState extends State<BookingForm> {
                   decoration: BoxDecoration(
                     boxShadow: [
                       const BoxShadow(
-                        color: Colors.grey,
+                        color: Color(0xffdcdcdc),
                         blurRadius: 20,
                       ),
                     ],
@@ -171,7 +173,7 @@ class _BookingFormState extends State<BookingForm> {
                       decoration: BoxDecoration(
                         boxShadow: [
                            BoxShadow(
-                            color: Colors.grey,
+                             color: Color(0xffdcdcdc),
                             blurRadius: 20,
                           ),
                         ],
@@ -205,7 +207,7 @@ class _BookingFormState extends State<BookingForm> {
                       decoration: BoxDecoration(
                         boxShadow: [
                           const BoxShadow(
-                            color: Colors.grey,
+                            color: Color(0xffdcdcdc),
                             blurRadius: 20,
                           ),
                         ],
@@ -254,7 +256,7 @@ class _BookingFormState extends State<BookingForm> {
                       decoration: BoxDecoration(
                         boxShadow: [
                           const BoxShadow(
-                            color: Colors.grey,
+                            color: Color(0xffdcdcdc),
                             blurRadius: 20,
                           ),
                         ],
@@ -289,7 +291,7 @@ class _BookingFormState extends State<BookingForm> {
                       decoration: BoxDecoration(
                         boxShadow: [
                           const BoxShadow(
-                            color: Colors.grey,
+                            color: Color(0xffdcdcdc),
                             blurRadius: 20,
                           ),
                         ],
@@ -324,8 +326,8 @@ class _BookingFormState extends State<BookingForm> {
                       decoration: BoxDecoration(
                         boxShadow: [
                           const BoxShadow(
-                            color: Colors.grey,
-                            blurRadius: 20,
+                            color: Color(0xffdcdcdc),
+                            blurRadius: 10,
                           ),
                         ],
                         borderRadius: BorderRadius.circular(15.0),

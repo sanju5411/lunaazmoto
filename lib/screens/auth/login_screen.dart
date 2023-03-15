@@ -425,7 +425,7 @@ class _LoginScreenState extends State<LoginScreen> {
         setState(() {
           _isLoading = false;
         });
-        // SharedPreferencesService.setRegistered(registered: false);
+         SharedPreferencesService.setRegistered(registered: false);
 
         sendOtp();
       }

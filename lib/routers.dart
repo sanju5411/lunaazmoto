@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:lunaaz_moto/common/builders/custom_page_route.dart';
+import 'package:lunaaz_moto/common/widgets/wheler_popup.dart';
 import 'package:lunaaz_moto/screens/auth/login_screen.dart';
 import 'package:lunaaz_moto/screens/auth/otp_screen.dart';
 import 'package:lunaaz_moto/screens/bike_delivery/delivery_dashboard/delivery_dashboard.dart';
+import 'package:lunaaz_moto/screens/customer/customer_screens/book_form/booking_form.dart';
 import 'package:lunaaz_moto/screens/customer/customer_screens/dashboard_screen/dashboard_screen.dart';
 import 'package:lunaaz_moto/screens/customer/customer_screens/fill_form/fill_out_form.dart';
 import 'package:lunaaz_moto/screens/customer/customer_screens/my_services/my_services.dart';
@@ -40,6 +42,18 @@ Route<dynamic> generateRoute(RouteSettings routeSettings) {
         child:   DashboardScreen(),
         routeSettings: routeSettings,
       );
+
+    case BookingForm.routeName:
+      return CustomPageRoute(
+        child:   BookingForm(),
+        routeSettings: routeSettings,
+      );
+
+    // case CustomWheelerPopUp.routeName:
+    //   return CustomPageRoute(
+    //     child:   CustomWheelerPopUp(),
+    //     routeSettings: routeSettings,
+    //   );
 
     case ServiceDashboard.routeName:
       return CustomPageRoute(
