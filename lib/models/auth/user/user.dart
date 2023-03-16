@@ -30,7 +30,7 @@ class AuthUser {
         avatar: json["avatar"],
         dateOfBirth: json["date_of_birth"],
         userType: json["user_type"],
-        fcmTopics: json["fcm_topics"] == ""
+        fcmTopics: json["fcm_topics"] == null
             ? null
             : List<String>.from(json["fcm_topics"].map((x) => x)),
       );
