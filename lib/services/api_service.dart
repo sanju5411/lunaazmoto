@@ -157,7 +157,7 @@ class ApiService {
   }
 
 
-  static Future<PackagesMainModel> packages() async {
+  static Future<PackagesMainModel> packages({required Object jsonInput}) async {
     Uri uri = Uri.parse('${ApiConfig.apiV1}/${ApiConfig.packages}');
     String token = await SharedPreferencesService.getApiToken();
     headers.addAll({'Authorization': 'Bearer $token'});
@@ -166,6 +166,7 @@ class ApiService {
       var res = await post(
         uri,
         headers: headers,
+        body: jsonInput,
       );
       var json = jsonDecode(res.body);
       return PackagesMainModel.fromJson(json);

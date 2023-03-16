@@ -49,7 +49,7 @@ class Dashboard {
   Map<String, dynamic> toJson() => {
     "status": status,
     "message": message,
-    "today_bookings" : todayBookings ,
+    "today_bookings" : todayBookings,
     "total_bookings" : totalBookings,
     "happy_customers": happyCustomers == null
         ? null

@@ -2,10 +2,10 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:lunaaz_moto/common/widgets/custom_plan_card.dart';
-import 'package:lunaaz_moto/common/widgets/wheler_popup.dart';
 import 'package:lunaaz_moto/constants/global_variables.dart';
 import 'package:lunaaz_moto/models/customer/dashboard_model.dart';
 import 'package:lunaaz_moto/models/customer/service_model/package_model/package_model.dart';
+import 'package:lunaaz_moto/models/customer/service_model/service_model.dart';
 import 'package:lunaaz_moto/screens/customer/customer_screens/book_form/booking_form.dart';
 import 'package:lunaaz_moto/services/api_service.dart';
 
@@ -20,6 +20,15 @@ class BookingScreen extends StatefulWidget {
 
 class _BookingScreenState extends State<BookingScreen> {
 
+  PackagesMainModel? _bookingPackage;
+  List<BookingPackage>? _packages;
+  // List<PackageBenefits>? packageBenefits;
+
+
+
+  String rupees = "₹";
+
+
   @override
   void initState() {
     // TODO: implement initState
@@ -28,9 +37,24 @@ class _BookingScreenState extends State<BookingScreen> {
   }
 
   getAllPackagesList() async{
-    PackagesMainModel packagesModel = await ApiService.packages();
-  }
+    Map<String, String> jsonInput = {
+      'package_type': "four_wheeler",
+    };
+    PackagesMainModel packagesModel = await ApiService.packages(jsonInput: jsonEncode(jsonInput));
+    print("packages?>>>>${jsonEncode(packagesModel)}>>>>>>");
 
+      _bookingPackage = packagesModel;
+      if(_bookingPackage?.packages != null){
+        _packages = _bookingPackage?.packages!;
+        _packages = _bookingPackage?.packages!;
+
+      }
+
+
+
+
+
+  }
 
 
   @override
@@ -65,7 +89,7 @@ class _BookingScreenState extends State<BookingScreen> {
                       const SizedBox(
                         height: 15,
                       ),
-                      const Text(
+                       Text(
                         "Online Bike, Car",
                         style: TextStyle(
                             fontSize: 30, color: CustomColor.whiteColor),
@@ -110,7 +134,6 @@ class _BookingScreenState extends State<BookingScreen> {
               ),
               Container(
                 width: screenSize.width,
-                height: screenSize.height,
                 decoration: const BoxDecoration(
                     color: CustomColor.whiteColor,
                     borderRadius: BorderRadius.only(
@@ -133,33 +156,145 @@ class _BookingScreenState extends State<BookingScreen> {
                       const SizedBox(
                         height: 20,
                       ),
+                     // packageBenefits.isNotEmpty ?
                       SizedBox(
                         width: screenSize.width,
-                        height: 530,
-                        child: ListView(
-                          scrollDirection: Axis.horizontal,
-                          children: [
-                            InkWell(
-                              onTap: () {
-                             Navigator.pushNamed(context, BookingForm.routeName);
-                              },
-                              child: CustomPlaneBasic(),
-                            ),
-                            InkWell(
-                              onTap: () {
-                                Navigator.pushNamed(context, BookingForm.routeName);
-                              },
-                              child: CustomPlaneGold(),
-                            ),
-                            InkWell(
-                              onTap: () {
-                                Navigator.pushNamed(context, BookingForm.routeName);
-                              },
-                              child: CustomPlanePlatinum(),
-                            ),
-                          ],
-                        ),
-                      )
+                        height: screenSize.height,
+                        child: ListView.builder(
+                            itemCount: _packages?.length,
+                            //physics: NeverScrollableScrollPhysics(),
+                            scrollDirection: Axis.horizontal,
+                            itemBuilder: (BuildContext context, int index) {
+
+                              return InkWell(
+                                onTap: (){
+                                  Navigator.pushNamed(context, BookingForm.routeName);
+                                },
+                                child: Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Container(
+                                    width: 280,
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(20),
+                                      gradient: const LinearGradient(
+                                        begin: Alignment.topRight,
+                                        end: Alignment.bottomLeft,
+                                        colors: [
+                                          Color(0xffFB5A7C),
+                                          Color(0xffFE6585),
+                                          Color(0xffFE184A),
+
+                                        ],
+                                      ),
+                                    ),
+                                    child: Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        const SizedBox(height: 10,),
+
+                                        Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: const Text("LunaazMoto",style: TextStyle(fontSize: 15,color: CustomColor.whiteColor),),
+                                        ),
+                                        Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: const Text("LunaazMoto",style: TextStyle(fontSize: 15,color: CustomColor.whiteColor),),
+                                        ),
+                                        Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: const Text("LunaazMoto",style: TextStyle(fontSize: 15,color: CustomColor.whiteColor),),
+                                        ),
+                                        Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: const Text("LunaazMoto",style: TextStyle(fontSize: 15,color: CustomColor.whiteColor),),
+                                        ),
+                                        Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: const Text("LunaazMoto",style: TextStyle(fontSize: 15,color: CustomColor.whiteColor),),
+                                        ),
+
+                                        Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: const Text("LunaazMoto",style: TextStyle(fontSize: 15,color: CustomColor.whiteColor),),
+                                        ),
+                                        Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: const Text("LunaazMoto",style: TextStyle(fontSize: 15,color: CustomColor.whiteColor),),
+                                        ),
+                                        Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: const Text("LunaazMoto",style: TextStyle(fontSize: 15,color: CustomColor.whiteColor),),
+                                        ),
+                                        Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: const Text("LunaazMoto",style: TextStyle(fontSize: 15,color: CustomColor.whiteColor),),
+                                        ),
+                                        Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: const Text("LunaazMoto",style: TextStyle(fontSize: 15,color: CustomColor.whiteColor),),
+                                        ),
+
+
+
+
+                                        const SizedBox(height: 5,),
+                                        Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child:  Text(_packages![index] != null && _packages![index].packageName != null ?_packages![index].toString() : "" ,style: TextStyle(fontSize: 40, fontWeight: FontWeight.w800,color: CustomColor.whiteColor),),
+                                        ),
+                                        SizedBox(height: 20,),
+                                        Container(
+                                          height: 10,
+                                          width: screenSize.width,
+                                          decoration: BoxDecoration(
+                                            gradient: const LinearGradient(
+                                              begin: Alignment.bottomRight,
+                                              end: Alignment.bottomLeft,
+                                              colors: [
+                                                Color(0xffFB5A7C),
+                                                Color(0xffFE6585),
+                                                Color(0xffFE184A),
+
+                                              ],
+                                            ),
+                                          ),
+                                        ),
+                                        SizedBox(height: 20,),
+                                        Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: Column(children: [
+                                            Row(children: [
+                                              Text("₹ 1000" ,style: TextStyle(
+                                                  color: CustomColor.whiteColor,
+                                                  fontSize: 20,
+                                                  decoration: TextDecoration.lineThrough
+                                              ),),
+                                              SizedBox(width: 17,),
+                                              Text("₹ ${_packages![index].packagePrice??"0"}",style: TextStyle(
+                                                  color: CustomColor.whiteColor,
+                                                  fontSize: 28,
+                                                  fontWeight: FontWeight.w700
+                                              ),),
+                                            ],),
+                                            SizedBox(height: 30,),
+
+                                            Padding(
+                                              padding: const EdgeInsets.all(8.0),
+                                              child: Align(
+                                                alignment: Alignment.topLeft,
+                                                  child: Text(_packages![index].packageFeaturesName!.toString() ,style: TextStyle(color: CustomColor.whiteColor,fontSize: 20,),)),
+                                            ),
+                                            SizedBox(height: 10,),
+                                          ],),
+                                        )
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              );
+                            }),
+                      ) ,
+                      // : SizedBox()
                     ],
                   ),
                 ),

@@ -169,20 +169,20 @@ class BookingUser {
 
 
 class PackageBenefits {
-  String? name;
-  int? time;
+  String? name = "";
+  String? limit;
 
-  PackageBenefits({this.name, this.time});
+  PackageBenefits({this.name, this.limit});
 
   PackageBenefits.fromJson(Map<String, dynamic> json) {
     name = json['name'];
-    time = json['time'];
+    limit = json['limit'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['name'] = this.name;
-    data['time'] = this.time;
+    data['limit'] = this.limit;
     return data;
   }
 }
