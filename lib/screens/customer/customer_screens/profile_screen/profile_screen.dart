@@ -82,7 +82,17 @@ class ProfileScreenState extends State<ProfileScreen> {
         backgroundColor: CustomColor.primaryColor,
         leading: Container(),
         leadingWidth: 0,
-        title: Text('Profile'),
+        title: Row(
+          children: [
+            InkWell(
+              onTap: (){
+                Navigator.pop(context);
+              },
+                child: Icon(Icons.arrow_back_outlined)),
+            SizedBox(width: 20,),
+            Text('Profile'),
+          ],
+        ),
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -107,7 +117,6 @@ class ProfileScreenState extends State<ProfileScreen> {
                       ]),
                   child:
                   _authUser != null ?
-
                   Padding(
                     padding: const EdgeInsets.all(2.0),
                     child: ClipRRect(
@@ -134,7 +143,7 @@ class ProfileScreenState extends State<ProfileScreen> {
                   Icon(Icons.person,color: CustomColor.primaryColor,),
                   SizedBox(width: 20,),
                   Text(
-                    _authUser!.name ??  _authUser!.name.toString(),
+                    _authUser != null ? _authUser!.name!.toString(): 'UNKWON',
                     style: CustomStyle.primaryTextStyle,
                   ),
                 ],
@@ -149,7 +158,7 @@ class ProfileScreenState extends State<ProfileScreen> {
                   Icon(Icons.phone,color: CustomColor.primaryColor,),
                   SizedBox(width: 20,),
                   Text(
-                    _authUser!.mobile ?? "",
+                    _authUser!= null ? _authUser!.mobile!.toString() : "0000000000" ,
                     style: CustomStyle.primaryTextStyle,
                   ),
                 ],
@@ -197,100 +206,8 @@ class ProfileScreenState extends State<ProfileScreen> {
 
 
 
-// return Scaffold(
-//   appBar: AppBar(
-//     backgroundColor: Colors.transparent,
-//     elevation: 0,
-//   ),
-//   backgroundColor: CustomColor.primaryColor,
-//   body: Container(width: screenSize.width,
-//     decoration: const BoxDecoration(
-//       color: CustomColor.whiteColor,),
-//     child: Column(
-//       children: [
-//         const SizedBox(height: 20,),
-//         Text(nameValue,style: TextStyle(fontSize: 30),),
-//         const SizedBox(height: 20),
-//         Text(emailValue,style:TextStyle(fontSize: 30),),
-//         SizedBox(height: 20,),
-//         Text(dobValue,style:TextStyle(fontSize: 30),),
-//       ],
-//     )
-//   ),
-// );
-  // void getValue() async{
-  //   var pref = await SharedPreferences.getInstance();
-  //     nameValue = pref.getString('name')??'';
-  //
-  // }
 
 
 }
 
-
-class ProfileOptionContainer extends StatelessWidget {
-  final bool leadingSpace;
-  final IconData? leadingIcon;
-  final Widget? leading;
-  final String? titleText;
-  final Widget? title;
-  final IconData? trailingIcon;
-  final Widget? trailing;
-  final void Function()? onTap;
-  const ProfileOptionContainer({
-    Key? key,
-    this.leadingSpace = true,
-    this.leadingIcon,
-    this.leading,
-    this.titleText,
-    this.title,
-    this.trailingIcon,
-    this.trailing,
-    this.onTap,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 10.0),
-      child: InkWell(
-        onTap: onTap,
-        child: Row(
-          children: [
-            leadingSpace
-                ? SizedBox(
-              width: 40,
-              child: leading ??
-                  (leadingIcon != null
-                      ? Icon(
-                    leadingIcon,
-                    color: CustomColor.primaryColor,
-                    size: 20,
-                  )
-                      : Container()),
-            )
-                : Container(),
-            const SizedBox(width: 10),
-            Expanded(
-              child:
-              title ?? (titleText != null ? Text(titleText!) : Container()),
-            ),
-            const SizedBox(width: 10),
-            SizedBox(
-              width: 40,
-              child: trailing ??
-                  (trailingIcon != null
-                      ? Icon(
-                    trailingIcon,
-                    color: CustomColor.primaryColor,
-                    size: 22,
-                  )
-                      : Container()),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
 

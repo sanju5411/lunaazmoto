@@ -27,7 +27,7 @@ class _ServiceDashboardState extends State<ServiceDashboard> {
               onPressed: () {
                 Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => LoginScreen()), (route) => false);
                       },
-              child: Text("LogOut"),
+              child: Text("Log Out"),
             ),
           ),
         ],

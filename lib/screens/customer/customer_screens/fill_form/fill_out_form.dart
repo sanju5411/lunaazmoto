@@ -120,8 +120,7 @@ class FillformScreenState extends State<FillformScreen> {
                           height: 100,
                         )
                             : (_userData != null &&
-                            _userData!.avatar != null &&
-                            _userData!.avatar!.isNotEmpty)
+                            _userData!.avatar != null )
                             ? Image.network(
                           '${ApiConfig.baseUrl}${_userData!.avatar}',
                           fit: BoxFit.cover,
@@ -346,6 +345,7 @@ class FillformScreenState extends State<FillformScreen> {
         login.status == "success" &&
         login.user != null) {
       if (mounted) {
+        print("auth data upd profile>>>>${jsonEncode(login.user)}");
         await SharedPreferencesService.setAuthUser(authUser: login.user!);
         Fluttertoast.showToast(msg: login.message ?? "Update successfully")
             .then((value) =>  Navigator.pushNamed(context, DashboardScreen.routeName));

@@ -6,9 +6,11 @@ class PackagesMainModel{
   List<BookingPackage>? packages;
 
   PackagesMainModel({
+
     this.status,
     this.message,
     this.packages
+
   });
 
   PackagesMainModel.fromJson(Map<String, dynamic> json) {
