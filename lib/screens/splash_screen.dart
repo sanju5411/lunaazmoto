@@ -4,9 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import 'package:lunaaz_moto/constants/global_variables.dart';
 import 'package:lunaaz_moto/screens/auth/login_screen.dart';
+import 'package:lunaaz_moto/screens/bike_delivery/delivery_dashboard/delivery_dashboard.dart';
 import 'package:lunaaz_moto/screens/customer/customer_screens/dashboard_screen/dashboard_screen.dart';
 import 'package:lunaaz_moto/screens/customer/customer_screens/fill_form/fill_out_form.dart';
 import 'package:lunaaz_moto/screens/intro/intro_screen.dart';
+import 'package:lunaaz_moto/screens/service_centre/screens/vendor_dashboard/vendor_dashboard_screen.dart';
 import 'package:lunaaz_moto/services/device_info_service.dart';
 import 'package:lunaaz_moto/services/shared_preferences_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -76,7 +78,18 @@ class SplashScreenState extends State<SplashScreen> {
     if (!await SharedPreferencesService.isFirst()) {
       if(await SharedPreferencesService.isLoggedIn()) {
         if(await SharedPreferencesService.isRegistered()) {
-          routeName = DashboardScreen.routeName;
+          var  user = await SharedPreferencesService.getAuthUserData();
+
+          if(user.userType == "customer"){
+            routeName = DashboardScreen.routeName;
+          }
+         else if(user.userType == "service_center"){
+            routeName = ServiceDashboard.routeName;
+          }
+         else if(user.userType == "driver"){
+            routeName = DeliveryDashboard.routeName;
+          }
+
         } else {
           routeName = FillformScreen.routeName;
         }

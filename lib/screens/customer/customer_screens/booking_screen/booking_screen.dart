@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
 import 'package:lunaaz_moto/common/widgets/custom_plan_card.dart';
 import 'package:lunaaz_moto/constants/global_variables.dart';
 import 'package:lunaaz_moto/models/customer/dashboard_model.dart';
@@ -23,7 +24,7 @@ class _BookingScreenState extends State<BookingScreen> {
   PackagesMainModel? _bookingPackage;
   List<BookingPackage>? _packages;
   // List<PackageBenefits>? packageBenefits;
-
+  bool isLoading = true;
 
 
   String rupees = "₹";
@@ -46,16 +47,13 @@ class _BookingScreenState extends State<BookingScreen> {
       _bookingPackage = packagesModel;
       if(_bookingPackage?.packages != null){
         _packages = _bookingPackage?.packages!;
-        _packages = _bookingPackage?.packages!;
+        setState(() {
+          isLoading = false;
+        });
 
       }
 
-
-
-
-
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -156,7 +154,7 @@ class _BookingScreenState extends State<BookingScreen> {
                       const SizedBox(
                         height: 20,
                       ),
-                     // packageBenefits.isNotEmpty ?
+                      !isLoading ?
                       SizedBox(
                         width: screenSize.width,
                         height: screenSize.height,
@@ -196,51 +194,12 @@ class _BookingScreenState extends State<BookingScreen> {
                                           padding: const EdgeInsets.all(8.0),
                                           child: const Text("LunaazMoto",style: TextStyle(fontSize: 15,color: CustomColor.whiteColor),),
                                         ),
-                                        Padding(
-                                          padding: const EdgeInsets.all(8.0),
-                                          child: const Text("LunaazMoto",style: TextStyle(fontSize: 15,color: CustomColor.whiteColor),),
-                                        ),
-                                        Padding(
-                                          padding: const EdgeInsets.all(8.0),
-                                          child: const Text("LunaazMoto",style: TextStyle(fontSize: 15,color: CustomColor.whiteColor),),
-                                        ),
-                                        Padding(
-                                          padding: const EdgeInsets.all(8.0),
-                                          child: const Text("LunaazMoto",style: TextStyle(fontSize: 15,color: CustomColor.whiteColor),),
-                                        ),
-                                        Padding(
-                                          padding: const EdgeInsets.all(8.0),
-                                          child: const Text("LunaazMoto",style: TextStyle(fontSize: 15,color: CustomColor.whiteColor),),
-                                        ),
-
-                                        Padding(
-                                          padding: const EdgeInsets.all(8.0),
-                                          child: const Text("LunaazMoto",style: TextStyle(fontSize: 15,color: CustomColor.whiteColor),),
-                                        ),
-                                        Padding(
-                                          padding: const EdgeInsets.all(8.0),
-                                          child: const Text("LunaazMoto",style: TextStyle(fontSize: 15,color: CustomColor.whiteColor),),
-                                        ),
-                                        Padding(
-                                          padding: const EdgeInsets.all(8.0),
-                                          child: const Text("LunaazMoto",style: TextStyle(fontSize: 15,color: CustomColor.whiteColor),),
-                                        ),
-                                        Padding(
-                                          padding: const EdgeInsets.all(8.0),
-                                          child: const Text("LunaazMoto",style: TextStyle(fontSize: 15,color: CustomColor.whiteColor),),
-                                        ),
-                                        Padding(
-                                          padding: const EdgeInsets.all(8.0),
-                                          child: const Text("LunaazMoto",style: TextStyle(fontSize: 15,color: CustomColor.whiteColor),),
-                                        ),
-
-
 
 
                                         const SizedBox(height: 5,),
                                         Padding(
                                           padding: const EdgeInsets.all(8.0),
-                                          child:  Text(_packages![index] != null && _packages![index].packageName != null ?_packages![index].toString() : "" ,style: TextStyle(fontSize: 40, fontWeight: FontWeight.w800,color: CustomColor.whiteColor),),
+                                          child:  Text((_packages![index].packageName == null)? "": _packages![index].packageName!,style: TextStyle(fontSize: 40, fontWeight: FontWeight.w800,color: CustomColor.whiteColor),),
                                         ),
                                         SizedBox(height: 20,),
                                         Container(
@@ -263,7 +222,8 @@ class _BookingScreenState extends State<BookingScreen> {
                                         Padding(
                                           padding: const EdgeInsets.all(8.0),
                                           child: Column(children: [
-                                            Row(children: [
+                                            Row(
+                                              children: [
                                               Text("₹ 1000" ,style: TextStyle(
                                                   color: CustomColor.whiteColor,
                                                   fontSize: 20,
@@ -282,7 +242,11 @@ class _BookingScreenState extends State<BookingScreen> {
                                               padding: const EdgeInsets.all(8.0),
                                               child: Align(
                                                 alignment: Alignment.topLeft,
-                                                  child: Text(_packages![index].packageFeaturesName!.toString() ,style: TextStyle(color: CustomColor.whiteColor,fontSize: 20,),)),
+                                                  child: HtmlWidget(
+                                                    _packages![index].packageFeaturesName!.toString()
+
+                                                  ),
+                                              ),
                                             ),
                                             SizedBox(height: 10,),
                                           ],),
@@ -293,7 +257,7 @@ class _BookingScreenState extends State<BookingScreen> {
                                 ),
                               );
                             }),
-                      ) ,
+                      ) : CircularProgressIndicator(color: Colors.black,) ,
                       // : SizedBox()
                     ],
                   ),

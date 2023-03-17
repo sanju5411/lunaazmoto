@@ -30,6 +30,12 @@ class _BookingFormState extends State<BookingForm> {
 
   }
 
+  void _setBookingFormData(Map<String, String> jsonInput) async {
+
+   // PackagesMainModel packagesModel = await ApiService.packages(jsonInput: jsonEncode(jsonInput));
+
+}
+
   DateTime _dateTime = DateTime.now();
   void _showDatePicker() {
     showDatePicker(
@@ -93,44 +99,6 @@ class _BookingFormState extends State<BookingForm> {
                       fontWeight: FontWeight.w800
                     ),),
                     const SizedBox(height: 20,),
-                    Row(children: <Widget> [
-                      Text("Select Type :-",style: TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.w500,
-                      ),),
-
-                      Radio(
-                        value: 1,
-                        groupValue: id,
-                        onChanged: (val) {
-                          setState(() {
-                            radioButtonItem = 'ONE';
-                            id = 1;
-                          });
-                        },
-                      ),
-                      Text(
-                        'Car',
-                        style: new TextStyle(fontSize: 17.0),
-                      ),
-
-                      Radio(
-                        value: 2,
-                        groupValue: id,
-                        onChanged: (val) {
-                          setState(() {
-                            radioButtonItem = 'TWO';
-                            id = 2;
-                          });
-                        },
-                      ),
-                      const Text('Bike', style:  TextStyle(
-                          fontSize: 17.0,
-                        ),
-                      ),
-
-
-                    ],),
                     SizedBox(height: 10,),
                     Text("Name",style: TextStyle(fontSize: 25,fontWeight: FontWeight.w600),),
                     SizedBox(height: 10,),
@@ -145,7 +113,8 @@ class _BookingFormState extends State<BookingForm> {
                     borderRadius: BorderRadius.circular(15.0),
                   ),
                   child: TextFormField(
-                    obscureText: true,
+                    controller: _nameController,
+
                     decoration: InputDecoration(
 
                       fillColor: Colors.white,
@@ -180,7 +149,8 @@ class _BookingFormState extends State<BookingForm> {
                         borderRadius: BorderRadius.circular(15.0),
                       ),
                       child: TextFormField(
-                        obscureText: true,
+                        controller: _phoneController,
+
                         decoration: InputDecoration(
                           fillColor: Colors.white,
                           filled: true,
@@ -215,7 +185,6 @@ class _BookingFormState extends State<BookingForm> {
                       ),
                       child: TextFormField(
                         controller: _serviceDateController,
-                        obscureText: true,
                         decoration: InputDecoration(
                           fillColor: Colors.white,
                           filled: true,
@@ -263,7 +232,7 @@ class _BookingFormState extends State<BookingForm> {
                         borderRadius: BorderRadius.circular(15.0),
                       ),
                       child: TextFormField(
-                        obscureText: true,
+                        controller: _serviceTimeController,
                         decoration: InputDecoration(
 
                           fillColor: Colors.white,
@@ -298,7 +267,7 @@ class _BookingFormState extends State<BookingForm> {
                         borderRadius: BorderRadius.circular(15.0),
                       ),
                       child: TextFormField(
-                        obscureText: true,
+                        controller: _vehicleNumController,
                         decoration: InputDecoration(
 
                           fillColor: Colors.white,
@@ -333,7 +302,8 @@ class _BookingFormState extends State<BookingForm> {
                         borderRadius: BorderRadius.circular(15.0),
                       ),
                       child: TextFormField(
-                        obscureText: true,
+                        controller: _addressController,
+
                         decoration: InputDecoration(
 
                           fillColor: Colors.white,
@@ -371,13 +341,26 @@ class _BookingFormState extends State<BookingForm> {
                     ),
                     SizedBox(height: 20,),
                     CustomButton(
-                        // onTap: (){
-                        //   Navigator.push(context, MaterialPageRoute(builder: (context) => MyServicesScreen()));
-                        // },
-                      onTap: () async {
 
+                      onTap: () async {
+                        var name  = _nameController.text.toString();
+                        var phoneNumber  = _phoneController.text.toString();
+                        var serviceDate  = _serviceDateController.text.toString();
+                        var serviceTime  = _serviceTimeController.text.toString();
+                        var vehicleNum  = _vehicleNumController.text.toString();
+                        var address  = _addressController.text.toString();
+
+                        Map<String, String> jsonInput = {
+                          'name': name,
+
+                        };
+
+                        _setBookingFormData(jsonInput);
+
+                        print("object${name} - ${phoneNumber} - ${serviceDate} - ${serviceTime} - ${vehicleNum} - ${address}>>>>");
 
                         Navigator.push(context, MaterialPageRoute(builder: (context) => MyServicesScreen(),),);
+
                       },
                       text: "Book Service",
 

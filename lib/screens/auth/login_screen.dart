@@ -13,7 +13,7 @@ import 'package:lunaaz_moto/screens/auth/otp_screen.dart';
 import 'package:lunaaz_moto/screens/bike_delivery/delivery_dashboard/delivery_dashboard.dart';
 import 'package:lunaaz_moto/screens/customer/customer_screens/dashboard_screen/dashboard_screen.dart';
 import 'package:lunaaz_moto/screens/customer/customer_screens/fill_form/fill_out_form.dart';
-import 'package:lunaaz_moto/screens/service_centre/screens/vendor_dashboard_screen.dart';
+import 'package:lunaaz_moto/screens/service_centre/screens/vendor_dashboard/vendor_dashboard_screen.dart';
 import 'package:lunaaz_moto/screens/splash_screen.dart';
 import 'package:lunaaz_moto/services/api_service.dart';
 import 'package:lunaaz_moto/services/device_info_service.dart';

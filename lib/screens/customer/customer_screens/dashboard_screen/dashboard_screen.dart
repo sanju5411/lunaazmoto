@@ -13,6 +13,7 @@ import 'package:lunaaz_moto/models/customer/service_model/service_model.dart';
 import 'package:lunaaz_moto/screens/customer/customer_screens/booking_screen/booking_screen.dart';
 import 'package:lunaaz_moto/screens/customer/customer_screens/my_services/my_services.dart';
 import 'package:lunaaz_moto/screens/customer/customer_screens/profile_screen/profile_screen.dart';
+import 'package:lunaaz_moto/screens/customer/customer_screens/side_navbar/side_navbar.dart';
 import 'package:lunaaz_moto/services/api_service.dart';
 
 class DashboardScreen extends StatefulWidget {
@@ -518,6 +519,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
           ),
         ),
       ),
+
     );
   }
 
