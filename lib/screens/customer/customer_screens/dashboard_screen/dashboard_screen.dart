@@ -64,9 +64,11 @@ class _DashboardScreenState extends State<DashboardScreen> {
           print("last service>>>>>>>>>${jsonEncode(serviceModel[0].bookingCenter)}<<<<<<<<<<<");
 
         }
-        todayBookingCount = _dashboard!.todayBookings!;
+        todayBookingCount = int.parse(_dashboard!.todayBookings!.toString());
         totalBookingCount = _dashboard!.totalBookings!;
-        loading = false;
+        setState(() {
+          loading = false;
+        });
       });
     }
     // _createSlider();

@@ -1,8 +1,12 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:lunaaz_moto/common/widgets/custom_button.dart';
 import 'package:lunaaz_moto/constants/global_variables.dart';
+import 'package:lunaaz_moto/models/customer/booking_model/booking_model.dart';
 import 'package:lunaaz_moto/screens/customer/customer_screens/my_services/my_services.dart';
+import 'package:lunaaz_moto/services/api_service.dart';
 
 class BookingForm extends StatefulWidget {
   static const String routeName = '/booking_form_screen';
@@ -32,7 +36,17 @@ class _BookingFormState extends State<BookingForm> {
 
   void _setBookingFormData(Map<String, String> jsonInput) async {
 
-   // PackagesMainModel packagesModel = await ApiService.packages(jsonInput: jsonEncode(jsonInput));
+    BookingModel bookingModel = await ApiService.setBookingForm(jsonInput: jsonEncode(jsonInput));
+
+    print("booking form data>>>>>${jsonEncode(bookingModel)}>>>>");
+
+
+    if(bookingModel.status  == "success"){
+      setState(() {
+        Navigator.pushNamed(context, MyServicesScreen.routeName);
+      });
+    }
+
 
 }
 
@@ -45,10 +59,16 @@ class _BookingFormState extends State<BookingForm> {
       lastDate: DateTime(2025),
     ).then((value) {
       setState(() {
+        String dateFormat  = "${value!.year}-${value!.month}-${value!.day}";
         _dateTime = value!;
+
+        _serviceDateController.text = dateFormat.toString();
+
       });
     });
   }
+
+
 
   String radioButtonItem = 'ONE';
 
@@ -212,9 +232,7 @@ class _BookingFormState extends State<BookingForm> {
                         readOnly: true,
                         onTap: (){
                           _showDatePicker();
-                          setState(() {
-                            _serviceDateController.text = _dateTime.toString();
-                          });
+
                         },
                       ),
                     ), //date>>>>>>>
@@ -351,15 +369,25 @@ class _BookingFormState extends State<BookingForm> {
                         var address  = _addressController.text.toString();
 
                         Map<String, String> jsonInput = {
-                          'name': name,
 
+                            "user_address_id": "1",
+                            "package_id": "1",
+                            "booked_date": serviceDate,
+                            "booked_time": serviceTime,
+                            "vehicle_type":"",
+                            "vehicle_name": name,
+                            "vehicle_number": vehicleNum,
+                            "instructions":"instructions",
+                            "payment_method":"cash",
+                            "payment_details":"",
+                            "payment_status":"due"
                         };
 
                         _setBookingFormData(jsonInput);
 
                         print("object${name} - ${phoneNumber} - ${serviceDate} - ${serviceTime} - ${vehicleNum} - ${address}>>>>");
 
-                        Navigator.push(context, MaterialPageRoute(builder: (context) => MyServicesScreen(),),);
+                       // Navigator.push(context, MaterialPageRoute(builder: (context) => MyServicesScreen(),),);
 
                       },
                       text: "Book Service",

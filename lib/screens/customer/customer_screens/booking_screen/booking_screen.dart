@@ -178,6 +178,7 @@ class _BookingScreenState extends State<BookingScreen> {
                                         begin: Alignment.topRight,
                                         end: Alignment.bottomLeft,
                                         colors: [
+
                                           Color(0xffFB5A7C),
                                           Color(0xffFE6585),
                                           Color(0xffFE184A),
@@ -194,7 +195,6 @@ class _BookingScreenState extends State<BookingScreen> {
                                           padding: const EdgeInsets.all(8.0),
                                           child: const Text("LunaazMoto",style: TextStyle(fontSize: 15,color: CustomColor.whiteColor),),
                                         ),
-
 
                                         const SizedBox(height: 5,),
                                         Padding(
