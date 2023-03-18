@@ -10,8 +10,8 @@ class ApiConfig {
   static const String profile = "user-profile";
   static const String updateProfile = "user-profile/update";
   static const String driversDashboard = "drivers/dashboard";
-  // static const String address = "address";
-  // static const String deliveryAddresses = "addresses";
+  static const String saveBookingForm = "customers/booking/create";
+  static const String bookinglist = "customers/bookings";
   // static const String restaurantDetail = "restaurant";
   // static const String sendFeedback = "rating/save";
   // static const String updateRating = "rating/update";

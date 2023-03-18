@@ -377,7 +377,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                           itemCount: serviceModel.length,
                           physics: NeverScrollableScrollPhysics(),
                           itemBuilder: (BuildContext context, int index) {
-                            print("Last Servies--->${serviceModel[index]}");
+                            print("Last Servies--->${jsonEncode(serviceModel[index].bookingCenter)}");
                             return Padding(
                               padding: const EdgeInsets.symmetric(horizontal: 20,vertical: 16),
                               child: Container(
@@ -415,7 +415,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                             crossAxisAlignment: CrossAxisAlignment.start,
                                             children:  [
                                               const SizedBox(height: 10,),
-                                              Text(serviceModel[index].bookingCenter != null? serviceModel[index].bookingCenter!.shopName.toString():"",style: TextStyle(fontSize: 18,fontWeight: FontWeight.w600),),
+                                              Text(serviceModel[index].bookingCenter != null ?
+                                              serviceModel[index].bookingCenter!.shopName.toString():"",
+                                                style: const TextStyle(fontSize: 18,fontWeight: FontWeight.w600),),
                                               const SizedBox(height: 3,),
                                               Row(children: [
                                                 const Text("Booking ID -"),
