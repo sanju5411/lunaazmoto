@@ -7,7 +7,9 @@ import 'package:lunaaz_moto/configs/api_config.dart';
 import 'package:lunaaz_moto/models/auth/login/login.dart';
 import 'package:lunaaz_moto/models/auth/login/login_check.dart';
 import 'package:lunaaz_moto/models/auth/user/user.dart';
+import 'package:lunaaz_moto/models/customer/booking_model/booking_model.dart';
 import 'package:lunaaz_moto/models/customer/dashboard_model.dart';
+import 'package:lunaaz_moto/models/customer/service_booking_list/service_booking_list_model.dart';
 import 'package:lunaaz_moto/models/customer/service_model/package_model/package_main_model.dart';
 import 'package:lunaaz_moto/models/customer/service_model/package_model/package_model.dart';
 import 'package:lunaaz_moto/models/profile/profile_model.dart';
@@ -193,6 +195,44 @@ class ApiService {
     } catch (e) {
       print("DASHBOARD_API_ERROR>>> $e");
       return DriverMainModel();
+    }
+  }
+
+
+  static Future<BookingModel> setBookingForm({required Object jsonInput}) async {
+    Uri uri = Uri.parse('${ApiConfig.apiV1}/${ApiConfig.saveBookingForm}');
+    String token = await SharedPreferencesService.getApiToken();
+    headers.addAll({'Authorization': 'Bearer $token'});
+
+    try {
+      var res = await post(
+        uri,
+        headers: headers,
+        body: jsonInput,
+      );
+      var json = jsonDecode(res.body);
+      return BookingModel.fromJson(json);
+    } catch (e) {
+      print("Booking_FORM_ERROR>>> $e");
+      return BookingModel();
+    }
+  }
+
+  static Future<BookingList> getMyServices() async {
+    Uri uri = Uri.parse('${ApiConfig.apiV1}/${ApiConfig.bookinglist}');
+    String token = await SharedPreferencesService.getApiToken();
+    headers.addAll({'Authorization': 'Bearer $token'});
+
+    try {
+      var res = await get(
+        uri,
+        headers: headers,
+      );
+      var json = jsonDecode(res.body);
+      return BookingList.fromJson(json);
+    } catch (e) {
+      print("BOOKING_LIST_ERROR>>> $e");
+      return BookingList();
     }
   }
 

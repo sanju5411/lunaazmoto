@@ -39,6 +39,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
 
   _getDashboardData() async {
+
     setState(() {
       loading = true;
     });
@@ -64,9 +65,11 @@ class _DashboardScreenState extends State<DashboardScreen> {
           print("last service>>>>>>>>>${jsonEncode(serviceModel[0].bookingCenter)}<<<<<<<<<<<");
 
         }
-        todayBookingCount = _dashboard!.todayBookings!;
-        totalBookingCount = _dashboard!.totalBookings!;
-        loading = false;
+       todayBookingCount = _dashboard!.todayBookings!;
+       totalBookingCount = _dashboard!.totalBookings!;
+        setState(() {
+          loading = false;
+        });
       });
     }
     // _createSlider();
@@ -114,7 +117,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
           ),
         ),
       ),
-      body: StretchingOverscrollIndicator(
+      body: !loading ?
+      StretchingOverscrollIndicator(
         axisDirection: AxisDirection.down,
         child: SingleChildScrollView(
           child: Column(
@@ -135,8 +139,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   options: CarouselOptions(
                       enlargeCenterPage: true,
                       autoPlay: true,
-                      aspectRatio: 2,
-                      viewportFraction: 0.83,
+                      aspectRatio: 2.2,
+                      viewportFraction: 0.8,
                       scrollDirection:
                       Axis.horizontal,
                       autoPlayInterval:
@@ -154,14 +158,14 @@ class _DashboardScreenState extends State<DashboardScreen> {
               const Padding(
                 padding:  EdgeInsets.only(left: 20,top: 20,bottom: 10),
                 child: Text("Happy clients",style: TextStyle(fontWeight: FontWeight.w700,fontSize: 25),),),
-              const SizedBox(height: 20,),
+              const SizedBox(height: 10,),
               _happyCustomers.isNotEmpty
                   ? Column(
                 crossAxisAlignment:
                 CrossAxisAlignment.start,
                 children: [
                   SizedBox(
-                    height: 140,
+                    height: 100,
                     width: screenSize.width,
                     child: ListView.builder(
                       padding: const EdgeInsets
@@ -411,7 +415,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                             crossAxisAlignment: CrossAxisAlignment.start,
                                             children:  [
                                               const SizedBox(height: 10,),
-                                              Text(serviceModel[index].bookingCenter!.shopName.toString(),style: TextStyle(fontSize: 18,fontWeight: FontWeight.w600),),
+                                              Text(serviceModel[index].bookingCenter != null? serviceModel[index].bookingCenter!.shopName.toString():"",style: TextStyle(fontSize: 18,fontWeight: FontWeight.w600),),
                                               const SizedBox(height: 3,),
                                               Row(children: [
                                                 const Text("Booking ID -"),
@@ -518,7 +522,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
             ],
           ),
         ),
-      ),
+      ) : Center(child: CircularProgressIndicator())
 
     );
   }

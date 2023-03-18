@@ -24,7 +24,8 @@ class _BookingScreenState extends State<BookingScreen> {
   PackagesMainModel? _bookingPackage;
   List<BookingPackage>? _packages;
   // List<PackageBenefits>? packageBenefits;
-  bool isLoading = true;
+  bool loading = true;
+
 
 
   String rupees = "₹";
@@ -48,7 +49,7 @@ class _BookingScreenState extends State<BookingScreen> {
       if(_bookingPackage?.packages != null){
         _packages = _bookingPackage?.packages!;
         setState(() {
-          isLoading = false;
+          loading = false;
         });
 
       }
@@ -75,63 +76,65 @@ class _BookingScreenState extends State<BookingScreen> {
       ),
       body: Padding(
         padding: const EdgeInsets.only(top: 5),
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 10),
-                child: SingleChildScrollView(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const SizedBox(
-                        height: 15,
-                      ),
-                       Text(
-                        "Online Bike, Car",
-                        style: TextStyle(
-                            fontSize: 30, color: CustomColor.whiteColor),
-                      ),
-                      const SizedBox(
-                        height: 10,
-                      ),
-                      const Text(
-                        "Service Booking",
-                        style: TextStyle(
-                            fontSize: 35,
-                            color: CustomColor.whiteColor,
-                            fontWeight: FontWeight.w700),
-                      ),
-                      const SizedBox(
-                        height: 20,
-                      ),
-                      TextField(
-                        decoration: InputDecoration(
-                            suffixIcon: InkWell(
-                                onTap: () {
-                                  //here we add let long
-                                },
-                                child: const Icon(
-                                  Icons.location_on,
-                                  color: CustomColor.primaryColor,
-                                )),
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(20.0),
-                            ),
-                            filled: true,
-                            hintStyle: TextStyle(color: Colors.grey),
-                            hintText: "Current Location",
-                            fillColor: Colors.white),
-                      )
-                    ],
-                  ),
+        child: Column(
+         mainAxisSize: MainAxisSize.max,
+          children: [
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 10),
+              child: SingleChildScrollView(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const SizedBox(
+                      height: 15,
+                    ),
+                     Text(
+                      "Online Bike, Car",
+                      style: TextStyle(
+                          fontSize: 30, color: CustomColor.whiteColor),
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    const Text(
+                      "Service Booking",
+                      style: TextStyle(
+                          fontSize: 35,
+                          color: CustomColor.whiteColor,
+                          fontWeight: FontWeight.w700),
+                    ),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    TextField(
+                      decoration: InputDecoration(
+                          suffixIcon: InkWell(
+                              onTap: () {
+                                //here we add let long
+                              },
+                              child: const Icon(
+                                Icons.location_on,
+                                color: CustomColor.primaryColor,
+                              )),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(20.0),
+                          ),
+                          filled: true,
+                          hintStyle: TextStyle(color: Colors.grey),
+                          hintText: "Current Location",
+                          fillColor: Colors.white),
+                    )
+                  ],
                 ),
               ),
-              const SizedBox(
-                height: 30,
-              ),
-              Container(
+            ),
+            const SizedBox(
+              height: 30,
+            ),
+            Expanded(
+              child: Container(
                 width: screenSize.width,
+                //height: screenSize.height,
                 decoration: const BoxDecoration(
                     color: CustomColor.whiteColor,
                     borderRadius: BorderRadius.only(
@@ -154,10 +157,10 @@ class _BookingScreenState extends State<BookingScreen> {
                       const SizedBox(
                         height: 20,
                       ),
-                      !isLoading ?
+                      !loading?
                       SizedBox(
                         width: screenSize.width,
-                        height: screenSize.height,
+                        height: screenSize.height * 0.45,
                         child: ListView.builder(
                             itemCount: _packages?.length,
                             //physics: NeverScrollableScrollPhysics(),
@@ -178,6 +181,7 @@ class _BookingScreenState extends State<BookingScreen> {
                                         begin: Alignment.topRight,
                                         end: Alignment.bottomLeft,
                                         colors: [
+
                                           Color(0xffFB5A7C),
                                           Color(0xffFE6585),
                                           Color(0xffFE184A),
@@ -194,7 +198,6 @@ class _BookingScreenState extends State<BookingScreen> {
                                           padding: const EdgeInsets.all(8.0),
                                           child: const Text("LunaazMoto",style: TextStyle(fontSize: 15,color: CustomColor.whiteColor),),
                                         ),
-
 
                                         const SizedBox(height: 5,),
                                         Padding(
@@ -257,14 +260,15 @@ class _BookingScreenState extends State<BookingScreen> {
                                 ),
                               );
                             }),
-                      ) : CircularProgressIndicator(color: Colors.black,) ,
+                      ) : Center(
+                          child: CircularProgressIndicator(color: Colors.black,),) ,
                       // : SizedBox()
                     ],
                   ),
                 ),
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );
