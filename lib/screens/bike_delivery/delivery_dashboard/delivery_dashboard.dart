@@ -1,8 +1,13 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:lunaaz_moto/screens/bike_delivery/total_booking_screen/total_booking_screen.dart';
 import 'package:lunaaz_moto/screens/customer/customer_screens/profile_screen/profile_screen.dart';
 
 import '../../../constants/global_variables.dart';
+import '../../../models/drivers/drivers_main_model.dart';
+import '../../../models/drivers/new_services.dart';
+import '../../../services/api_service.dart';
 
 class DeliveryDashboard extends StatefulWidget {
   static const String routeName = '/deliver_person_dashboard';
@@ -14,6 +19,32 @@ class DeliveryDashboard extends StatefulWidget {
 }
 
 class _DeliveryDashboardState extends State<DeliveryDashboard> {
+
+  int? totalBooking;
+  int? todayNewBooking;
+  int? todayPickUp;
+  int? todayDelivered;
+  List<NewServices> nextBooking = [];
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    getDriverDashboard();
+  }
+
+  void getDriverDashboard() async{
+    DriverMainModel driverMainModel = await ApiService.getDriverDashboardData();
+    if(driverMainModel != null){
+      setState(() {
+        todayNewBooking = driverMainModel.todayBookings;
+        totalBooking = driverMainModel.totalBookings;
+        todayDelivered = 0;
+        todayPickUp = 0;
+        nextBooking = driverMainModel.newServices!;
+      });
+    }
+    print("Drive Main Model---->${jsonEncode(driverMainModel)}");
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -104,8 +135,8 @@ class _DeliveryDashboardState extends State<DeliveryDashboard> {
                                      child: Column(
                                        crossAxisAlignment: CrossAxisAlignment.center,
                                        mainAxisAlignment: MainAxisAlignment.center,
-                                       children: const [
-                                         Text("30",style: TextStyle(fontSize: 26,fontWeight: FontWeight.w600,color: Color(0xFF6FC11D)),),
+                                       children: [
+                                         Text("${totalBooking}",style: const TextStyle(fontSize: 26,fontWeight: FontWeight.w600,color: Color(0xFF6FC11D)),),
                                          SizedBox(height: 10,),
                                          Text("Today\nBooking",textAlign: TextAlign.center,style: TextStyle(fontSize: 13,fontWeight: FontWeight.w500),)
                                        ],
@@ -126,8 +157,8 @@ class _DeliveryDashboardState extends State<DeliveryDashboard> {
                                      child: Column(
                                        crossAxisAlignment: CrossAxisAlignment.center,
                                        mainAxisAlignment: MainAxisAlignment.center,
-                                       children: const [
-                                         Text("20",style: TextStyle(fontSize: 26,fontWeight: FontWeight.w600,color: Color(0xFFEFA315)),),
+                                       children: [
+                                         Text("${todayPickUp}",style: const TextStyle(fontSize: 26,fontWeight: FontWeight.w600,color: Color(0xFFEFA315)),),
                                          SizedBox(height: 10,),
                                          Text("Today\nPicked Up",textAlign: TextAlign.center,style: TextStyle(fontSize: 13,fontWeight: FontWeight.w500),)
                                        ],
@@ -148,10 +179,10 @@ class _DeliveryDashboardState extends State<DeliveryDashboard> {
                                      child: Column(
                                        crossAxisAlignment: CrossAxisAlignment.center,
                                        mainAxisAlignment: MainAxisAlignment.center,
-                                       children: const [
-                                         Text("30",style: TextStyle(fontSize: 26,fontWeight: FontWeight.w600,color: Color(0xFFFF2121)),),
-                                         SizedBox(height: 10,),
-                                         Text("Today\nBooking",textAlign: TextAlign.center,style: TextStyle(fontSize: 13,fontWeight: FontWeight.w500),)
+                                       children: [
+                                         Text("$todayDelivered",style: const TextStyle(fontSize: 26,fontWeight: FontWeight.w600,color: Color(0xFFFF2121)),),
+                                         const SizedBox(height: 10,),
+                                         const Text("Today\nBooking",textAlign: TextAlign.center,style: TextStyle(fontSize: 13,fontWeight: FontWeight.w500),)
                                        ],
                                      )
                                  ),
@@ -177,33 +208,38 @@ class _DeliveryDashboardState extends State<DeliveryDashboard> {
                          ListView.builder(
                              physics: const NeverScrollableScrollPhysics(),
                              shrinkWrap: true,
-                             itemCount: 4,
+                             itemCount: nextBooking.length,
                              itemBuilder: (BuildContext context, int index) {
-                               return  Padding(
-                                 padding: const EdgeInsets.symmetric(horizontal: 20),
-                                 child: Container(
-                                   margin: const EdgeInsets.all(8),
-                                   decoration: BoxDecoration(
-                                       color: Colors.white, // Your desired background color
-                                       borderRadius: BorderRadius.circular(10),
-                                       boxShadow: const [
-                                         BoxShadow(color: Color.fromRGBO(255, 164, 124,0.2), blurRadius: 10),
-                                       ]
-                                   ),
-                                   child: ListTile(
-                                     contentPadding:
-                                     const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
-                                     shape: RoundedRectangleBorder(
-                                       borderRadius: BorderRadius.circular(15),
-                                       side: const BorderSide(
-                                         color: Colors.black,
+                               return  GestureDetector(
+                                 onTap: (){
+
+                                 },
+                                 child: Padding(
+                                   padding: const EdgeInsets.symmetric(horizontal: 20),
+                                   child: Container(
+                                     margin: const EdgeInsets.all(8),
+                                     decoration: BoxDecoration(
+                                         color: Colors.white, // Your desired background color
+                                         borderRadius: BorderRadius.circular(10),
+                                         boxShadow: const [
+                                           BoxShadow(color: Color.fromRGBO(255, 164, 124,0.2), blurRadius: 10),
+                                         ]
+                                     ),
+                                     child: ListTile(
+                                       contentPadding:
+                                       const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+                                       shape: RoundedRectangleBorder(
+                                         borderRadius: BorderRadius.circular(15),
+                                         side: const BorderSide(
+                                           color: Colors.black,
+                                         ),
                                        ),
+                                       leading: const CircleAvatar(
+                                         backgroundImage: NetworkImage("https://assets.pokemon.com/assets/cms2/img/pokedex/detail/043.png"), // No matter how big it is, it won't overflow
+                                       ),
+                                       title: Text("${nextBooking[index].bookingUser?.name}",style: TextStyle(fontWeight: FontWeight.w600,fontSize: 15),),
+                                       subtitle: Text("${nextBooking[index].bookedDate}, ${nextBooking[index].bookedTime}",style: TextStyle(fontWeight: FontWeight.w500,fontSize: 12,color: Color(0xFF8C8FA5)),),
                                      ),
-                                     leading: const CircleAvatar(
-                                       backgroundImage: NetworkImage("https://assets.pokemon.com/assets/cms2/img/pokedex/detail/043.png"), // No matter how big it is, it won't overflow
-                                     ),
-                                     title: const Text("Rimma Roy",style: TextStyle(fontWeight: FontWeight.w600,fontSize: 15),),
-                                     subtitle: const Text("09 JAN 2022, 8am - 10am",style: TextStyle(fontWeight: FontWeight.w500,fontSize: 12,color: Color(0xFF8C8FA5)),),
                                    ),
                                  ),
                                );
@@ -228,17 +264,16 @@ class _DeliveryDashboardState extends State<DeliveryDashboard> {
                  child: Column(
                    crossAxisAlignment: CrossAxisAlignment.center,
                    mainAxisAlignment: MainAxisAlignment.center,
-                   children: const [
+                   children:  [
 
-                     Text("Total Booking",style: TextStyle(fontSize: 18,fontWeight: FontWeight.w600,color: Colors.black),),
-                     SizedBox(height: 13,),
-                     Text("1000",textAlign: TextAlign.center,style: TextStyle(fontSize: 23,fontWeight: FontWeight.w900,color: Colors.lightGreen),),
+                     const Text("Total Booking",style: TextStyle(fontSize: 18,fontWeight: FontWeight.w600,color: Colors.black),),
+                     const SizedBox(height: 13,),
+                     Text("$totalBooking",textAlign: TextAlign.center,style: const TextStyle(fontSize: 23,fontWeight: FontWeight.w900,color: Colors.lightGreen),),
 
                    ],
                  )
              ),
              ),
-
              Positioned(
                top: 180,
                right: 20,
@@ -253,13 +288,12 @@ class _DeliveryDashboardState extends State<DeliveryDashboard> {
                    child: Column(
                      crossAxisAlignment: CrossAxisAlignment.center,
                      mainAxisAlignment: MainAxisAlignment.center,
-                     children: const [
-
+                     children:  [
                        Text(
                          textAlign: TextAlign.center,
                          "Today\nNew Booking",style: TextStyle(fontSize: 18,fontWeight: FontWeight.w600,color: Colors.black),),
-                       SizedBox(height: 13,),
-                       Text("280",textAlign: TextAlign.center,style: TextStyle(fontSize: 23,fontWeight: FontWeight.w900,color: Colors.orange),),
+                       const SizedBox(height: 13,),
+                       Text("$todayNewBooking",textAlign: TextAlign.center,style: const TextStyle(fontSize: 23,fontWeight: FontWeight.w900,color: Colors.orange),),
 
                      ],
                    )
@@ -272,4 +306,6 @@ class _DeliveryDashboardState extends State<DeliveryDashboard> {
       ),
     );
   }
+
+
 }

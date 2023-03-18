@@ -9,7 +9,7 @@ class ApiConfig {
    static const String packages = "customers/packages";
   static const String profile = "user-profile";
   static const String updateProfile = "user-profile/update";
-  // static const String addressSave = "address/save";
+  static const String driversDashboard = "drivers/dashboard";
   // static const String address = "address";
   // static const String deliveryAddresses = "addresses";
   // static const String restaurantDetail = "restaurant";

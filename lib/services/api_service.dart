@@ -17,6 +17,8 @@ import 'package:path/path.dart';
 import 'package:profile/profile.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../models/drivers/drivers_main_model.dart';
+
 Map<String, String> headers = {
   'Content-type': 'application/json',
   'Accept': 'application/json',
@@ -173,6 +175,24 @@ class ApiService {
     } catch (e) {
       print("PACKAGES_API_ERROR>>> $e");
       return PackagesMainModel();
+    }
+  }
+
+  static Future<DriverMainModel> getDriverDashboardData() async {
+    Uri uri = Uri.parse('${ApiConfig.apiV1}/${ApiConfig.driversDashboard}');
+    String token = await SharedPreferencesService.getApiToken();
+    headers.addAll({'Authorization': 'Bearer $token'});
+
+    try {
+      var res = await get(
+        uri,
+        headers: headers,
+      );
+      var json = jsonDecode(res.body);
+      return DriverMainModel.fromJson(json);
+    } catch (e) {
+      print("DASHBOARD_API_ERROR>>> $e");
+      return DriverMainModel();
     }
   }
 
