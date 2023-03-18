@@ -369,25 +369,26 @@ class _BookingFormState extends State<BookingForm> {
                         var address  = _addressController.text.toString();
 
                         Map<String, String> jsonInput = {
-
                             "user_address_id": "1",
                             "package_id": "1",
                             "booked_date": serviceDate,
                             "booked_time": serviceTime,
-                            "vehicle_type":"",
+                            "vehicle_type":"two_wheeler",
                             "vehicle_name": name,
                             "vehicle_number": vehicleNum,
                             "instructions":"instructions",
                             "payment_method":"cash",
                             "payment_details":"",
-                            "payment_status":"due"
+                            "payment_status":"due",
+                            "user_address": address,
                         };
 
                         _setBookingFormData(jsonInput);
 
-                        print("object${name} - ${phoneNumber} - ${serviceDate} - ${serviceTime} - ${vehicleNum} - ${address}>>>>");
+                       print("object${name} - ${phoneNumber} - ${serviceDate} - ${serviceTime} - ${vehicleNum} - ${address}>>>>");
 
-                       // Navigator.push(context, MaterialPageRoute(builder: (context) => MyServicesScreen(),),);
+                        print("mapp>>>>>>>>>>&&&>>${jsonEncode(jsonInput)}>>>>>>>>>>>>");
+
 
                       },
                       text: "Book Service",

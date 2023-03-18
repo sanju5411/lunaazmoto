@@ -1,7 +1,10 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:lunaaz_moto/common/widgets/custom_booking_card.dart';
 import 'package:lunaaz_moto/constants/global_variables.dart';
 import 'package:lunaaz_moto/models/customer/dashboard_model.dart';
+import 'package:lunaaz_moto/models/customer/service_booking_list/service_booking_list_model.dart';
 import 'package:lunaaz_moto/models/customer/service_model/service_model.dart';
 import 'package:lunaaz_moto/screens/customer/customer_screens/book_form/booking_form.dart';
 import 'package:lunaaz_moto/services/api_service.dart';
@@ -19,38 +22,36 @@ class _MyServicesScreenState extends State<MyServicesScreen> {
 
   bool loading = true;
 
-  List<dynamic> lastServices = [];
-  Dashboard? _dashboard;
-  List<ServiceModel> serviceModel = [];
 
-  _getDashboardData() async {
-    setState(() {
-      loading = true;
-    });
+  List<BookingList> bookServiceList = [];
+  List<OnGoingBookings> onGoingList = [];
+  List<Bookings> lastBookings = [];
 
-
-    Dashboard dashboard = await ApiService.dashboard("customers");
-
-
-    if (mounted) {
-      setState(() {
-        _dashboard = dashboard;
-        if (_dashboard!.serviceModel != null &&
-            _dashboard!.serviceModel!.isNotEmpty) {
-          lastServices = _dashboard!.serviceModel!;
-          serviceModel = _dashboard!.serviceModel!;}
-        loading = false;
-      });
+    @override
+    void initState() {
+      super.initState();
+      _setBookingFormData();
     }
-    // _createSlider();
-   // _createBannerSlider();
-  }
 
-  @override
-  void initState() {
-    _getDashboardData();
-    super.initState();
-  }
+    void _setBookingFormData() async {
+
+      BookingList bookingList = await ApiService.getMyServices();
+      print("booking form data>>>>>${jsonEncode(bookingList)}>>>>");
+
+
+      if(bookingList.status  == "success"){
+        onGoingList = bookingList!.onGoingBookings!;
+        lastBookings = bookingList!.bookings!;
+        setState(() {
+          loading = false;
+        });
+      }
+
+    }
+
+
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -86,7 +87,9 @@ class _MyServicesScreenState extends State<MyServicesScreen> {
 
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 15),
-                child: Column(
+                child:
+                    !loading?
+                Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     const SizedBox(height: 15,),
@@ -105,7 +108,9 @@ class _MyServicesScreenState extends State<MyServicesScreen> {
                          decoration: BoxDecoration(
                            color: Colors.deepOrange,
                            borderRadius: BorderRadius.circular(30)
+
                          ),
+
                          child: Padding(
                            padding: const EdgeInsets.all(8.0),
                            child: Text("New Booking",style:
@@ -116,22 +121,108 @@ class _MyServicesScreenState extends State<MyServicesScreen> {
                      ),
                    ],),
                     const SizedBox(height: 20,),
-                    const BookingServiceCard(),
+                    onGoingList.isNotEmpty ?
+                    SizedBox(
+                      width: screenSize.width,
+                      height: screenSize.height,
+                      child: ListView.builder(
+                          itemCount: onGoingList.length,
+                          physics: NeverScrollableScrollPhysics(),
+                          itemBuilder: (BuildContext context, int index) {
+                            print("Last Servies--->${onGoingList[index]}");
+                            return Padding(
+                              padding: const EdgeInsets.symmetric(horizontal: 6,vertical: 16),
+                              child: Container(
+                                // height: screenSize.height * 0.18,
+                                width: screenSize.width,
+                                decoration:  BoxDecoration(
+                                    color: CustomColor.whiteColor,
+                                    boxShadow: const
+                                    [
+                                      BoxShadow(
+                                        color: Colors.grey,
+                                        offset: Offset(
+                                          5.0,
+                                          5.0,
+                                        ),
+                                        blurRadius: 10.0,
+                                        spreadRadius: 2.0,
+                                      ), //BoxShadow
+                                      BoxShadow(
+                                        color: Colors.white,
+                                        offset: Offset(0.0, 0.0),
+                                        blurRadius: 0.0,
+                                        spreadRadius: 0.0,
+                                      ), //BoxShadow
+                                    ],
+                                    borderRadius: BorderRadius.circular(20)
+                                ),
+                                child: Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Column(
+                                    children: [
+                                      Row(
+                                        children: [
+                                          Column(
+                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                            children:  [
+                                              const SizedBox(height: 10,),
+                                               Text(onGoingList[index].bookingCenter != null?onGoingList[index].bookingCenter!.shopName.toString():"",style: TextStyle(fontSize: 18,fontWeight: FontWeight.w600),),
+                                              const SizedBox(height: 3,),
+                                              Row(children: [
+                                                const Text("Booking ID -"),
+                                                const SizedBox(width: 7,),
+                                                Text(onGoingList[index].bookingId.toString())
+                                              ],)
+                                            ],
+                                          ),
+                                          Spacer(),
+                                          Text(onGoingList[index].bookingDate.toString()),
+                                        ],
+                                      ),
+                                      SizedBox(height: 35,),
+                                      Row(
+                                        children: [
+                                          Column(
+                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                            children:  [
+                                              Text("General Service",style: TextStyle(fontSize: 18,fontWeight: FontWeight.w600,color: CustomColor.primaryColor),),
+                                              SizedBox(height: 3,),
+                                              Row(children: [
+                                                Text("Vehicle No. -"),
+                                                SizedBox(width: 7,),
+                                                Text((onGoingList[index].bookingVehNum.toString()),),
+                                              ],)
+                                            ],
+                                          ),
+                                          Spacer(),
+                                          Text((onGoingList[index].bookingPaymentStatus.toString()),style: TextStyle(color: Colors.blueAccent,fontWeight: FontWeight.w600),),
+                                        ],
+                                      )
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            );
+                          }),
+                    ) : SizedBox(
+                      height: 40,
+                    ),
                     const SizedBox(height: 90,),
                     const Text("Last Services",style: TextStyle(
                         fontWeight: FontWeight.w800,
                         fontSize: 30
                     ),),
                     const SizedBox(height: 20,),
-                    serviceModel.isNotEmpty ?
+                    lastBookings.isNotEmpty ?
                     SizedBox(
                       width: screenSize.width,
                      height: screenSize.height,
                       child: ListView.builder(
-                          itemCount: serviceModel.length,
+                          itemCount: lastBookings.length,
                           physics: NeverScrollableScrollPhysics(),
                           itemBuilder: (BuildContext context, int index) {
-                            print("Last Servies--->${serviceModel[index]}");
+                            print("Last Servies--->${lastBookings[index]}");
                             return Padding(
                               padding: const EdgeInsets.symmetric(horizontal: 6,vertical: 16),
                               child: Container(
@@ -169,17 +260,17 @@ class _MyServicesScreenState extends State<MyServicesScreen> {
                                             crossAxisAlignment: CrossAxisAlignment.start,
                                             children:  [
                                               const SizedBox(height: 10,),
-                                              Text(serviceModel[index].bookingCenter!.shopName.toString(),style: TextStyle(fontSize: 18,fontWeight: FontWeight.w600),),
+                                             Text(lastBookings[index].bookingCenter!.shopName.toString(),style: TextStyle(fontSize: 18,fontWeight: FontWeight.w600),),
                                               const SizedBox(height: 3,),
                                               Row(children: [
                                                 const Text("Booking ID -"),
                                                 const SizedBox(width: 7,),
-                                                Text(lastServices[index].bookingId.toString())
+                                                Text(lastBookings[index].bookingId.toString())
                                               ],)
                                             ],
                                           ),
                                           Spacer(),
-                                          Text(lastServices[index].bookingDate.toString()),
+                                          Text(lastBookings[index].bookingDate.toString()),
                                         ],
                                       ),
                                       SizedBox(height: 35,),
@@ -193,12 +284,12 @@ class _MyServicesScreenState extends State<MyServicesScreen> {
                                               Row(children: [
                                                 Text("Vehicle No. -"),
                                                 SizedBox(width: 7,),
-                                                Text((lastServices[index].bookingVehNum.toString()),),
+                                                Text((lastBookings[index].bookingVehNum.toString()),),
                                               ],)
                                             ],
                                           ),
                                           Spacer(),
-                                          Text((lastServices[index].bookingPaymentStatus.toString()),style: TextStyle(color: Colors.blueAccent,fontWeight: FontWeight.w600),),
+                                          Text((lastBookings[index].bookingPaymentStatus.toString()),style: TextStyle(color: Colors.blueAccent,fontWeight: FontWeight.w600),),
                                         ],
                                       )
                                     ],
@@ -207,12 +298,16 @@ class _MyServicesScreenState extends State<MyServicesScreen> {
                               ),
                             );
                           }),
-                    ) : SizedBox(),
+                    ) : SizedBox(
+                      height: 40,
+                    ),
 
                     const SizedBox(height: 20,),
 
                   ],
-                ),
+                ) : SizedBox(
+                      height: screenSize.height,
+                        child: Center(child: CircularProgressIndicator()))
               ),
             ),
           ],

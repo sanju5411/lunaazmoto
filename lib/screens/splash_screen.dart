@@ -42,31 +42,21 @@ class SplashScreenState extends State<SplashScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Color(0xffffffff),
       body: Stack(
         children: [
-          Center(child: Lottie.asset(
-              "assets/lotties/vehicle_ser.json",
-              width: 300,
-              height: 200,
+          Padding(
+            padding: const EdgeInsets.all(20.0),
+            child: Center(
+              child: Image.asset("assets/icon/lunaaz_launcher_icon.png")
             ),
           ),
           Positioned(
             bottom: 70,
-            child: Container(
-              padding:
-              const EdgeInsets.symmetric(horizontal: 50.0, vertical: 20.0),
-              width: MediaQuery.of(context).size.width,
-              child: const AutoSizeText(
-                "BIKE AND CAR REPAIR AND SERVICE",
-                style: TextStyle(
-                  color: CustomColor.primaryColor,
-                  fontSize: 18,
-                  fontWeight: FontWeight.w800
-                ),
-                textAlign: TextAlign.center,
-                maxLines: 2,
-              ),
-            ),
+            left: 40,
+            child: Align(
+              alignment: Alignment.bottomCenter,
+                child: Text("Bike Service & Car Wash",style: TextStyle(fontSize: 27,color: CustomColor.primaryColor,fontWeight: FontWeight.w700),))
           ),
         ],
       ),

@@ -6,9 +6,9 @@ class Dashboard {
   Dashboard({
     this.status,
     this.message,
-    this.happyCustomers,
-    this.banners,
-    this.serviceModel,
+   this.happyCustomers,
+   this.banners,
+   this.serviceModel,
     this.todayBookings,
     this.totalBookings,
   });
@@ -16,9 +16,9 @@ class Dashboard {
   String? status;
   String? message;
 
-  List<HappyCustomer>? happyCustomers;
+   List<HappyCustomer>? happyCustomers;
   List<BannerImage>? banners;
-  List<ServiceModel>? serviceModel;
+ List<ServiceModel>? serviceModel;
 
   int? totalBookings;
   int? todayBookings;
