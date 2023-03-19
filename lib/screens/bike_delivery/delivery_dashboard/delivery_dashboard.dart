@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:lunaaz_moto/screens/bike_delivery/booking_detail/booking_detail.dart';
 import 'package:lunaaz_moto/screens/bike_delivery/total_booking_screen/total_booking_screen.dart';
 import 'package:lunaaz_moto/screens/customer/customer_screens/profile_screen/profile_screen.dart';
 
@@ -85,7 +86,7 @@ class _DeliveryDashboardState extends State<DeliveryDashboard> {
                    padding: const EdgeInsets.symmetric(horizontal: 25,vertical: 7),
                    child: Column(
                      crossAxisAlignment: CrossAxisAlignment.start,
-                     children: [
+                     children: const [
                        Text("LunaazMoto",style: TextStyle(fontSize: 30,fontWeight: FontWeight.w700,color: CustomColor.whiteColor),),
                        SizedBox(height: 10,),
                        Text("Deliver Person",style: TextStyle(fontSize: 20,fontWeight: FontWeight.w400,color: CustomColor.whiteColor),),
@@ -121,78 +122,60 @@ class _DeliveryDashboardState extends State<DeliveryDashboard> {
                            child: Row(
                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
                              children: [
-                               InkWell(
-                                 onTap: (){
-                                   Navigator.pushNamed(context, TotalBookingScreen.routeName);
-                                 },
-                                 child: Container(
-                                     height: 110,
-                                     width: 110,
-                                     decoration:  BoxDecoration(
-                                         border: Border.all(color: const Color(0xFFA5D872)),
-                                         borderRadius: const BorderRadius.all(Radius.circular(20))
-                                     ),
-                                     child: Column(
-                                       crossAxisAlignment: CrossAxisAlignment.center,
-                                       mainAxisAlignment: MainAxisAlignment.center,
-                                       children: [
-                                         Text("${totalBooking}",style: const TextStyle(fontSize: 26,fontWeight: FontWeight.w600,color: Color(0xFF6FC11D)),),
-                                         SizedBox(height: 10,),
-                                         Text("Today\nBooking",textAlign: TextAlign.center,style: TextStyle(fontSize: 13,fontWeight: FontWeight.w500),)
-                                       ],
-                                     )
-                                 ),
+                               Container(
+                                   height: 110,
+                                   width: 110,
+                                   decoration:  BoxDecoration(
+                                       border: Border.all(color: const Color(0xFFA5D872)),
+                                       borderRadius: const BorderRadius.all(Radius.circular(20))
+                                   ),
+                                   child: Column(
+                                     crossAxisAlignment: CrossAxisAlignment.center,
+                                     mainAxisAlignment: MainAxisAlignment.center,
+                                     children: [
+                                       Text("${totalBooking}",style: const TextStyle(fontSize: 26,fontWeight: FontWeight.w600,color: Color(0xFF6FC11D)),),
+                                       SizedBox(height: 10,),
+                                       Text("Today\nBooking",textAlign: TextAlign.center,style: TextStyle(fontSize: 13,fontWeight: FontWeight.w500),)
+                                     ],
+                                   )
                                ),
-                               InkWell(
-                                 onTap: (){
-                                   Navigator.pushNamed(context, TotalBookingScreen.routeName);
-                                 },
-                                 child: Container(
-                                     height: 110,
-                                     width: 110,
-                                     decoration:  BoxDecoration(
-                                         border: Border.all(color: const Color(0xFFEFA315)),
-                                         borderRadius: const BorderRadius.all(Radius.circular(20))
-                                     ),
-                                     child: Column(
-                                       crossAxisAlignment: CrossAxisAlignment.center,
-                                       mainAxisAlignment: MainAxisAlignment.center,
-                                       children: [
-                                         Text("${todayPickUp}",style: const TextStyle(fontSize: 26,fontWeight: FontWeight.w600,color: Color(0xFFEFA315)),),
-                                         SizedBox(height: 10,),
-                                         Text("Today\nPicked Up",textAlign: TextAlign.center,style: TextStyle(fontSize: 13,fontWeight: FontWeight.w500),)
-                                       ],
-                                     )
-                                 ),
+                               Container(
+                                   height: 110,
+                                   width: 110,
+                                   decoration:  BoxDecoration(
+                                       border: Border.all(color: const Color(0xFFEFA315)),
+                                       borderRadius: const BorderRadius.all(Radius.circular(20))
+                                   ),
+                                   child: Column(
+                                     crossAxisAlignment: CrossAxisAlignment.center,
+                                     mainAxisAlignment: MainAxisAlignment.center,
+                                     children: [
+                                       Text("${todayPickUp}",style: const TextStyle(fontSize: 26,fontWeight: FontWeight.w600,color: Color(0xFFEFA315)),),
+                                       SizedBox(height: 10,),
+                                       Text("Today\nPicked Up",textAlign: TextAlign.center,style: TextStyle(fontSize: 13,fontWeight: FontWeight.w500),)
+                                     ],
+                                   )
                                ),
-                               InkWell(
-                                 onTap: (){
-                                   Navigator.pushNamed(context, TotalBookingScreen.routeName);
-                                 },
-                                 child: Container(
-                                     height: 110,
-                                     width: 110,
-                                     decoration:  BoxDecoration(
-                                         border: Border.all(color: const Color(0xFFFF2121)),
-                                         borderRadius: const BorderRadius.all(Radius.circular(20))
-                                     ),
-                                     child: Column(
-                                       crossAxisAlignment: CrossAxisAlignment.center,
-                                       mainAxisAlignment: MainAxisAlignment.center,
-                                       children: [
-                                         Text("$todayDelivered",style: const TextStyle(fontSize: 26,fontWeight: FontWeight.w600,color: Color(0xFFFF2121)),),
-                                         const SizedBox(height: 10,),
-                                         const Text("Today\nBooking",textAlign: TextAlign.center,style: TextStyle(fontSize: 13,fontWeight: FontWeight.w500),)
-                                       ],
-                                     )
-                                 ),
+                               Container(
+                                   height: 110,
+                                   width: 110,
+                                   decoration:  BoxDecoration(
+                                       border: Border.all(color: const Color(0xFFFF2121)),
+                                       borderRadius: const BorderRadius.all(Radius.circular(20))
+                                   ),
+                                   child: Column(
+                                     crossAxisAlignment: CrossAxisAlignment.center,
+                                     mainAxisAlignment: MainAxisAlignment.center,
+                                     children: [
+                                       Text("$todayDelivered",style: const TextStyle(fontSize: 26,fontWeight: FontWeight.w600,color: Color(0xFFFF2121)),),
+                                       const SizedBox(height: 10,),
+                                       const Text("Today\nBooking",textAlign: TextAlign.center,style: TextStyle(fontSize: 13,fontWeight: FontWeight.w500),)
+                                     ],
+                                   )
                                ),
                              ],
                            ),
                          ),
-
-
-
                          const SizedBox(height: 20,),
                          Container(
                              margin: const EdgeInsets.symmetric(horizontal: 20),
@@ -212,7 +195,7 @@ class _DeliveryDashboardState extends State<DeliveryDashboard> {
                              itemBuilder: (BuildContext context, int index) {
                                return  GestureDetector(
                                  onTap: (){
-
+                                   Navigator.pushNamed(context, BookingDetail.routeName,arguments: nextBooking[index]);
                                  },
                                  child: Padding(
                                    padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -249,39 +232,18 @@ class _DeliveryDashboardState extends State<DeliveryDashboard> {
                  ),
                ],
              ),
-
              Positioned(
-               top: 180,
+               top: 200,
                left: 20,
-               child:  Container(
-                 height: 110,
-                   width: 150,
-                 decoration:  BoxDecoration(
-                   color: CustomColor.whiteColor,
-                     border: Border.all(color: const Color(0xFFA5D872)),
-                     borderRadius: const BorderRadius.all(Radius.circular(13))
-                 ),
-                 child: Column(
-                   crossAxisAlignment: CrossAxisAlignment.center,
-                   mainAxisAlignment: MainAxisAlignment.center,
-                   children:  [
-
-                     const Text("Total Booking",style: TextStyle(fontSize: 18,fontWeight: FontWeight.w600,color: Colors.black),),
-                     const SizedBox(height: 13,),
-                     Text("$totalBooking",textAlign: TextAlign.center,style: const TextStyle(fontSize: 23,fontWeight: FontWeight.w900,color: Colors.lightGreen),),
-
-                   ],
-                 )
-             ),
-             ),
-             Positioned(
-               top: 180,
-               right: 20,
-               child:  Container(
+               child:  GestureDetector(
+                 onTap: (){
+                   Navigator.pushNamed(context, TotalBookingScreen.routeName,arguments: "Total Booking");
+                 },
+                 child: Container(
                    height: 110,
-                   width: 150,
+                     width: 150,
                    decoration:  BoxDecoration(
-                       color: CustomColor.whiteColor,
+                     color: CustomColor.whiteColor,
                        border: Border.all(color: const Color(0xFFA5D872)),
                        borderRadius: const BorderRadius.all(Radius.circular(13))
                    ),
@@ -289,14 +251,44 @@ class _DeliveryDashboardState extends State<DeliveryDashboard> {
                      crossAxisAlignment: CrossAxisAlignment.center,
                      mainAxisAlignment: MainAxisAlignment.center,
                      children:  [
-                       Text(
-                         textAlign: TextAlign.center,
-                         "Today\nNew Booking",style: TextStyle(fontSize: 18,fontWeight: FontWeight.w600,color: Colors.black),),
+
+                       const Text("Total Booking",style: TextStyle(fontSize: 18,fontWeight: FontWeight.w600,color: Colors.black),),
                        const SizedBox(height: 13,),
-                       Text("$todayNewBooking",textAlign: TextAlign.center,style: const TextStyle(fontSize: 23,fontWeight: FontWeight.w900,color: Colors.orange),),
+                       Text("$totalBooking",textAlign: TextAlign.center,style: const TextStyle(fontSize: 23,fontWeight: FontWeight.w900,color: Colors.lightGreen),),
 
                      ],
                    )
+             ),
+               ),
+             ),
+             Positioned(
+               top: 200,
+               right: 20,
+               child:  GestureDetector(
+                 onTap: (){
+                   Navigator.pushNamed(context, TotalBookingScreen.routeName,arguments: "Today Booking");
+                 },
+                 child: Container(
+                     height: 110,
+                     width: 150,
+                     decoration:  BoxDecoration(
+                         color: CustomColor.whiteColor,
+                         border: Border.all(color: const Color(0xFFA5D872)),
+                         borderRadius: const BorderRadius.all(Radius.circular(13))
+                     ),
+                     child: Column(
+                       crossAxisAlignment: CrossAxisAlignment.center,
+                       mainAxisAlignment: MainAxisAlignment.center,
+                       children:  [
+                         Text(
+                           textAlign: TextAlign.center,
+                           "Today\nNew Booking",style: TextStyle(fontSize: 18,fontWeight: FontWeight.w600,color: Colors.black),),
+                         const SizedBox(height: 13,),
+                         Text("$todayNewBooking",textAlign: TextAlign.center,style: const TextStyle(fontSize: 23,fontWeight: FontWeight.w900,color: Colors.orange),),
+
+                       ],
+                     )
+                 ),
                ),
              ),
 

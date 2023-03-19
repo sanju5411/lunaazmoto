@@ -187,6 +187,8 @@ class ApiService {
     String token = await SharedPreferencesService.getApiToken();
     headers.addAll({'Authorization': 'Bearer $token'});
 
+    print("token--->$token");
+
     try {
       var res = await get(
         uri,

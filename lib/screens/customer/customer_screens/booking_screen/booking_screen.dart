@@ -227,11 +227,11 @@ class _BookingScreenState extends State<BookingScreen> {
                                           child: Column(children: [
                                             Row(
                                               children: [
-                                              Text("₹ 1000" ,style: TextStyle(
-                                                  color: CustomColor.whiteColor,
-                                                  fontSize: 20,
-                                                  decoration: TextDecoration.lineThrough
-                                              ),),
+                                              // Text("₹ 1000" ,style: TextStyle(
+                                              //     color: CustomColor.whiteColor,
+                                              //     fontSize: 20,
+                                              //     decoration: TextDecoration.lineThrough
+                                              // ),),
                                               SizedBox(width: 17,),
                                               Text("₹ ${_packages![index].packagePrice??"0"}",style: TextStyle(
                                                   color: CustomColor.whiteColor,
@@ -246,8 +246,8 @@ class _BookingScreenState extends State<BookingScreen> {
                                               child: Align(
                                                 alignment: Alignment.topLeft,
                                                   child: HtmlWidget(
-                                                    _packages![index].packageFeaturesName!.toString()
-
+                                                    _packages![index].packageFeaturesName!.toString(),
+                                                    textStyle: TextStyle(color: Colors.white),
                                                   ),
                                               ),
                                             ),

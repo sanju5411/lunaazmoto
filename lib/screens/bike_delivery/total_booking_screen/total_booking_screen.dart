@@ -1,53 +1,62 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:lunaaz_moto/constants/global_variables.dart';
+import 'package:lunaaz_moto/models/drivers/new_services.dart';
 import 'package:lunaaz_moto/screens/bike_delivery/booking_detail/booking_detail.dart';
 import 'package:lunaaz_moto/screens/bike_delivery/notification_screen/notification_screen.dart';
 
 class TotalBookingScreen extends StatefulWidget {
   static const String routeName = '/total_booking_vehicle';
   const TotalBookingScreen({Key? key}) : super(key: key);
-
   @override
   State<TotalBookingScreen> createState() => _TotalBookingScreenState();
 }
 
 class _TotalBookingScreenState extends State<TotalBookingScreen> {
+
   @override
   Widget build(BuildContext context) {
+
+    final appBarTitle = ModalRoute.of(context)?.settings.arguments as String;
+
     Size screenSize = MediaQuery.of(context).size;
     return Scaffold(
       backgroundColor: CustomColor.primaryColor,
       appBar: AppBar(
-        title: Text('Total Booking',style: TextStyle(fontSize: 19),),
+        title: Text(appBarTitle,style: TextStyle(fontSize: 19),),
         elevation: 0,
         backgroundColor: CustomColor.primaryColor,
         leading: InkWell(
           onTap: (){
             Navigator.pop(context);
           },
-            child: Icon(
+            child: const Icon(
               Icons.arrow_back_outlined,color: CustomColor.whiteColor,
             ),
         ),
         centerTitle: true,
         actions: [
-          InkWell(
-            onTap: (){
-              Navigator.pushNamed(context, NotificationScreen.routeName);
-            },
-              child: Icon(Icons.notifications_active,color: CustomColor.whiteColor,),
+          Container(
+            margin: EdgeInsets.symmetric(horizontal: 10),
+            child: InkWell(
+              onTap: (){
+                Navigator.pushNamed(context, NotificationScreen.routeName);
+              },
+                child: Icon(Icons.notifications_active,color: CustomColor.whiteColor,),
+            ),
           ),
         ],
       ),
       body: Container(
         width: screenSize.width,
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           borderRadius: BorderRadius.only(topLeft: Radius.circular(20),topRight: Radius.circular(20)),
           color: CustomColor.whiteColor,
         ),
         child: SingleChildScrollView(
-          physics:  ScrollPhysics(),
+          physics:  const ScrollPhysics(),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -95,7 +104,7 @@ class _TotalBookingScreenState extends State<TotalBookingScreen> {
                             trailing: Column(
                               children: [
                                 Icon(Icons.remove_red_eye,color: Colors.cyan,),
-                                SizedBox(height: 16,),
+                                SizedBox(height: 10,),
                                 Text("New Booking",style: TextStyle(color: Colors.deepPurpleAccent),)
                               ],
                             ),
@@ -147,7 +156,7 @@ class _TotalBookingScreenState extends State<TotalBookingScreen> {
                        trailing: Column(
                            children: [
                              Icon(Icons.remove_red_eye,color: Colors.cyan,),
-                             SizedBox(height: 16,),
+                             SizedBox(height: 10,),
                              Text("New Booking",style: TextStyle(color: Colors.deepPurpleAccent),)
                            ],
                        ),
@@ -162,24 +171,6 @@ class _TotalBookingScreenState extends State<TotalBookingScreen> {
           ],),
         ),
       ),
-
-      // ListTile(
-      //   contentPadding:
-      //   const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
-      //   shape: RoundedRectangleBorder(
-      //     borderRadius: BorderRadius.circular(15),
-      //     side: const BorderSide(
-      //       color: Colors.black,
-      //     ),
-      //   ),
-      //   leading: const CircleAvatar(
-      //     backgroundImage: NetworkImage("https://assets.pokemon.com/assets/cms2/img/pokedex/detail/043.png"), // No matter how big it is, it won't overflow
-      //   ),
-      //   title: const Text("Rimma Roy",style: TextStyle(fontWeight: FontWeight.w600,fontSize: 15),),
-      //   subtitle: const Text("09 JAN 2022, 8am - 10am",style: TextStyle(fontWeight: FontWeight.w500,fontSize: 12,color: Color(0xFF8C8FA5)),),
-      // ),
-
-
     );
   }
 }
