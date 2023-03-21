@@ -7,6 +7,7 @@ import 'package:lunaaz_moto/screens/bike_delivery/delivery_dashboard/delivery_da
 import 'package:lunaaz_moto/screens/bike_delivery/notification_screen/notification_screen.dart';
 import 'package:lunaaz_moto/screens/bike_delivery/total_booking_screen/total_booking_screen.dart';
 import 'package:lunaaz_moto/screens/customer/customer_screens/book_form/booking_form.dart';
+import 'package:lunaaz_moto/screens/customer/customer_screens/booking_screen/booking_screen.dart';
 import 'package:lunaaz_moto/screens/customer/customer_screens/dashboard_screen/dashboard_screen.dart';
 import 'package:lunaaz_moto/screens/customer/customer_screens/fill_form/fill_out_form.dart';
 import 'package:lunaaz_moto/screens/customer/customer_screens/my_services/my_services.dart';
@@ -59,6 +60,12 @@ Route<dynamic> generateRoute(RouteSettings routeSettings) {
         routeSettings: routeSettings,
       );
 
+    case BookingScreen.routeName:
+      return CustomPageRoute(
+        child:   BookingScreen(),
+        routeSettings: routeSettings,
+      );
+
     case MyServicesScreen.routeName:
       return CustomPageRoute(
         child:  const MyServicesScreen(),
@@ -79,9 +86,9 @@ Route<dynamic> generateRoute(RouteSettings routeSettings) {
         routeSettings: routeSettings,
       );
 
-    case NavDrawer.routeName:
+    case NavCusDrawer.routeName:
       return CustomPageRoute(
-        child:   NavDrawer(),
+        child:   NavCusDrawer(),
         direction: AxisDirection.right,
         routeSettings: routeSettings,
       );

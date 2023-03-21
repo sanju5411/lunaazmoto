@@ -1,21 +1,15 @@
 class BannerImage {
   BannerImage({
-
-    this.image,
-
+    required this.image,
   });
 
-  String? image;
+  String image;
 
   factory BannerImage.fromJson(Map<String, dynamic> json) => BannerImage(
-
     image: json["image"],
-
   );
 
   Map<String, dynamic> toJson() => {
-
     "image": image,
-
   };
 }

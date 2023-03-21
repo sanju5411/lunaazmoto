@@ -29,7 +29,7 @@ class Dashboard {
     todayBookings: json["today_bookings"],
     totalBookings: json["total_bookings"],
 
-    happyCustomers: json["happy_customers"] == null
+    happyCustomers: json["happy_customers"] == null || json["happy_customers"] == ""
         ? null
         : List<HappyCustomer>.from(
         json["happy_customers"].map((x) => HappyCustomer.fromJson(x))),
@@ -38,8 +38,8 @@ class Dashboard {
         : List<BannerImage>.from(
         json["banners"].map((x) => BannerImage.fromJson(x))),
 
-    serviceModel: json["last_services"] == null
-          ? null
+    serviceModel: json["last_services"] == null || json["last_services"] == ""
+        ? null
           : List<ServiceModel>.from(
           json["last_services"].map((x) => ServiceModel.fromJson(x))),
 
@@ -57,7 +57,7 @@ class Dashboard {
     "banners": banners == null
         ? null
         : List<BannerImage>.from(banners!.map((x) => x.toJson())),
-    "last_service": serviceModel == null
+    "last_service": serviceModel == null || serviceModel == ""
         ? null
         : List<ServiceModel>.from(serviceModel!.map((x) => x.toJson())),
   };

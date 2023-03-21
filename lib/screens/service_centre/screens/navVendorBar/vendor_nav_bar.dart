@@ -1,14 +1,15 @@
+
 import 'package:flutter/material.dart';
 import 'package:lunaaz_moto/constants/global_variables.dart';
 import 'package:lunaaz_moto/models/auth/user/user.dart';
 import 'package:lunaaz_moto/screens/auth/login_screen.dart';
 import 'package:lunaaz_moto/screens/customer/customer_screens/profile_screen/profile_screen.dart';
 import 'package:lunaaz_moto/services/shared_preferences_service.dart';
-import 'package:path/path.dart';
 
-class NavCusDrawer extends StatelessWidget {
 
-  static const String routeName = '/side_nav_screen';
+class VendorNavDrawer extends StatelessWidget {
+
+  static const String routeName = '/side_vendor_screen';
 
   @override
   Widget build(BuildContext context) {
@@ -17,7 +18,7 @@ class NavCusDrawer extends StatelessWidget {
     Size screenSize = MediaQuery.of(context).size;
 
     return Drawer(
-     // width:100,
+      //width:100,
       child: ListView(
 
         children: <Widget>[
@@ -25,24 +26,24 @@ class NavCusDrawer extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                 CircleAvatar(
+                CircleAvatar(
 
                   backgroundImage: AssetImage("assets/images/dpp.jpg"),
                 ),
                 SizedBox(height: 25,),
                 Text(  _authUser != null ? _authUser!.name!.toString(): 'LunaazMoto',style: TextStyle(fontSize: 30,color: CustomColor.whiteColor,fontWeight: FontWeight.w600),)
 
-        ],),
+              ],),
             decoration: BoxDecoration(
                 color: CustomColor.primaryColor,
-              borderRadius: BorderRadius.only(bottomRight: Radius.circular(20),bottomLeft: Radius.circular(20))
-              ),
+                borderRadius: BorderRadius.only(bottomRight: Radius.circular(20),bottomLeft: Radius.circular(20))
+            ),
           ),
           ListTile(
             leading: Icon(Icons.verified_user),
             title: Text('Profile'),
             onTap: () => {
-             Navigator.of(context).pop(),
+              Navigator.of(context).pop(),
               Navigator.pushNamed(context, ProfileScreen.routeName)
             },
           ),
@@ -63,7 +64,7 @@ class NavCusDrawer extends StatelessWidget {
             leading: Icon(Icons.exit_to_app),
             title: Text('Logout'),
             onTap: () => {
-             SharedPreferencesService.setLoggedIn(loggedIn: false),
+              SharedPreferencesService.setLoggedIn(loggedIn: false),
               Navigator.pushNamed(context, LoginScreen.routeName),
             },
           )
@@ -72,10 +73,7 @@ class NavCusDrawer extends StatelessWidget {
       ),
     );
   }
-  void _logiout() {
-    SharedPreferencesService.setLoggedIn(loggedIn: false);
-    Navigator.of(context as BuildContext).pushNamedAndRemoveUntil(
-        LoginScreen.routeName, (route) => false);
 
-  }
+
+
 }

@@ -1,3 +1,5 @@
+import 'package:lunaaz_moto/models/user_addressModel/user_address_model.dart';
+
 class BookingList {
   String? status;
   int? statusCode;
@@ -19,28 +21,28 @@ class BookingList {
     if (json['bookings'] != null) {
       bookings = <Bookings>[];
       json['bookings'].forEach((v) {
-        bookings!.add(new Bookings.fromJson(v));
+        bookings!.add(Bookings.fromJson(v));
       });
     }
     if (json['on_going_bookings'] != null) {
       onGoingBookings = <OnGoingBookings>[];
       json['on_going_bookings'].forEach((v) {
-        onGoingBookings!.add(new OnGoingBookings.fromJson(v));
+        onGoingBookings!.add(OnGoingBookings.fromJson(v));
       });
     }
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['status'] = this.status;
-    data['status_code'] = this.statusCode;
-    data['message'] = this.message;
-    if (this.bookings != null) {
-      data['bookings'] = this.bookings!.map((v) => v.toJson()).toList();
+    final Map<String, dynamic> data = Map<String, dynamic>();
+    data['status'] = status;
+    data['status_code'] = statusCode;
+    data['message'] = message;
+    if (bookings != null) {
+      data['bookings'] = bookings!.map((v) => v.toJson()).toList();
     }
-    if (this.onGoingBookings != null) {
+    if (onGoingBookings != null) {
       data['on_going_bookings'] =
-          this.onGoingBookings!.map((v) => v.toJson()).toList();
+          onGoingBookings!.map((v) => v.toJson()).toList();
     }
     return data;
   }
@@ -49,7 +51,7 @@ class BookingList {
 class Bookings {
   int? bookingId;
   BookingUser? bookingUser;
-  Null? bookingAddress;
+  UserAddress? bookingAddress;
   BookingPackage? bookingPackage;
   BookingCenter? bookingCenter;
   String? bookingNumber;
@@ -100,15 +102,18 @@ class Bookings {
 
   Bookings.fromJson(Map<String, dynamic> json) {
     bookingId = json['booking_id'];
-    bookingUser = json['booking_user'] != null
-        ? new BookingUser.fromJson(json['booking_user'])
+    bookingUser = json['booking_user'] != null || json['booking_user'] != ""
+        ? BookingUser.fromJson(json['booking_user'])
         : null;
-    bookingAddress = json['booking_address'];
-    bookingPackage = json['booking_package'] != null
-        ? new BookingPackage.fromJson(json['booking_package'])
+    bookingAddress = json['booking_address']  != null || json['booking_address'] != ""
+        ? UserAddress.fromJson(json['booking_address'])
+        : null;
+
+    bookingPackage = json['booking_package'] != null || json['booking_package'] != ""
+        ? BookingPackage.fromJson(json['booking_package'])
         : null;
     bookingCenter = json['booking_center'] != null
-        ? new BookingCenter.fromJson(json['booking_center'])
+        ? BookingCenter.fromJson(json['booking_center'])
         : null;
     bookingNumber = json['booking_number'];
     bookingDate = json['booking_date'];
@@ -132,37 +137,39 @@ class Bookings {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['booking_id'] = this.bookingId;
-    if (this.bookingUser != null) {
-      data['booking_user'] = this.bookingUser!.toJson();
+    final Map<String, dynamic> data = Map<String, dynamic>();
+    data['booking_id'] = bookingId;
+    if (bookingUser != null) {
+      data['booking_user'] = bookingUser!.toJson();
     }
-    data['booking_address'] = this.bookingAddress;
-    if (this.bookingPackage != null) {
-      data['booking_package'] = this.bookingPackage!.toJson();
+    if(bookingAddress != null){
+      data['booking_address'] = bookingAddress!.toJson();
     }
-    if (this.bookingCenter != null) {
-      data['booking_center'] = this.bookingCenter!.toJson();
+    if (bookingPackage != null) {
+      data['booking_package'] = bookingPackage!.toJson();
     }
-    data['booking_number'] = this.bookingNumber;
-    data['booking_date'] = this.bookingDate;
-    data['booked_date'] = this.bookedDate;
-    data['booked_time'] = this.bookedTime;
-    data['booking_veh_name'] = this.bookingVehName;
-    data['booking_veh_num'] = this.bookingVehNum;
-    data['booking_veh_type'] = this.bookingVehType;
-    data['booking_instruct'] = this.bookingInstruct;
-    data['booking_accepted_at'] = this.bookingAcceptedAt;
-    data['booking_proccessed_at'] = this.bookingProccessedAt;
-    data['booking_picked_at'] = this.bookingPickedAt;
-    data['booking_completed_at'] = this.bookingCompletedAt;
-    data['booking_rejected_at'] = this.bookingRejectedAt;
-    data['booking_payment_method'] = this.bookingPaymentMethod;
-    data['booking_payment_detail'] = this.bookingPaymentDetail;
-    data['booking_payment_status'] = this.bookingPaymentStatus;
-    data['booking_review'] = this.bookingReview;
-    data['booking_rating'] = this.bookingRating;
-    data['booking_status'] = this.bookingStatus;
+    if (bookingCenter != null) {
+      data['booking_center'] = bookingCenter!.toJson();
+    }
+    data['booking_number'] = bookingNumber;
+    data['booking_date'] = bookingDate;
+    data['booked_date'] = bookedDate;
+    data['booked_time'] = bookedTime;
+    data['booking_veh_name'] = bookingVehName;
+    data['booking_veh_num'] = bookingVehNum;
+    data['booking_veh_type'] = bookingVehType;
+    data['booking_instruct'] = bookingInstruct;
+    data['booking_accepted_at'] = bookingAcceptedAt;
+    data['booking_proccessed_at'] = bookingProccessedAt;
+    data['booking_picked_at'] = bookingPickedAt;
+    data['booking_completed_at'] = bookingCompletedAt;
+    data['booking_rejected_at'] = bookingRejectedAt;
+    data['booking_payment_method'] = bookingPaymentMethod;
+    data['booking_payment_detail'] = bookingPaymentDetail;
+    data['booking_payment_status'] = bookingPaymentStatus;
+    data['booking_review'] = bookingReview;
+    data['booking_rating'] = bookingRating;
+    data['booking_status'] = bookingStatus;
     return data;
   }
 }
@@ -199,15 +206,15 @@ class BookingUser {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['name'] = this.name;
-    data['country_code'] = this.countryCode;
-    data['mobile'] = this.mobile;
-    data['email'] = this.email;
-    data['avatar'] = this.avatar;
-    data['user_type'] = this.userType;
-    data['fcm_topics'] = this.fcmTopics;
+    final Map<String, dynamic> data = Map<String, dynamic>();
+    data['id'] = id;
+    data['name'] = name;
+    data['country_code'] = countryCode;
+    data['mobile'] = mobile;
+    data['email'] = email;
+    data['avatar'] = avatar;
+    data['user_type'] = userType;
+    data['fcm_topics'] = fcmTopics;
     return data;
   }
 }
@@ -243,23 +250,23 @@ class BookingPackage {
     if (json['package_benefits'] != null) {
       packageBenefits = <PackageBenefits>[];
       json['package_benefits'].forEach((v) {
-        packageBenefits!.add(new PackageBenefits.fromJson(v));
+        packageBenefits!.add(PackageBenefits.fromJson(v));
       });
     }
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['package_id'] = this.packageId;
-    data['package_name'] = this.packageName;
-    data['package_type'] = this.packageType;
-    data['package_price'] = this.packagePrice;
-    data['package_duration'] = this.packageDuration;
-    data['package_status'] = this.packageStatus;
-    data['package_features_name'] = this.packageFeaturesName;
-    if (this.packageBenefits != null) {
+    final Map<String, dynamic> data = Map<String, dynamic>();
+    data['package_id'] = packageId;
+    data['package_name'] = packageName;
+    data['package_type'] =  packageType;
+    data['package_price'] = packagePrice;
+    data['package_duration'] = packageDuration;
+    data['package_status'] =  packageStatus;
+    data['package_features_name'] =  packageFeaturesName;
+    if (packageBenefits != null) {
       data['package_benefits'] =
-          this.packageBenefits!.map((v) => v.toJson()).toList();
+         packageBenefits!.map((v) => v.toJson()).toList();
     }
     return data;
   }
@@ -277,9 +284,9 @@ class PackageBenefits {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['name'] = this.name;
-    data['limit'] = this.limit;
+    final Map<String, dynamic> data = Map<String, dynamic>();
+    data['name'] = name;
+    data['limit'] = limit;
     return data;
   }
 }
@@ -397,7 +404,7 @@ class BookingCenter {
     if (json['shop_categories'] != null) {
       shopCategories = <ShopCategories>[];
       json['shop_categories'].forEach((v) {
-        shopCategories!.add(new ShopCategories.fromJson(v));
+        shopCategories!.add(ShopCategories.fromJson(v));
       });
     }
     shopAccountHolder = json['shop_account_holder'];
@@ -410,56 +417,56 @@ class BookingCenter {
     if (json['shop_documents'] != null) {
       shopDocuments = <ShopDocuments>[];
       json['shop_documents'].forEach((v) {
-        shopDocuments!.add(new ShopDocuments.fromJson(v));
+        shopDocuments!.add(ShopDocuments.fromJson(v));
       });
     }
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['shop_id'] = this.shopId;
-    data['image'] = this.image;
-    data['shop_name'] = this.shopName;
-    data['shop_mobile'] = this.shopMobile;
-    data['shop_email'] = this.shopEmail;
-    data['shop_owner'] = this.shopOwner;
-    data['shop_alter_email'] = this.shopAlterEmail;
-    data['shop_alter_mobile'] = this.shopAlterMobile;
-    data['shop_delivery_type'] = this.shopDeliveryType;
-    data['shop_recommend'] = this.shopRecommend;
-    data['shop_sportlight'] = this.shopSportlight;
-    data['shop_popular'] = this.shopPopular;
-    data['shop_featured'] = this.shopFeatured;
-    data['shop_description'] = this.shopDescription;
-    data['shop_address_line1'] = this.shopAddressLine1;
-    data['shop_address_line2'] = this.shopAddressLine2;
-    data['shop_location'] = this.shopLocation;
-    data['shop_landmark'] = this.shopLandmark;
-    data['shop_city'] = this.shopCity;
-    data['shop_state'] = this.shopState;
-    data['shop_postcode'] = this.shopPostcode;
-    data['shop_country'] = this.shopCountry;
-    data['shop_lat'] = this.shopLat;
-    data['shop_long'] = this.shopLong;
-    data['shop_activity_status'] = this.shopActivityStatus;
-    data['shop_change_status_time'] = this.shopChangeStatusTime;
-    data['shop_status'] = this.shopStatus;
-    data['shop_create_at'] = this.shopCreateAt;
-    data['shop_details'] = this.shopDetails;
-    if (this.shopCategories != null) {
+    final Map<String, dynamic> data = Map<String, dynamic>();
+    data['shop_id'] = shopId;
+    data['image'] = image;
+    data['shop_name'] = shopName;
+    data['shop_mobile'] = shopMobile;
+    data['shop_email'] = shopEmail;
+    data['shop_owner'] = shopOwner;
+    data['shop_alter_email'] = shopAlterEmail;
+    data['shop_alter_mobile'] = shopAlterMobile;
+    data['shop_delivery_type'] = shopDeliveryType;
+    data['shop_recommend'] = shopRecommend;
+    data['shop_sportlight'] = shopSportlight;
+    data['shop_popular'] = shopPopular;
+    data['shop_featured'] = shopFeatured;
+    data['shop_description'] = shopDescription;
+    data['shop_address_line1'] = shopAddressLine1;
+    data['shop_address_line2'] = shopAddressLine2;
+    data['shop_location'] = shopLocation;
+    data['shop_landmark'] = shopLandmark;
+    data['shop_city'] = shopCity;
+    data['shop_state'] = shopState;
+    data['shop_postcode'] = shopPostcode;
+    data['shop_country'] = shopCountry;
+    data['shop_lat'] = shopLat;
+    data['shop_long'] = shopLong;
+    data['shop_activity_status'] = shopActivityStatus;
+    data['shop_change_status_time'] = shopChangeStatusTime;
+    data['shop_status'] = shopStatus;
+    data['shop_create_at'] = shopCreateAt;
+    data['shop_details'] = shopDetails;
+    if (shopCategories != null) {
       data['shop_categories'] =
-          this.shopCategories!.map((v) => v.toJson()).toList();
+          shopCategories!.map((v) => v.toJson()).toList();
     }
-    data['shop_account_holder'] = this.shopAccountHolder;
-    data['shop_account_number'] = this.shopAccountNumber;
-    data['shop_confirm_account_number'] = this.shopConfirmAccountNumber;
-    data['shop_bank_name'] = this.shopBankName;
-    data['shop_bank_branch_name'] = this.shopBankBranchName;
-    data['shop_upi'] = this.shopUpi;
-    data['shop_ifsc'] = this.shopIfsc;
-    if (this.shopDocuments != null) {
+    data['shop_account_holder'] = shopAccountHolder;
+    data['shop_account_number'] = shopAccountNumber;
+    data['shop_confirm_account_number'] = shopConfirmAccountNumber;
+    data['shop_bank_name'] = shopBankName;
+    data['shop_bank_branch_name'] = shopBankBranchName;
+    data['shop_upi'] = shopUpi;
+    data['shop_ifsc'] = shopIfsc;
+    if (shopDocuments != null) {
       data['shop_documents'] =
-          this.shopDocuments!.map((v) => v.toJson()).toList();
+          shopDocuments!.map((v) => v.toJson()).toList();
     }
     return data;
   }
@@ -485,11 +492,11 @@ class ShopCategories {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['category_id'] = this.categoryId;
-    data['category_name'] = this.categoryName;
-    data['category_detail'] = this.categoryDetail;
-    data['category_status'] = this.categoryStatus;
+    final Map<String, dynamic> data = Map<String, dynamic>();
+    data['category_id'] = categoryId;
+    data['category_name'] = categoryName;
+    data['category_detail'] = categoryDetail;
+    data['category_status'] = categoryStatus;
     return data;
   }
 }
@@ -520,13 +527,13 @@ class ShopDocuments {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['user_id'] = this.userId;
-    data['name'] = this.name;
-    data['file'] = this.file;
-    data['created_at'] = this.createdAt;
-    data['updated_at'] = this.updatedAt;
+    final Map<String, dynamic> data = Map<String, dynamic>();
+    data['id'] = id;
+    data['user_id'] = userId;
+    data['name'] = name;
+    data['file'] = file;
+    data['created_at'] = createdAt;
+    data['updated_at'] = updatedAt;
     return data;
   }
 }
@@ -535,7 +542,7 @@ class ShopDocuments {
 class OnGoingBookings {
   int? bookingId;
   BookingUser? bookingUser;
-  Null? bookingAddress;
+  UserAddress? bookingAddress;
   BookingPackage? bookingPackage;
   BookingCenter? bookingCenter;
   String? bookingNumber;
@@ -586,15 +593,17 @@ class OnGoingBookings {
 
   OnGoingBookings.fromJson(Map<String, dynamic> json) {
     bookingId = json['booking_id'];
-    bookingUser = json['booking_user'] != null
-        ? new BookingUser.fromJson(json['booking_user'])
+    bookingUser = json['booking_user'] != null ||  json['booking_user'] != ""
+        ? BookingUser.fromJson(json['booking_user'])
         : null;
-    bookingAddress = json['booking_address'];
-    bookingPackage = json['booking_package'] != null
-        ? new BookingPackage.fromJson(json['booking_package'])
+    bookingAddress = json['booking_address'] != null || json['booking_address'] != ""
+        ? UserAddress.fromJson(json['booking_address'])
+        : null;
+    bookingPackage = json['booking_package'] != null || json['booking_package'] != ""
+        ? BookingPackage.fromJson(json['booking_package'])
         : null;
     bookingCenter = json['booking_center'] != null
-        ? new BookingCenter.fromJson(json['booking_center'])
+        ? BookingCenter.fromJson(json['booking_center'])
         : null;
     bookingNumber = json['booking_number'];
     bookingDate = json['booking_date'];
@@ -618,37 +627,39 @@ class OnGoingBookings {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['booking_id'] = this.bookingId;
-    if (this.bookingUser != null) {
-      data['booking_user'] = this.bookingUser!.toJson();
+    final Map<String, dynamic> data = Map<String, dynamic>();
+    data['booking_id'] = bookingId;
+    if (bookingUser != null) {
+      data['booking_user'] = bookingUser!.toJson();
     }
-    data['booking_address'] = this.bookingAddress;
-    if (this.bookingPackage != null) {
-      data['booking_package'] = this.bookingPackage!.toJson();
+   if(bookingAddress != null){
+     data['booking_address'] = bookingAddress;
+   }
+    if (bookingPackage != null) {
+      data['booking_package'] = bookingPackage!.toJson();
     }
-    if (this.bookingCenter != null) {
-      data['booking_center'] = this.bookingCenter!.toJson();
+    if (bookingCenter != null) {
+      data['booking_center'] = bookingCenter!.toJson();
     }
-    data['booking_number'] = this.bookingNumber;
-    data['booking_date'] = this.bookingDate;
-    data['booked_date'] = this.bookedDate;
-    data['booked_time'] = this.bookedTime;
-    data['booking_veh_name'] = this.bookingVehName;
-    data['booking_veh_num'] = this.bookingVehNum;
-    data['booking_veh_type'] = this.bookingVehType;
-    data['booking_instruct'] = this.bookingInstruct;
-    data['booking_accepted_at'] = this.bookingAcceptedAt;
-    data['booking_proccessed_at'] = this.bookingProccessedAt;
-    data['booking_picked_at'] = this.bookingPickedAt;
-    data['booking_completed_at'] = this.bookingCompletedAt;
-    data['booking_rejected_at'] = this.bookingRejectedAt;
-    data['booking_payment_method'] = this.bookingPaymentMethod;
-    data['booking_payment_detail'] = this.bookingPaymentDetail;
-    data['booking_payment_status'] = this.bookingPaymentStatus;
-    data['booking_review'] = this.bookingReview;
-    data['booking_rating'] = this.bookingRating;
-    data['booking_status'] = this.bookingStatus;
+    data['booking_number'] =  bookingNumber;
+    data['booking_date'] =  bookingDate;
+    data['booked_date'] =  bookedDate;
+    data['booked_time'] =  bookedTime;
+    data['booking_veh_name'] =  bookingVehName;
+    data['booking_veh_num'] =  bookingVehNum;
+    data['booking_veh_type'] =  bookingVehType;
+    data['booking_instruct'] =  bookingInstruct;
+    data['booking_accepted_at'] =  bookingAcceptedAt;
+    data['booking_proccessed_at'] =  bookingProccessedAt;
+    data['booking_picked_at'] =  bookingPickedAt;
+    data['booking_completed_at'] =  bookingCompletedAt;
+    data['booking_rejected_at'] =  bookingRejectedAt;
+    data['booking_payment_method'] =  bookingPaymentMethod;
+    data['booking_payment_detail'] =  bookingPaymentDetail;
+    data['booking_payment_status'] =  bookingPaymentStatus;
+    data['booking_review'] =  bookingReview;
+    data['booking_rating'] =  bookingRating;
+    data['booking_status'] =  bookingStatus;
     return data;
   }
 }

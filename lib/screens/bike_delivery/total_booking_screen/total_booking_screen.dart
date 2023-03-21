@@ -42,7 +42,7 @@ class _TotalBookingScreenState extends State<TotalBookingScreen> {
             margin: EdgeInsets.symmetric(horizontal: 10),
             child: InkWell(
               onTap: (){
-                Navigator.pushNamed(context, NotificationScreen.routeName);
+                //Navigator.pushNamed(context, NotificationScreen.routeName);
               },
                 child: Icon(Icons.notifications_active,color: CustomColor.whiteColor,),
             ),
@@ -85,7 +85,7 @@ class _TotalBookingScreenState extends State<TotalBookingScreen> {
                         ),
                         child:  InkWell(
                           onTap: (){
-                            Navigator.pushNamed(context, BookingDetail.routeName);
+                            //Navigator.pushNamed(context, BookingDetail.routeName);
                           },
                           child: ListTile(
                             contentPadding:

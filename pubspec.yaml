@@ -65,6 +65,8 @@ dependencies:
   image_picker: ^0.8.6+4
   hidden_drawer_menu: ^3.0.1
   flutter_widget_from_html: ^0.8.5
+  geolocator: ^9.0.2
+  geocoding: ^2.1.0
 
 
 
@@ -72,6 +74,7 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  intl: ^0.17.0
 
   flutter_lints: ^2.0.0
   flutter_launcher_icons: ^0.11.0

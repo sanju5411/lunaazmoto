@@ -12,10 +12,10 @@ class BookingModel {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['status'] = this.status;
-    data['status_code'] = this.statusCode;
-    data['message'] = this.message;
+    final Map<String, dynamic> data = Map<String, dynamic>();
+    data['status'] = status;
+    data['status_code'] = statusCode;
+    data['message'] = message;
     return data;
   }
 }

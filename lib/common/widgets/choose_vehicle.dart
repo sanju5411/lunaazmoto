@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:lunaaz_moto/common/widgets/custom_button.dart';
 import 'package:lunaaz_moto/constants/global_variables.dart';
 import 'package:lunaaz_moto/screens/customer/customer_screens/book_form/booking_form.dart';
+import 'package:lunaaz_moto/screens/customer/customer_screens/booking_screen/booking_screen.dart';
 import 'package:lunaaz_moto/screens/customer/customer_screens/dashboard_screen/dashboard_screen.dart';
-
 
 class CustomWheelerPopUp extends StatefulWidget {
   static const String routeName = '/wheeler_popup';
@@ -17,48 +17,75 @@ class CustomWheelerPopUp extends StatefulWidget {
 class _CustomWheelerPopUpState extends State<CustomWheelerPopUp> {
   @override
   Widget build(BuildContext context) {
-    return  Scaffold(
-      backgroundColor: Color(0xffffebeb),
-      body: Dialog(
-        child: Container(
-          height: 270.0,
-          width: 270.0,
-          decoration: BoxDecoration( borderRadius : BorderRadius.circular(50)),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              SizedBox(height: 10,),
-              Padding(
-                padding: const EdgeInsets.all(10.0),
-                child: CustomButton(
-                    text: "Two Wheeler",
-                    onTap: (){
+    return Scaffold(
+      backgroundColor: Color(0x7ea8a8a8),
+      body: AlertDialog(
+        alignment: Alignment.center,
+        title: Text("Select :-"),
+        actionsAlignment: MainAxisAlignment.center,
+        actions: [
+         Column(
+           crossAxisAlignment: CrossAxisAlignment.start,
+           children: [
 
-                    }),
-              ),
-              SizedBox(height: 10,),
-              Padding(
-                padding: const EdgeInsets.all(10.0),
-                child: CustomButton(
-                    text: "Three Wheeler",
-                    onTap: (){
+           SizedBox(
+             height: 10,
+           ),
+           InkWell(
+             onTap: (){
+               Navigator.pushNamed(context, BookingScreen.routeName);
 
-                             }),
-              ),
-              SizedBox(height:10,),
-              Padding(
-                padding: const EdgeInsets.all(10.0),
-                child: CustomButton(
-                    text: "Four Wheeler",
-                    onTap: (){
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => BookingForm()));
-                    }),
-              ),
-            ],
-          ),
-        ),
-      ),
+               // Navigator.pushNamedAndRemoveUntil(context, CustomWheelerPopUp.routeName, (route) => false);
+             },
+             child: Container(
+               width: 150,
+                 decoration: BoxDecoration(color: CustomColor.primaryColor,borderRadius: BorderRadius.circular(13),),
+                 child: Padding(
+                   padding: const EdgeInsets.symmetric(vertical: 8,horizontal: 16),
+                   child: Align(
+                     alignment: Alignment.center,
+                     child: Text(
+                       "Bike Service",
+                       style: TextStyle(
+                           fontSize: 20,
+                           color: CustomColor.whiteColor,
+                           fontWeight: FontWeight.w700),
+                     ),
+                   ),
+                 )),
+           ),
+           SizedBox(
+             height: 10,
+           ),
+             InkWell(
+               onTap: (){
+                 Navigator.pushNamed(context, BookingScreen.routeName);
+
+                 // Navigator.pushNamedAndRemoveUntil(context, CustomWheelerPopUp.routeName, (route) => false);
+               },
+               child: Container(
+                 width: 150,
+                   decoration: BoxDecoration(color: CustomColor.primaryColor,borderRadius: BorderRadius.circular(13),),
+                   child: const Padding(
+                     padding:  EdgeInsets.symmetric(vertical: 8,horizontal: 16),
+                     child: Align(
+                       alignment: Alignment.center,
+                       child: Text(
+                        "Car Wash",
+                         style: TextStyle(
+                             fontSize: 20,
+                             color: CustomColor.whiteColor,
+                             fontWeight: FontWeight.w700),
+                       ),
+                     ),
+                   )),
+             ),
+           SizedBox(
+             height: 10,
+           ),
+         ],)
+        ],
+      )
     );
   }
-
 }

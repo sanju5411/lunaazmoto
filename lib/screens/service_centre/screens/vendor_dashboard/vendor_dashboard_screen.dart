@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:lunaaz_moto/constants/global_variables.dart';
-import 'package:lunaaz_moto/screens/auth/login_screen.dart';
 import 'package:lunaaz_moto/screens/customer/customer_screens/profile_screen/profile_screen.dart';
 import 'package:lunaaz_moto/screens/service_centre/screens/customer_list/customer_common_list.dart';
+import 'package:lunaaz_moto/screens/service_centre/screens/navVendorBar/vendor_nav_bar.dart';
 
 class ServiceDashboard extends StatefulWidget {
   static const String routeName = '/service_centre';
@@ -22,32 +22,35 @@ class _ServiceDashboardState extends State<ServiceDashboard> {
     return SafeArea(
       child: Scaffold(
         backgroundColor: CustomColor.primaryColor,
+        appBar: AppBar(
+          backgroundColor: CustomColor.primaryColor,
+          elevation: 0,
+          // leading: Icon(Icons.menu),
+          title: Column(children: [
+            SizedBox(height: 5,),
+            Text("Current Location",style: TextStyle(fontSize: 16),),
+            SizedBox(height: 10,),
+            Text("Sardarpura"),
+
+          ],),
+          centerTitle: true,
+          actions: [
+            InkWell(
+              onTap: () => Navigator.pushNamed(context, ProfileScreen.routeName),
+
+              child: CircleAvatar(
+                backgroundImage: AssetImage("assets/images/dpp.jpg"),
+              ),
+            ),
+            SizedBox(width: 15,)
+          ],
+        ),
+        drawer: VendorNavDrawer(),
         body: SingleChildScrollView(
           physics: const ScrollPhysics(),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              SizedBox(height: 7,),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20,vertical: 15),
-                child: Row(children: [
-                  Icon(Icons.menu,color: CustomColor.whiteColor,),
-                  Spacer(),
-                  Column(children: [
-                    Text("Current Location",style: TextStyle(color: CustomColor.whiteColor),),
-                    SizedBox(height: 7,),
-                    Text("Dhaka",style: TextStyle(color: CustomColor.whiteColor,fontSize: 20,fontWeight: FontWeight.w700),),
-                  ],),
-                  Spacer(),
-                  InkWell(
-                    onTap: () => Navigator.pushNamed(context, ProfileScreen.routeName),
-
-                    child: CircleAvatar(
-                      backgroundImage: AssetImage("assets/images/dpp.jpg"),
-                    ),
-                  ),
-                ],),
-              ),
               SizedBox(height: 10,),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 25,vertical: 7),

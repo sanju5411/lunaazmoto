@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:lunaaz_moto/common/widgets/custom_button.dart';
 import 'package:lunaaz_moto/constants/global_variables.dart';
+import 'package:lunaaz_moto/models/auth/user/user.dart';
 import 'package:lunaaz_moto/models/customer/booking_model/booking_model.dart';
 import 'package:lunaaz_moto/screens/customer/customer_screens/my_services/my_services.dart';
 import 'package:lunaaz_moto/services/api_service.dart';
@@ -19,7 +20,14 @@ class BookingForm extends StatefulWidget {
 
 class _BookingFormState extends State<BookingForm> {
 
-  final TextEditingController _nameController =       TextEditingController();
+  AuthUser? _userMob;
+  int? _radioSelected;
+  String? _radioVal;
+
+
+  bool loading = false;
+
+  final TextEditingController _vehicNameController =       TextEditingController();
   final TextEditingController _phoneController =      TextEditingController();
   final TextEditingController _serviceDateController = TextEditingController();
   final TextEditingController _serviceTimeController   = TextEditingController();
@@ -29,12 +37,19 @@ class _BookingFormState extends State<BookingForm> {
 
   @override
   void initState() {
+    _serviceTimeController.text = "";
     _serviceDateController.text = "";
+    _radioSelected  = 2;
+
+    //_phoneController.text = _userMob!.mobile = "";
+
     super.initState();
 
   }
 
   void _setBookingFormData(Map<String, String> jsonInput) async {
+
+    loading = true;
 
     BookingModel bookingModel = await ApiService.setBookingForm(jsonInput: jsonEncode(jsonInput));
 
@@ -42,6 +57,7 @@ class _BookingFormState extends State<BookingForm> {
 
 
     if(bookingModel.status  == "success"){
+      loading = false;
       setState(() {
         Navigator.pushNamed(context, MyServicesScreen.routeName);
       });
@@ -51,6 +67,8 @@ class _BookingFormState extends State<BookingForm> {
 }
 
   DateTime _dateTime = DateTime.now();
+
+
   void _showDatePicker() {
     showDatePicker(
       context: context,
@@ -68,12 +86,38 @@ class _BookingFormState extends State<BookingForm> {
     });
   }
 
+  void _showTimePicker() async{
+
+    TimeOfDay?  pickedTime = await showTimePicker(
+      context: context,
+      initialTime: TimeOfDay.now(),
+
+    ).then((value) {
+      setState(() {
+        print("time>>>>>${value?.hour}-${value?.minute}-${value?.periodOffset}");
+        String timeFormat  = "${value?.format(context)}";
 
 
-  String radioButtonItem = 'ONE';
+
+        _serviceTimeController.text = timeFormat.toString();
+
+      });
+    });
+
+  if(pickedTime != null){
+    print(pickedTime.format(context));
+
+  }else{
+    print("Time is not selected");
+  }
+  }
+
+
+
 
   // Group Value for Radio Button.
   int id = 1;
+
 
 
   @override
@@ -120,7 +164,7 @@ class _BookingFormState extends State<BookingForm> {
                     ),),
                     const SizedBox(height: 20,),
                     SizedBox(height: 10,),
-                    Text("Name",style: TextStyle(fontSize: 25,fontWeight: FontWeight.w600),),
+                    Text("Vehicle Name",style: TextStyle(fontSize: 20,fontWeight: FontWeight.w600),),
                     SizedBox(height: 10,),
                     Container(
                   decoration: BoxDecoration(
@@ -133,7 +177,7 @@ class _BookingFormState extends State<BookingForm> {
                     borderRadius: BorderRadius.circular(15.0),
                   ),
                   child: TextFormField(
-                    controller: _nameController,
+                    controller: _vehicNameController,
 
                     decoration: InputDecoration(
 
@@ -141,7 +185,7 @@ class _BookingFormState extends State<BookingForm> {
                       filled: true,
                       suffixIcon: const Icon(
                         Icons.person,
-                        color: Color(0xff224597),
+                        color: CustomColor.primaryColor,
                       ),
                       hintText: 'Enter Full Name',
 
@@ -156,7 +200,7 @@ class _BookingFormState extends State<BookingForm> {
                   ),
                 ),
                     SizedBox(height: 25,),
-                    Text("Phone Number",style: TextStyle(fontSize: 25,fontWeight: FontWeight.w600),),
+                    Text("Phone Number",style: TextStyle(fontSize: 20,fontWeight: FontWeight.w600),),
                     SizedBox(height: 10,),
                     Container(
                       decoration: BoxDecoration(
@@ -170,13 +214,14 @@ class _BookingFormState extends State<BookingForm> {
                       ),
                       child: TextFormField(
                         controller: _phoneController,
-
+                        keyboardType: TextInputType.phone,
                         decoration: InputDecoration(
+
                           fillColor: Colors.white,
                           filled: true,
                           suffixIcon: const Icon(
                             Icons.call,
-                            color: Color(0xff224597),
+                            color: CustomColor.primaryColor
                           ),
                           hintText: 'Enter Phone Number',
                           enabledBorder: OutlineInputBorder(
@@ -191,7 +236,7 @@ class _BookingFormState extends State<BookingForm> {
                       ),
                     ),
                     SizedBox(height: 25,),
-                    Text("Service Date",style: TextStyle(fontSize: 25,fontWeight: FontWeight.w600),),
+                    Text("Service Date",style: TextStyle(fontSize: 20,fontWeight: FontWeight.w600),),
                     SizedBox(height: 10,),
                     Container(
                       decoration: BoxDecoration(
@@ -237,7 +282,7 @@ class _BookingFormState extends State<BookingForm> {
                       ),
                     ), //date>>>>>>>
                     SizedBox(height: 25,),
-                    Text("Service Time",style: TextStyle(fontSize: 25,fontWeight: FontWeight.w600),),
+                    Text("Service Time",style: TextStyle(fontSize: 20,fontWeight: FontWeight.w600),),
                     SizedBox(height: 10,),
                     Container(
                       decoration: BoxDecoration(
@@ -255,10 +300,18 @@ class _BookingFormState extends State<BookingForm> {
 
                           fillColor: Colors.white,
                           filled: true,
-                          suffixIcon: const Icon(
-                            Icons.access_time_filled_outlined,
-                            color: Color(0xff224597),
+                          suffixIcon: InkWell(
+                            onTap: () {
+                              _showTimePicker();
+
+                            },
+                            child: const Icon(
+                              Icons.access_time_filled_outlined,
+                              color: Color(0xff224597),
+
+                            ),
                           ),
+
                           hintText: 'HH-MM',
 
                           enabledBorder: OutlineInputBorder(
@@ -269,10 +322,14 @@ class _BookingFormState extends State<BookingForm> {
                             ),
                           ),
                         ),
+                        readOnly: true,
+                        onTap: (){
+                          _showTimePicker();
+                        },
                       ),
                     ),
                     SizedBox(height: 25,),
-                    Text("Vehicle Number",style: TextStyle(fontSize: 25,fontWeight: FontWeight.w600),),
+                    Text("Vehicle Number",style: TextStyle(fontSize: 20,fontWeight: FontWeight.w600),),
                     SizedBox(height: 10,),
                     Container(
                       decoration: BoxDecoration(
@@ -307,7 +364,7 @@ class _BookingFormState extends State<BookingForm> {
                       ),
                     ),
                     SizedBox(height: 25,),
-                    Text("Address",style: TextStyle(fontSize: 25,fontWeight: FontWeight.w600),),
+                    Text("Address",style: TextStyle(fontSize: 20,fontWeight: FontWeight.w600),),
                     SizedBox(height: 10,),
                     Container(
                       decoration: BoxDecoration(
@@ -342,26 +399,50 @@ class _BookingFormState extends State<BookingForm> {
                         ),
                       ),
                     ),
-                    SizedBox(height: 30,),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 12,vertical: 12),
-                      child: Row(children: [
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Text("Pay online",style: TextStyle(fontSize: 17,color: Colors.blue,fontWeight: FontWeight.w800),),
-                        ),
-                        Spacer(),
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Text("Cash On Delivery",style: TextStyle(fontSize: 17,color: Colors.blue,fontWeight: FontWeight.w800),),
-                        ),
-                      ],),
-                    ),
                     SizedBox(height: 20,),
+                    Padding(
+                      padding: const EdgeInsets.only(left: 20),
+                      child: Text("We Accept only COD",style: TextStyle(color: Colors.red,fontSize: 17),),
+                    ),
+                    SizedBox(height: 10,),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 12,vertical: 2),
+                      child:  Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text('Online Cash'),
+                          Radio(
+
+                            value: 1,
+                            groupValue: _radioSelected,
+                            activeColor: Colors.blue,
+                            onChanged: (value) {
+                              setState(() {
+                                _radioSelected = value as int;
+                                _radioVal  = 'Online Cash';
+                              });
+                            },
+                          ),
+                          Text('Cash On Delivery'),
+                          Radio(
+                            value: 2,
+                            groupValue: _radioSelected,
+                            activeColor: Colors.pink,
+                            onChanged: (value) {
+                              setState(() {
+                                _radioSelected = value as int?;
+                                _radioVal  = 'Cash On Delivery';
+                              });
+                            },
+                          )
+                        ],
+                      ),
+                    ),
+                    SizedBox(height: 15,),
                     CustomButton(
 
                       onTap: () async {
-                        var name  = _nameController.text.toString();
+                        var vehicleName  = _vehicNameController.text.toString();
                         var phoneNumber  = _phoneController.text.toString();
                         var serviceDate  = _serviceDateController.text.toString();
                         var serviceTime  = _serviceTimeController.text.toString();
@@ -374,10 +455,10 @@ class _BookingFormState extends State<BookingForm> {
                             "booked_date": serviceDate,
                             "booked_time": serviceTime,
                             "vehicle_type":"two_wheeler",
-                            "vehicle_name": name,
+                            "vehicle_name": vehicleName,
                             "vehicle_number": vehicleNum,
                             "instructions":"instructions",
-                            "payment_method":"cash",
+                            "payment_method":_radioSelected.toString(),
                             "payment_details":"",
                             "payment_status":"due",
                             "user_address": address,
@@ -385,7 +466,7 @@ class _BookingFormState extends State<BookingForm> {
 
                         _setBookingFormData(jsonInput);
 
-                       print("object${name} - ${phoneNumber} - ${serviceDate} - ${serviceTime} - ${vehicleNum} - ${address}>>>>");
+                       print("object>>>>${_radioVal.toString()}>>>>");
 
                         print("mapp>>>>>>>>>>&&&>>${jsonEncode(jsonInput)}>>>>>>>>>>>>");
 

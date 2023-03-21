@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:core';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:lunaaz_moto/common/widgets/choose_vehicle.dart';
 import 'package:lunaaz_moto/common/widgets/custom_button.dart';
 import 'package:lunaaz_moto/common/widgets/custom_last_services.dart';
 import 'package:lunaaz_moto/configs/api_config.dart';
@@ -32,8 +33,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
   List<HappyCustomer> _happyCustomers = [];
   List<BannerImage> _banners = [];
   List<Widget> bannerSliders = [];
-  int todayBookingCount = 0;
-  int totalBookingCount = 0;
+  int? todayBookingCount = 0;
+  int? totalBookingCount = 0;
   List<dynamic> lastServices = [];
   List<ServiceModel> serviceModel = [];
 
@@ -91,31 +92,24 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
     return  Scaffold(
       backgroundColor: CustomColor.whiteColor,
-      appBar: PreferredSize(
-        preferredSize: const  Size.fromHeight(120),
-        child: Container(
-          color: CustomColor.primaryColor,
-          child: Padding(
-            padding: const EdgeInsets.only(top: 45,right: 10,left: 10),
-            child: Row(
-              children:   [
-                Icon(Icons.menu,color: CustomColor.whiteColor,),
-                Spacer(),
-                Text("LunaazMoto ",style:
-                const TextStyle(fontSize: 20,fontWeight: FontWeight.w800,color: CustomColor.whiteColor),
-                ),
-                Spacer(),
-                InkWell(
-                  onTap: () => Navigator.pushNamed(context, ProfileScreen.routeName),
-
-                  child: CircleAvatar(
-                    backgroundImage: AssetImage("assets/images/dpp.jpg"),
-                  ),
-                ),
-              ],
+      appBar: AppBar(
+        backgroundColor: CustomColor.primaryColor,
+        elevation: 0,
+        title: Text("Lunaaz Moto",style: TextStyle(color: CustomColor.whiteColor),
+        ),
+        centerTitle: true,
+        actions: [
+          InkWell(
+            onTap: () => Navigator.pushNamed(context, ProfileScreen.routeName),
+            child: CircleAvatar(
+              backgroundImage: AssetImage("assets/images/dpp.jpg"),
             ),
           ),
-        ),
+          SizedBox(width: 15,)
+        ],
+      ),
+      drawer: Drawer(
+        child:NavCusDrawer()
       ),
       body: !loading ?
       StretchingOverscrollIndicator(
@@ -341,6 +335,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                         ),
                         variant: Variant.booknowbtn,
                         onTap: () {
+                          showDialog(context: context, builder: (context) => CustomWheelerPopUp(),);
                           Navigator.push(context, MaterialPageRoute(builder: (context) => BookingScreen(),
                           ),
                           );

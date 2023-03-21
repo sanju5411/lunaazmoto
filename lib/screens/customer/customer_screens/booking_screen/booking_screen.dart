@@ -2,6 +2,8 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
+import 'package:geocoding/geocoding.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:lunaaz_moto/common/widgets/custom_plan_card.dart';
 import 'package:lunaaz_moto/constants/global_variables.dart';
 import 'package:lunaaz_moto/models/customer/dashboard_model.dart';
@@ -13,6 +15,8 @@ import 'package:lunaaz_moto/services/api_service.dart';
 import '../../../../models/customer/service_model/package_model/package_main_model.dart';
 
 class BookingScreen extends StatefulWidget {
+
+  static const String routeName = '/booking_packages';
   const BookingScreen({Key? key}) : super(key: key);
 
   @override
@@ -25,6 +29,8 @@ class _BookingScreenState extends State<BookingScreen> {
   List<BookingPackage>? _packages;
   // List<PackageBenefits>? packageBenefits;
   bool loading = true;
+  String? _currentAddress;
+  Position? _currentPosition;
 
 
 
@@ -34,6 +40,7 @@ class _BookingScreenState extends State<BookingScreen> {
   @override
   void initState() {
     // TODO: implement initState
+
     super.initState();
     getAllPackagesList();
   }
@@ -55,6 +62,64 @@ class _BookingScreenState extends State<BookingScreen> {
       }
 
   }
+
+  Future<bool> _handleLocationPermission() async {
+    bool serviceEnabled;
+    LocationPermission permission;
+
+    serviceEnabled = await Geolocator.isLocationServiceEnabled();
+    if (!serviceEnabled) {
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+          content: Text(
+              'Location services are disabled. Please enable the services')));
+      return false;
+    }
+    permission = await Geolocator.checkPermission();
+    if (permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
+      if (permission == LocationPermission.denied) {
+        ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Location permissions are denied')));
+        return false;
+      }
+    }
+    if (permission == LocationPermission.deniedForever) {
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+          content: Text(
+              'Location permissions are permanently denied, we cannot request permissions.')));
+      return false;
+    }
+    return true;
+  }
+
+  Future<void> _getAddressFromLatLng(Position position) async {
+    await placemarkFromCoordinates(
+        _currentPosition!.latitude, _currentPosition!.longitude)
+        .then((List<Placemark> placemarks) {
+      Placemark place = placemarks[0];
+      setState(() {
+        _currentAddress =
+        '${place.street}, ${place.subLocality}, ${place.subAdministrativeArea}, ${place.postalCode}';
+      });
+    }).catchError((e) {
+      debugPrint(e);
+    });
+  }
+
+  Future<void> _getCurrentPosition() async {
+    final hasPermission = await _handleLocationPermission();
+
+    if (!hasPermission) return;
+    await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high)
+        .then((Position position) {
+      setState(() => _currentPosition = position);
+      _getAddressFromLatLng(_currentPosition!);
+    }).catchError((e) {
+      debugPrint(e);
+    });
+  }
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -109,11 +174,12 @@ class _BookingScreenState extends State<BookingScreen> {
                     TextField(
                       decoration: InputDecoration(
                           suffixIcon: InkWell(
-                              onTap: () {
-                                //here we add let long
+                              onTap: ()
+                              {
+                                _getCurrentPosition();
                               },
                               child: const Icon(
-                                Icons.location_on,
+                                Icons.my_location,
                                 color: CustomColor.primaryColor,
                               )),
                           border: OutlineInputBorder(
@@ -123,11 +189,13 @@ class _BookingScreenState extends State<BookingScreen> {
                           hintStyle: TextStyle(color: Colors.grey),
                           hintText: "Current Location",
                           fillColor: Colors.white),
+                      readOnly: true,
                     )
                   ],
                 ),
               ),
             ),
+            Text(_currentAddress ?? ""),
             const SizedBox(
               height: 30,
             ),

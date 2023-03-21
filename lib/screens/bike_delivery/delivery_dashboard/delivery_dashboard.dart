@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:lunaaz_moto/screens/bike_delivery/booking_detail/booking_detail.dart';
+import 'package:lunaaz_moto/screens/bike_delivery/deliver_navbar/deliver_navbar.dart';
 import 'package:lunaaz_moto/screens/bike_delivery/total_booking_screen/total_booking_screen.dart';
 import 'package:lunaaz_moto/screens/customer/customer_screens/profile_screen/profile_screen.dart';
 
@@ -21,10 +22,10 @@ class DeliveryDashboard extends StatefulWidget {
 
 class _DeliveryDashboardState extends State<DeliveryDashboard> {
 
-  int? totalBooking;
-  int? todayNewBooking;
-  int? todayPickUp;
-  int? todayDelivered;
+  int totalBooking =0;
+  int todayNewBooking =0;
+  int todayPickUp =0;
+  int todayDelivered =0;
   List<NewServices> nextBooking = [];
   @override
   void initState() {
@@ -37,8 +38,8 @@ class _DeliveryDashboardState extends State<DeliveryDashboard> {
     DriverMainModel driverMainModel = await ApiService.getDriverDashboardData();
     if(driverMainModel != null){
       setState(() {
-        todayNewBooking = driverMainModel.todayBookings;
-        totalBooking = driverMainModel.totalBookings;
+        todayNewBooking = driverMainModel.todayBookings!;
+        totalBooking = driverMainModel.totalBookings!;
         todayDelivered = 0;
         todayPickUp = 0;
         nextBooking = driverMainModel.newServices!;
@@ -53,6 +54,35 @@ class _DeliveryDashboardState extends State<DeliveryDashboard> {
     return SafeArea(
       child: Scaffold(
         backgroundColor: CustomColor.primaryColor,
+        appBar: AppBar(
+          backgroundColor: CustomColor.primaryColor,
+          elevation: 0,
+          title: Column(
+            children: [
+              SizedBox(height: 5,),
+              Text("Lunaaz Moto",style: TextStyle(color: CustomColor.whiteColor),
+
+              ),
+              SizedBox(height: 6,),
+              Text("Dhaka",style: TextStyle(color: CustomColor.whiteColor),
+
+              ),
+            ],
+          ),
+          centerTitle: true,
+          actions: [
+            InkWell(
+              onTap: () => Navigator.pushNamed(context, ProfileScreen.routeName),
+              child: const CircleAvatar(
+
+                backgroundImage: AssetImage("assets/images/dpp.jpg"),
+
+              ),
+            ),
+            SizedBox(width: 15,)
+          ],
+        ),
+        drawer: DeliverNavBat(),
         body: SingleChildScrollView(
           physics: const ScrollPhysics(),
           child: Stack(
@@ -60,28 +90,8 @@ class _DeliveryDashboardState extends State<DeliveryDashboard> {
              Column(
                crossAxisAlignment: CrossAxisAlignment.start,
                children: [
-                 SizedBox(height: 7,),
-                 Padding(
-                   padding: const EdgeInsets.symmetric(horizontal: 20,vertical: 15),
-                   child: Row(children: [
-                     Icon(Icons.menu,color: CustomColor.whiteColor,),
-                     Spacer(),
-                     Column(children: [
-                       Text("Current Location",style: TextStyle(color: CustomColor.whiteColor),),
-                       SizedBox(height: 7,),
-                       Text("Dhaka",style: TextStyle(color: CustomColor.whiteColor,fontSize: 20,fontWeight: FontWeight.w700),),
-                     ],),
-                     Spacer(),
-                     InkWell(
-                       onTap: () => Navigator.pushNamed(context, ProfileScreen.routeName),
 
-                       child: CircleAvatar(
-                         backgroundImage: AssetImage("assets/images/dpp.jpg"),
-                       ),
-                     ),
-                   ],),
-                 ),
-                 SizedBox(height: 10,),
+                 SizedBox(height: 30,),
                  Padding(
                    padding: const EdgeInsets.symmetric(horizontal: 25,vertical: 7),
                    child: Column(
@@ -93,7 +103,7 @@ class _DeliveryDashboardState extends State<DeliveryDashboard> {
 
                      ],),
                  ),
-                 const SizedBox(height: 70,),
+                 const SizedBox(height: 80,),
                  Container(
                      width: screenSize.width,
                      decoration: const BoxDecoration(
@@ -105,7 +115,7 @@ class _DeliveryDashboardState extends State<DeliveryDashboard> {
                      ),
                      child: Column(
                        children: [
-                         const SizedBox(height: 100,),
+                         const SizedBox(height: 50,),
                          Container(
                              margin: const EdgeInsets.symmetric(horizontal: 20),
                              child: Row(
@@ -233,7 +243,7 @@ class _DeliveryDashboardState extends State<DeliveryDashboard> {
                ],
              ),
              Positioned(
-               top: 200,
+               top: 120,
                left: 20,
                child:  GestureDetector(
                  onTap: (){
@@ -262,7 +272,7 @@ class _DeliveryDashboardState extends State<DeliveryDashboard> {
                ),
              ),
              Positioned(
-               top: 200,
+               top: 120,
                right: 20,
                child:  GestureDetector(
                  onTap: (){

@@ -79,7 +79,9 @@ class _MyServicesScreenState extends State<MyServicesScreen> {
               topLeft: Radius.circular(20),
             )
         ),
-        child: SingleChildScrollView(
+        child:
+            !loading?
+        SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -250,17 +252,17 @@ class _MyServicesScreenState extends State<MyServicesScreen> {
                                         crossAxisAlignment: CrossAxisAlignment.start,
                                         children:  [
                                           const SizedBox(height: 10,),
-                                          Text(lastBookings[index].bookingCenter!.shopName.toString(),style: TextStyle(fontSize: 18,fontWeight: FontWeight.w600),),
+                                          Text( lastBookings[index].bookingCenter != null? lastBookings[index].bookingCenter!.shopName.toString():"",style: TextStyle(fontSize: 18,fontWeight: FontWeight.w600),),
                                           const SizedBox(height: 3,),
                                           Row(children: [
                                             const Text("Booking ID -"),
                                             const SizedBox(width: 7,),
-                                            Text(lastBookings[index].bookingId.toString())
+                                            Text(lastBookings[index].bookingId != null ? lastBookings[index].bookingId.toString():"")
                                           ],)
                                         ],
                                       ),
                                       Spacer(),
-                                      Text(lastBookings[index].bookingDate.toString()),
+                                      Text(lastBookings![index].bookingDate == null ? "": lastBookings![index].bookingDate.toString()),
                                     ],
                                   ),
                                   SizedBox(height: 35,),
@@ -288,13 +290,14 @@ class _MyServicesScreenState extends State<MyServicesScreen> {
                           ),
                         );
                       }),
-
                     ],
                   ),
                 ),
             ],
           ),
-        ),
+        ): SizedBox(
+                height: screenSize.height,
+                child: Center(child: CircularProgressIndicator())),
       )
     );
   }
