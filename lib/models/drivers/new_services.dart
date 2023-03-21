@@ -1,12 +1,14 @@
+import 'package:lunaaz_moto/models/user_addressModel/user_address_model.dart';
+
 import '../auth/user/user.dart';
 import '../customer/service_model/package_model/package_model.dart';
 
 class NewServices {
   int? bookingId;
   AuthUser? bookingUser;
-  Null? bookingAddress;
+  UserAddress? bookingAddress;
   BookingPackage? bookingPackage;
-  Null? bookingCenter;
+  var bookingCenter;
   String? bookingNumber;
   String? bookingDate;
   String? bookedDate;
@@ -56,11 +58,11 @@ class NewServices {
   NewServices.fromJson(Map<String, dynamic> json) {
     bookingId = json['booking_id'];
     bookingUser = json['booking_user'] != null
-        ? new AuthUser.fromJson(json['booking_user'])
+        ? AuthUser.fromJson(json['booking_user'])
         : null;
-    bookingAddress = json['booking_address'];
+    bookingAddress = json['booking_address'] != null ? UserAddress.fromJson(json['booking_address']): null;
     bookingPackage = json['booking_package'] != null
-        ? new BookingPackage.fromJson(json['booking_package'])
+        ? BookingPackage.fromJson(json['booking_package'])
         : null;
     bookingCenter = json['booking_center'];
     bookingNumber = json['booking_number'];
@@ -85,7 +87,7 @@ class NewServices {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data = Map<String, dynamic>();
     data['booking_id'] = bookingId;
     if (bookingUser != null) {
       data['booking_user'] = bookingUser!.toJson();

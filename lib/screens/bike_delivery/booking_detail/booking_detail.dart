@@ -1,10 +1,13 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:lunaaz_moto/common/widgets/custom_button.dart';
 import 'package:lunaaz_moto/constants/global_variables.dart';
+import 'package:lunaaz_moto/models/customer/service_booking_list/service_booking_list_model.dart';
 import 'package:lunaaz_moto/models/drivers/new_services.dart';
 import 'package:lunaaz_moto/screens/bike_delivery/delivery_dashboard/delivery_dashboard.dart';
+import 'package:lunaaz_moto/services/api_service.dart';
 class BookingDetail extends StatefulWidget {
   static const String routeName = '/booking_detail';
   const BookingDetail({Key? key}) : super(key: key);
@@ -15,11 +18,22 @@ class BookingDetail extends StatefulWidget {
 
 class _BookingDetailState extends State<BookingDetail> {
 
+  changeBookingStatus(String status, int bookingId) async{
+    Map<String, String> jsonInput = {
+      "status" : status,
+    };
+    BookingList bookingList = await ApiService.changeServiceStatus(bookingId : bookingId,jsonInput: jsonEncode(jsonInput));
+    if(bookingList != null){
+
+      Fluttertoast.showToast(msg: "${bookingList.message}");
+    }
+  }
 
 
   @override
   Widget build(BuildContext context) {
     final bookingData = ModalRoute.of(context)?.settings.arguments as NewServices;
+    var bookingId = bookingData.bookingId;
 
     print("BookingDetailState===>${jsonEncode(bookingData)}");
     Size screenSize = MediaQuery.of(context).size;
@@ -119,7 +133,9 @@ class _BookingDetailState extends State<BookingDetail> {
                           children: [
                             Text("${bookingData.bookingUser?.name}",style: const TextStyle(fontSize: 20,color: CustomColor.whiteColor,fontWeight: FontWeight.w700),),
                             SizedBox(height: 5,),
-                            Text("Newyork, United States",style: const TextStyle(fontSize: 13,color: CustomColor.whiteColor,fontWeight: FontWeight.w500),),
+                            if(bookingData.bookingAddress != null)...[
+                              Text("${bookingData.bookingAddress?.city},${bookingData.bookingAddress?.state}",style: const TextStyle(fontSize: 13,color: CustomColor.whiteColor,fontWeight: FontWeight.w500),),
+                            ],
                             SizedBox(height: 5,),
                             Text("${bookingData.bookedDate}  @ ${bookingData.bookedTime}",style: const TextStyle(fontSize: 17,color: CustomColor.whiteColor,fontWeight: FontWeight.w600),),
 
@@ -212,45 +228,58 @@ class _BookingDetailState extends State<BookingDetail> {
                               mainAxisAlignment: MainAxisAlignment.start,
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text("City : Jodhpur",style: TextStyle(color: Colors.grey,fontWeight: FontWeight.w600,fontSize: 15),),
-                                SizedBox(height: 8,),
-                                Text("Area : Sardarpura",style: TextStyle(color: Colors.grey,fontWeight: FontWeight.w600,fontSize: 15),),
+                                if(bookingData.bookingAddress != null)...[
+                                  Text("City : ${bookingData.bookingAddress?.city}",style: TextStyle(color: Colors.grey,fontWeight: FontWeight.w600,fontSize: 15),),
+                                  SizedBox(height: 8,),
+                                  Text("Area : ${bookingData.bookingAddress?.state}",style: TextStyle(color: Colors.grey,fontWeight: FontWeight.w600,fontSize: 15),),
+                                ],
+
                               ],
                             ),
                           ),
                           const SizedBox(height: 20,),
                           Row(
                             children: [
-                              Container(
-                                color: const Color.fromRGBO(96, 177, 14, 0.15),
-                                height: 40,
-                                width: 100,
-                                child: Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: const [
-                                      Icon(Icons.check_circle_outline_outlined,color: Color(0xFF60B10E),),
-                                      const SizedBox(width: 5,),
-                                      Text("Accept",style: TextStyle(color: Color(0xFF60B10E)),)
-                                    ],
+                              GestureDetector(
+                                onTap: (){
+                                  changeBookingStatus("accepted",bookingId!);
+                                },
+                                child: Container(
+                                  color: const Color.fromRGBO(96, 177, 14, 0.15),
+                                  height: 40,
+                                  width: 100,
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Row(
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      children: const [
+                                        Icon(Icons.check_circle_outline_outlined,color: Color(0xFF60B10E),),
+                                        const SizedBox(width: 5,),
+                                        Text("Accept",style: TextStyle(color: Color(0xFF60B10E)),)
+                                      ],
+                                    ),
                                   ),
                                 ),
                               ),
                               const SizedBox(width: 50,),
-                              Container(
-                                color: const Color(0xFFFFE0E0),
-                                height: 40,
-                                width: 100,
-                                child: Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: const [
-                                      Icon(Icons.cancel_outlined,color: Color(0xFFFF2121),),
-                                      const SizedBox(width: 5,),
-                                      Text("Reject",style: TextStyle(color: Color(0xFFFF2121)),)
-                                    ],
+                              GestureDetector(
+                                onTap: (){
+                                  changeBookingStatus("",bookingId!);
+                                },
+                                child: Container(
+                                  color: const Color(0xFFFFE0E0),
+                                  height: 40,
+                                  width: 100,
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Row(
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      children: const [
+                                        Icon(Icons.cancel_outlined,color: Color(0xFFFF2121),),
+                                        const SizedBox(width: 5,),
+                                        Text("Reject",style: TextStyle(color: Color(0xFFFF2121)),)
+                                      ],
+                                    ),
                                   ),
                                 ),
                               )
