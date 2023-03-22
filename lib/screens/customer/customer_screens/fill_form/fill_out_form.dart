@@ -8,6 +8,7 @@ import 'package:lunaaz_moto/common/widgets/custom_button.dart';
 import 'package:lunaaz_moto/configs/api_config.dart';
 import 'package:lunaaz_moto/constants/global_variables.dart';
 import 'package:lunaaz_moto/models/auth/login/login.dart';
+import 'package:lunaaz_moto/models/auth/user/user.dart';
 import 'package:lunaaz_moto/models/profile/user_data.dart';
 import 'package:lunaaz_moto/screens/customer/customer_screens/dashboard_screen/dashboard_screen.dart';
 import 'package:lunaaz_moto/screens/customer/customer_screens/profile_screen/profile_screen.dart';
@@ -28,7 +29,7 @@ class FillformScreen extends StatefulWidget {
 class FillformScreenState extends State<FillformScreen> {
 
   String? path;
-  UserData? _userData;
+  AuthUser? _userData;
 
   TextEditingController _nameController = TextEditingController();
   TextEditingController _emailController = TextEditingController();
@@ -40,35 +41,27 @@ class FillformScreenState extends State<FillformScreen> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    //getValue();?>>>>>>
+    getProfileData();
+
   }
 
+  getProfileData() async{
 
-  setEditData() {
+   var userData =  await SharedPreferencesService.getAuthUserData();
     setState(() {
+      _userData = userData;
       _nameController.text = _userData != null ? _userData!.name ?? "" : "";
       _emailController.text = _userData != null ? _userData!.email ?? "" : "";
       _mobileController.text = _userData != null ? _userData!.mobile ?? "" : "";
+      print("${jsonEncode(_userData)}");
     });
   }
 
-  DateTime _dateTime = DateTime.now();
-  void _showDatePicker() {
-    showDatePicker(
-      context: context,
-      initialDate: DateTime.now(),
-      firstDate: DateTime(2000),
-      lastDate: DateTime(2025),
-    ).then((value) {
-      setState(() {
-        _dateTime = value!;
-      });
-    });
-  }
+
+
 
   @override
   Widget build(BuildContext context) {
-    setEditData();
     return Scaffold(
       backgroundColor: Color(0xffFFE8DA),
       body: Center(
@@ -176,6 +169,8 @@ class FillformScreenState extends State<FillformScreen> {
               ),
               TextFormField(
                 controller: _mobileController,
+                readOnly: true,
+                enabled: false,
                 decoration:  InputDecoration(
                   enabledBorder: OutlineInputBorder(
                     borderRadius:  BorderRadius.circular(10),
@@ -192,48 +187,33 @@ class FillformScreenState extends State<FillformScreen> {
                 ),
               ),
               const SizedBox(
-                height: 10,
-              ),
-              // TextFormField(
-              //   controller: _dobController,
-              //   keyboardType: TextInputType.number,
-              //   decoration: InputDecoration(
-              //     enabledBorder: OutlineInputBorder(
-              //       borderSide: BorderSide(
-              //           width: 1, color: Colors.black), //<-- SEE HERE
-              //     ),
-              //     suffixIcon: InkWell(
-              //       onTap: () {
-              //         _showDatePicker();
-              //       },
-              //       child: Icon(
-              //         Icons.calendar_month,
-              //         color: CustomColor.primaryColor,
-              //       ),
-              //     ),
-              //     focusedBorder: OutlineInputBorder(
-              //       borderSide: BorderSide(
-              //           width: 1, color: Colors.black), //<-- SEE HERE
-              //     ),
-              //     labelText: 'date of birth',
-              //     hintText: "DOB",
-              //   ),
-              // ),
-              // Container(
-              //   decoration: BoxDecoration(
-              //     borderRadius: BorderRadius.all(Radius.circular(10)),
-              //     border: Border.all(),
-              //   ),
-              //     child: Padding(
-              //       padding: const EdgeInsets.symmetric(horizontal: 71,vertical: 19),
-              //       child: Text(_dateTime.toString(),),
-              //     )),
-              const SizedBox(
                 height: 15,
               ),
               CustomButton(
                 loading: _loading,
-                onTap: () => _updateProfile(),
+                onTap: () {
+                  bool saveData = true;
+
+                  if(_nameController.text.isEmpty){
+                    saveData = false;
+                    Fluttertoast.showToast(msg: "Please Enter Name");
+                    return;
+                  }
+                  if(_emailController.text.isEmpty){
+                    saveData = false;
+                    Fluttertoast.showToast(msg: "Please Enter Email");
+                    return;
+                  }
+                  if(_mobileController.text.isEmpty){
+                    saveData = false;
+                    Fluttertoast.showToast(msg: "Please Enter Mobile Number");
+                    return;
+                  }
+                  if(saveData){
+                    _updateProfile();
+                  }
+
+                },
                text: "Update",
               ),
             ],
@@ -324,6 +304,8 @@ class FillformScreenState extends State<FillformScreen> {
       Navigator.of(context).pop();
     });
   }
+
+
 
   _updateProfile() async {
     if (_nameController.text.isEmpty) {

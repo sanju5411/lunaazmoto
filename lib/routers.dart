@@ -19,6 +19,8 @@ import 'package:lunaaz_moto/screens/service_centre/screens/customer_list/custome
 import 'package:lunaaz_moto/screens/service_centre/screens/vendor_dashboard/vendor_dashboard_screen.dart';
 import 'package:lunaaz_moto/screens/service_centre/screens/vendor_notification/vendor_notification.dart';
 
+import 'screens/customer/customer_screens/cust_booking_detail/customer_booking_detail.dart';
+
 Route<dynamic> generateRoute(RouteSettings routeSettings) {
   final arguments = routeSettings.arguments;
   switch (routeSettings.name) {
@@ -57,6 +59,12 @@ Route<dynamic> generateRoute(RouteSettings routeSettings) {
     case BookingForm.routeName:
       return CustomPageRoute(
         child:   BookingForm(),
+        routeSettings: routeSettings,
+      );
+
+    case CustomerBookingDetail.routeName:
+      return CustomPageRoute(
+        child:   CustomerBookingDetail(),
         routeSettings: routeSettings,
       );
 

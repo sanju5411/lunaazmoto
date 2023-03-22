@@ -1,6 +1,9 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:geocoding/geocoding.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:lunaaz_moto/common/widgets/custom_button.dart';
 import 'package:lunaaz_moto/constants/global_variables.dart';
@@ -8,6 +11,7 @@ import 'package:lunaaz_moto/models/auth/user/user.dart';
 import 'package:lunaaz_moto/models/customer/booking_model/booking_model.dart';
 import 'package:lunaaz_moto/screens/customer/customer_screens/my_services/my_services.dart';
 import 'package:lunaaz_moto/services/api_service.dart';
+import 'package:lunaaz_moto/services/shared_preferences_service.dart';
 
 class BookingForm extends StatefulWidget {
   static const String routeName = '/booking_form_screen';
@@ -23,6 +27,8 @@ class _BookingFormState extends State<BookingForm> {
   AuthUser? _userMob;
   int? _radioSelected;
   String? _radioVal;
+ String? _currentAddress;
+ Position? _currentPosition;
 
   bool loading = false;
 
@@ -44,8 +50,21 @@ class _BookingFormState extends State<BookingForm> {
 
     //_phoneController.text = _userMob!.mobile = "";
 
+    _addressController.text = "";
+
+    getProfileData();
     super.initState();
 
+  }
+
+
+  getProfileData() async{
+
+    var userData =  await SharedPreferencesService.getAuthUserData();
+    setState(() {
+      _userMob = userData;
+      _phoneController.text = _userMob != null ? _userMob!.mobile ?? "" : "";
+    });
   }
 
   void _setBookingFormData(Map<String, String> jsonInput) async {
@@ -62,7 +81,9 @@ class _BookingFormState extends State<BookingForm> {
     if(bookingModel.status  == "success"){
       loading = false;
       setState(() {
-      Navigator.pushNamed(context, MyServicesScreen.routeName);
+        Navigator.of(context)
+            .pushReplacementNamed(MyServicesScreen.routeName);
+     // Navigator.pushNamed(context, MyServicesScreen.routeName);
       });
     }
 
@@ -130,6 +151,62 @@ class _BookingFormState extends State<BookingForm> {
 
 
 
+  Future<bool> _handleLocationPermission() async {
+    bool serviceEnabled;
+    LocationPermission permission;
+
+    serviceEnabled = await Geolocator.isLocationServiceEnabled();
+    if (!serviceEnabled) {
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+          content: Text(
+              'Location services are disabled. Please enable the services')));
+      return false;
+    }
+    permission = await Geolocator.checkPermission();
+    if (permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
+      if (permission == LocationPermission.denied) {
+        ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Location permissions are denied')));
+        return false;
+      }
+    }
+    if (permission == LocationPermission.deniedForever) {
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+          content: Text(
+              'Location permissions are permanently denied, we cannot request permissions.')));
+      return false;
+    }
+    return true;
+  }
+
+  Future<void> _getAddressFromLatLng(Position position) async {
+    await placemarkFromCoordinates(
+        _currentPosition!.latitude, _currentPosition!.longitude)
+        .then((List<Placemark> placemarks) {
+      Placemark place = placemarks[0];
+      setState(() {
+        _addressController.text = _currentAddress =
+        '${place.street}, ${place.subLocality}, ${place.subAdministrativeArea}, ${place.postalCode}';
+      });
+    }).catchError((e) {
+      debugPrint(e);
+    });
+  }
+
+  Future<void> _getCurrentPosition() async {
+    final hasPermission = await _handleLocationPermission();
+
+    if (!hasPermission) return;
+    await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high)
+        .then((Position position) {
+      setState(() => _currentPosition = position);
+      _getAddressFromLatLng(_currentPosition!);
+    }).catchError((e) {
+      debugPrint(e);
+    });
+  }
+
   // Group Value for Radio Button.
   int id = 1;
 
@@ -137,6 +214,8 @@ class _BookingFormState extends State<BookingForm> {
 
   @override
   Widget build(BuildContext context) {
+
+    final packageId = ModalRoute.of(context)?.settings.arguments as int;
 
     Size screenSize = MediaQuery.of(context).size;
 
@@ -147,7 +226,9 @@ class _BookingFormState extends State<BookingForm> {
         backgroundColor: Colors.transparent,
         leading: InkWell(
           onTap: (){
+
             Navigator.pop(context);
+
           },
           child: Icon(Icons.arrow_back)
           ,),
@@ -193,10 +274,8 @@ class _BookingFormState extends State<BookingForm> {
                   ),
                   child: TextFormField(
                     controller: _vehicNameController,
-                    validator: (value) =>
-                    value!.isEmpty? 'Password cannot be blank' : null,
+
                     decoration: InputDecoration(
-                      errorText: _validate ? 'Value Can\'t Be Empty' : null,
                       fillColor: Colors.white,
                       filled: true,
                       suffixIcon: const Icon(
@@ -293,7 +372,6 @@ class _BookingFormState extends State<BookingForm> {
                         readOnly: true,
                         onTap: (){
                           _showDatePicker();
-
                         },
                       ),
                     ), //date>>>>>>>
@@ -394,14 +472,17 @@ class _BookingFormState extends State<BookingForm> {
                       ),
                       child: TextFormField(
                         controller: _addressController,
-
                         decoration: InputDecoration(
-
                           fillColor: Colors.white,
                           filled: true,
-                          suffixIcon: const Icon(
-                            Icons.location_on,
-                            color: Color(0xffc40000),
+                          suffixIcon: InkWell(
+                            onTap: (){
+                              _getCurrentPosition();
+                            },
+                            child: const Icon(
+                              Icons.my_location,
+                              color: Color(0xffc40000),
+                            ),
                           ),
                           hintText: 'Enter your valid address',
 
@@ -424,22 +505,21 @@ class _BookingFormState extends State<BookingForm> {
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 12,vertical: 2),
                       child:  Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.start,
                         children: [
-                          Text('Online Cash'),
-                          Radio(
-
-                            value: 1,
-                            groupValue: _radioSelected,
-                            activeColor: Colors.blue,
-                            onChanged: (value) {
-                              setState(() {
-                                _radioSelected = value as int;
-                                _radioVal  = 'Online Cash';
-                              });
-                            },
-                          ),
-                          Text('Cash On Delivery'),
+                          // Text('Online Cash'),
+                          // Radio(
+                          //
+                          //   value: 1,
+                          //   groupValue: _radioSelected,
+                          //   activeColor: Colors.blue,
+                          //   onChanged: (value) {
+                          //     setState(() {
+                          //       _radioSelected = value as int;
+                          //       _radioVal  = 'Online Cash';
+                          //     });
+                          //   },
+                          // ),
                           Radio(
                             value: 2,
                             groupValue: _radioSelected,
@@ -450,7 +530,9 @@ class _BookingFormState extends State<BookingForm> {
                                 _radioVal  = 'Cash On Delivery';
                               });
                             },
-                          )
+                          ),
+                          Text('Cash On Delivery'),
+
                         ],
                       ),
                     ),
@@ -467,7 +549,7 @@ class _BookingFormState extends State<BookingForm> {
 
                         Map<String, String> jsonInput = {
                             "user_address_id": "1",
-                            "package_id": "1",
+                            "package_id": packageId.toString(),
                             "booked_date": serviceDate,
                             "booked_time": serviceTime,
                             "vehicle_type":"two_wheeler",
@@ -480,10 +562,49 @@ class _BookingFormState extends State<BookingForm> {
                             "user_address": address,
                         };
 
+                        bool saveData = true;
 
+                        if(vehicleName.isEmpty){
+                          saveData = false;
+                          Fluttertoast.showToast(msg: "Please Enter Vehicle Name");
+                           return;
+                        }
+
+                        if(phoneNumber.isEmpty){
+                          saveData = false;
+                          Fluttertoast.showToast(msg: "Please Enter Phone Number");
+                          return;
+                        }
+
+                        if(serviceDate.isEmpty){
+                          saveData = false;
+                          Fluttertoast.showToast(msg: "Please Enter Date");
+                          return;
+                        }
+
+                        if(serviceTime.isEmpty){
+                          saveData = false;
+                          Fluttertoast.showToast(msg: "Please Enter Time");
+                          return;
+                        }
+
+                        if(vehicleNum.isEmpty){
+                          saveData = false;
+                          Fluttertoast.showToast(msg: "Please Enter Vehicle Number");
+                          return;
+                        }
+
+                        if(address.isEmpty){
+                          saveData = false;
+                          Fluttertoast.showToast(msg: "Please Enter Address");
+                          return;
+                        }
+
+                        if(saveData){
                           _setBookingFormData(jsonInput);
+                        }
 
-
+                        print("object${saveData}");
 
                        print("object>>>>${_radioVal.toString()}>>>>");
 

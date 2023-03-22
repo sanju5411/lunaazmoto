@@ -33,6 +33,8 @@ class _BookingScreenState extends State<BookingScreen> {
   Position? _currentPosition;
 
 
+  TextEditingController _pLocation = TextEditingController();
+
 
   String rupees = "₹";
 
@@ -42,12 +44,14 @@ class _BookingScreenState extends State<BookingScreen> {
     // TODO: implement initState
 
     super.initState();
-    getAllPackagesList();
+    _pLocation.text = "";
+
   }
 
-  getAllPackagesList() async{
+  getAllPackagesList(String appBarTitle) async{
+
     Map<String, String> jsonInput = {
-      'package_type': "four_wheeler",
+      'package_type': appBarTitle,
     };
     PackagesMainModel packagesModel = await ApiService.packages(jsonInput: jsonEncode(jsonInput));
     print("packages?>>>>${jsonEncode(packagesModel)}>>>>>>");
@@ -98,7 +102,7 @@ class _BookingScreenState extends State<BookingScreen> {
         .then((List<Placemark> placemarks) {
       Placemark place = placemarks[0];
       setState(() {
-        _currentAddress =
+        _pLocation.text = _currentAddress =
         '${place.street}, ${place.subLocality}, ${place.subAdministrativeArea}, ${place.postalCode}';
       });
     }).catchError((e) {
@@ -121,8 +125,13 @@ class _BookingScreenState extends State<BookingScreen> {
 
 
 
+
   @override
   Widget build(BuildContext context) {
+
+    final appBarTitle = ModalRoute.of(context)?.settings.arguments as String;
+    getAllPackagesList(appBarTitle);
+
     Size screenSize = MediaQuery.of(context).size;
     return Scaffold(
       backgroundColor: CustomColor.primaryColor,
@@ -172,6 +181,7 @@ class _BookingScreenState extends State<BookingScreen> {
                       height: 20,
                     ),
                     TextField(
+                      controller: _pLocation,
                       decoration: InputDecoration(
                           suffixIcon: InkWell(
                               onTap: ()
@@ -195,7 +205,7 @@ class _BookingScreenState extends State<BookingScreen> {
                 ),
               ),
             ),
-            Text(_currentAddress ?? ""),
+
             const SizedBox(
               height: 30,
             ),
@@ -237,7 +247,7 @@ class _BookingScreenState extends State<BookingScreen> {
 
                               return InkWell(
                                 onTap: (){
-                                  Navigator.pushNamed(context, BookingForm.routeName);
+                                  Navigator.pushNamed(context, BookingForm.routeName,arguments: _packages![index].packageId);
                                 },
                                 child: Padding(
                                   padding: const EdgeInsets.all(8.0),
