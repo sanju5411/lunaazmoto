@@ -1,10 +1,12 @@
+import 'package:lunaaz_moto/models/user_addressModel/user_address_model.dart';
+
 import '../auth/user/user.dart';
 import '../customer/service_model/package_model/package_model.dart';
 
 class NewServices {
   int? bookingId;
   AuthUser? bookingUser;
-  Null? bookingAddress;
+  UserAddress? bookingAddress;
   BookingPackage? bookingPackage;
   Null? bookingCenter;
   String? bookingNumber;
@@ -58,7 +60,9 @@ class NewServices {
     bookingUser = json['booking_user'] != null
         ? new AuthUser.fromJson(json['booking_user'])
         : null;
-    bookingAddress = json['booking_address'];
+    bookingAddress = json['booking_address']!= null
+        ? new UserAddress.fromJson(json['booking_address'])
+        : null;
     bookingPackage = json['booking_package'] != null
         ? new BookingPackage.fromJson(json['booking_package'])
         : null;
@@ -90,7 +94,9 @@ class NewServices {
     if (bookingUser != null) {
       data['booking_user'] = bookingUser!.toJson();
     }
-    data['booking_address'] = bookingAddress;
+    if(bookingAddress != null){
+      data['booking_address'] = bookingAddress;
+    }
     if (bookingPackage != null) {
       data['booking_package'] = bookingPackage!.toJson();
     }

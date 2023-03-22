@@ -336,9 +336,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
                         variant: Variant.booknowbtn,
                         onTap: () {
                           showDialog(context: context, builder: (context) => CustomWheelerPopUp(),);
-                          Navigator.push(context, MaterialPageRoute(builder: (context) => BookingScreen(),
-                          ),
-                          );
                         },
 
                       ),

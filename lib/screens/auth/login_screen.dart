@@ -117,6 +117,9 @@ class _LoginScreenState extends State<LoginScreen> {
                                       _mobileTextError = "Invalid Mobile Number";
                                     });
                                   }
+                                  else{
+                                    _mobileTextError  = "Enter 10 digit number";
+                                  }
                                   if (phone.length == 10) {
                                     setState(() {
                                       _mobileNumber = phone;
@@ -125,30 +128,24 @@ class _LoginScreenState extends State<LoginScreen> {
                                 },
                                 keyboardType: TextInputType.phone,
                               ),
-                              //IntlPhoneField(
-                              //   showDropdownIcon: false,
-                              //   style: TextStyle(fontSize: 16),
-                              //   controller: phoneController,
-                              //   decoration: InputDecoration(
-                              //     hintText: "Phone Number",
-                              //       counterText: "",
-                              //     border: InputBorder.none
-                              //   ),
-                              //   initialCountryCode: 'IN',
-                              //   onChanged: (phone) {
-                              //     print(phone.completeNumber);
-                              //   },
-                              //   // onCountryChanged: (country) {
-                              //   //   setState(() {
-                              //   //     _countryCode = country.completeNumber;
-                              //   //   });
-                              //   // },
-                              // )
+
+                            ),
+                          ),
+                        ),
+                        SizedBox(height: 8,),
+                        Padding(
+                          padding: const EdgeInsets.only(left: 32),
+                          child: SizedBox(
+                            width: screenSize.width,
+                            height: 30,
+                            child: Text(
+                              _mobileTextError,
+                              style: CustomStyle.errorTextStyle,
                             ),
                           ),
                         ),
                         const SizedBox(
-                          height: 30,
+                          height: 15,
                         ),
                         Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 40),

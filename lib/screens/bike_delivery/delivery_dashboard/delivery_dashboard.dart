@@ -22,10 +22,10 @@ class DeliveryDashboard extends StatefulWidget {
 
 class _DeliveryDashboardState extends State<DeliveryDashboard> {
 
-  int totalBooking =0;
-  int todayNewBooking =0;
-  int todayPickUp =0;
-  int todayDelivered =0;
+  int? totalBooking =0;
+  int? todayNewBooking =0;
+  int? todayPickUp =0;
+  int? todayDelivered =0;
   List<NewServices> nextBooking = [];
   @override
   void initState() {

@@ -24,7 +24,6 @@ class _BookingFormState extends State<BookingForm> {
   int? _radioSelected;
   String? _radioVal;
 
-
   bool loading = false;
 
   final TextEditingController _vehicNameController =       TextEditingController();
@@ -34,6 +33,8 @@ class _BookingFormState extends State<BookingForm> {
   final TextEditingController _vehicleNumController     = TextEditingController();
   final TextEditingController _addressController        =     TextEditingController();
 
+
+  bool _validate = false;
 
   @override
   void initState() {
@@ -49,6 +50,8 @@ class _BookingFormState extends State<BookingForm> {
 
   void _setBookingFormData(Map<String, String> jsonInput) async {
 
+
+
     loading = true;
 
     BookingModel bookingModel = await ApiService.setBookingForm(jsonInput: jsonEncode(jsonInput));
@@ -59,9 +62,10 @@ class _BookingFormState extends State<BookingForm> {
     if(bookingModel.status  == "success"){
       loading = false;
       setState(() {
-        Navigator.pushNamed(context, MyServicesScreen.routeName);
+      Navigator.pushNamed(context, MyServicesScreen.routeName);
       });
     }
+
 
 
 }
@@ -112,6 +116,17 @@ class _BookingFormState extends State<BookingForm> {
   }
   }
 
+
+  // @override
+  // void dispose() {
+  //   _vehicNameController.dispose();
+  //   _phoneController.dispose();
+  //   _serviceDateController.dispose();
+  //   _serviceTimeController.dispose();
+  //   _vehicleNumController.dispose();
+  //   _addressController.dispose();
+  //   super.dispose();
+  // }
 
 
 
@@ -168,8 +183,8 @@ class _BookingFormState extends State<BookingForm> {
                     SizedBox(height: 10,),
                     Container(
                   decoration: BoxDecoration(
-                    boxShadow: [
-                      const BoxShadow(
+                    boxShadow: const [
+                      BoxShadow(
                         color: Color(0xffdcdcdc),
                         blurRadius: 20,
                       ),
@@ -178,16 +193,17 @@ class _BookingFormState extends State<BookingForm> {
                   ),
                   child: TextFormField(
                     controller: _vehicNameController,
-
+                    validator: (value) =>
+                    value!.isEmpty? 'Password cannot be blank' : null,
                     decoration: InputDecoration(
-
+                      errorText: _validate ? 'Value Can\'t Be Empty' : null,
                       fillColor: Colors.white,
                       filled: true,
                       suffixIcon: const Icon(
                         Icons.person,
-                        color: CustomColor.primaryColor,
+                        color: Color(0xffc40000),
                       ),
-                      hintText: 'Enter Full Name',
+                      hintText: 'Enter Vehicle Name',
 
                       enabledBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(15.0),
@@ -221,7 +237,7 @@ class _BookingFormState extends State<BookingForm> {
                           filled: true,
                           suffixIcon: const Icon(
                             Icons.call,
-                            color: CustomColor.primaryColor
+                            color: Color(0xffc40000),
                           ),
                           hintText: 'Enter Phone Number',
                           enabledBorder: OutlineInputBorder(
@@ -259,7 +275,7 @@ class _BookingFormState extends State<BookingForm> {
                             },
                             child: const Icon(
                               Icons.calendar_today,
-                              color: Color(0xff224597),
+                              color:Color(0xffc40000),
 
                             ),
                           ),
@@ -307,7 +323,7 @@ class _BookingFormState extends State<BookingForm> {
                             },
                             child: const Icon(
                               Icons.access_time_filled_outlined,
-                              color: Color(0xff224597),
+                              color:Color(0xffc40000),
 
                             ),
                           ),
@@ -349,7 +365,7 @@ class _BookingFormState extends State<BookingForm> {
                           filled: true,
                           suffixIcon: const Icon(
                             Icons.car_crash_rounded,
-                            color: Color(0xff224597),
+                            color: Color(0xffc40000),
                           ),
                           hintText: 'Enter your vehicle number',
 
@@ -385,7 +401,7 @@ class _BookingFormState extends State<BookingForm> {
                           filled: true,
                           suffixIcon: const Icon(
                             Icons.location_on,
-                            color: Color(0xff224597),
+                            color: Color(0xffc40000),
                           ),
                           hintText: 'Enter your valid address',
 
@@ -464,7 +480,10 @@ class _BookingFormState extends State<BookingForm> {
                             "user_address": address,
                         };
 
-                        _setBookingFormData(jsonInput);
+
+                          _setBookingFormData(jsonInput);
+
+
 
                        print("object>>>>${_radioVal.toString()}>>>>");
 
