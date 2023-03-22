@@ -202,7 +202,6 @@ class ApiService {
     }
   }
 
-
   static Future<BookingModel> setBookingForm({required Object jsonInput}) async {
     Uri uri = Uri.parse('${ApiConfig.apiV1}/${ApiConfig.saveBookingForm}');
     String token = await SharedPreferencesService.getApiToken();
@@ -232,6 +231,27 @@ class ApiService {
         uri,
         headers: headers,
       );
+      var json = jsonDecode(res.body);
+      return BookingList.fromJson(json);
+    } catch (e) {
+      print("BOOKING_LIST_ERROR>>> $e");
+      return BookingList();
+    }
+  }
+
+  static Future<BookingList> changeServiceStatus({required var bookingId, required Object jsonInput}) async {
+    Uri uri = Uri.parse('${ApiConfig.apiV1}/${ApiConfig.bookingChangeStatus}/$bookingId');
+    String token = await SharedPreferencesService.getApiToken();
+    headers.addAll({'Authorization': 'Bearer $token'});
+
+    try {
+      var res = await post(
+        uri,
+        headers: headers,
+        body : jsonInput
+      );
+      print("BOOKING_LIST_ERROR>>> $uri");
+      print("BOOKING_LIST_ERROR>>> $jsonInput");
       var json = jsonDecode(res.body);
       return BookingList.fromJson(json);
     } catch (e) {

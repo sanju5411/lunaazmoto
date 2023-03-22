@@ -12,6 +12,7 @@ import 'package:firebase_auth_web/firebase_auth_web.dart';
 import 'package:firebase_core_web/firebase_core_web.dart';
 import 'package:firebase_messaging_web/firebase_messaging_web.dart';
 import 'package:fluttertoast/fluttertoast_web.dart';
+import 'package:geolocator_web/geolocator_web.dart';
 import 'package:image_picker_for_web/image_picker_for_web.dart';
 import 'package:just_audio_web/just_audio_web.dart';
 import 'package:platform_device_id_web/platform_device_id_web.dart';
@@ -30,6 +31,7 @@ void registerPlugins(Registrar registrar) {
   FirebaseCoreWeb.registerWith(registrar);
   FirebaseMessagingWeb.registerWith(registrar);
   FluttertoastWebPlugin.registerWith(registrar);
+  GeolocatorPlugin.registerWith(registrar);
   ImagePickerPlugin.registerWith(registrar);
   JustAudioPlugin.registerWith(registrar);
   PlatformDeviceIdWebPlugin.registerWith(registrar);

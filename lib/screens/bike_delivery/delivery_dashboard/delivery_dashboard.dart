@@ -36,16 +36,15 @@ class _DeliveryDashboardState extends State<DeliveryDashboard> {
 
   void getDriverDashboard() async{
     DriverMainModel driverMainModel = await ApiService.getDriverDashboardData();
-    if(driverMainModel != null){
-      setState(() {
-        todayNewBooking = driverMainModel.todayBookings!;
-        totalBooking = driverMainModel.totalBookings!;
-        todayDelivered = 0;
-        todayPickUp = 0;
-        nextBooking = driverMainModel.newServices!;
-      });
-    }
     print("Drive Main Model---->${jsonEncode(driverMainModel)}");
+    setState(() {
+      todayNewBooking = driverMainModel.todayBookings;
+      totalBooking = driverMainModel.totalBookings;
+      todayDelivered = driverMainModel.todayDeliveredBookings;
+      todayPickUp = driverMainModel.todayPickedBookings;
+      nextBooking = driverMainModel.newServices!;
+    });
+
   }
 
   @override
@@ -58,7 +57,7 @@ class _DeliveryDashboardState extends State<DeliveryDashboard> {
           backgroundColor: CustomColor.primaryColor,
           elevation: 0,
           title: Column(
-            children: [
+            children: const [
               SizedBox(height: 5,),
               Text("Lunaaz Moto",style: TextStyle(color: CustomColor.whiteColor),
 
