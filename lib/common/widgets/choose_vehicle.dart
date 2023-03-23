@@ -20,6 +20,9 @@ class _CustomWheelerPopUpState extends State<CustomWheelerPopUp> {
     return Scaffold(
       backgroundColor: Color(0x7ea8a8a8),
       body: AlertDialog(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(30),
+        ),
         alignment: Alignment.center,
         title: Text("Select :-"),
         actionsAlignment: MainAxisAlignment.center,
@@ -33,9 +36,8 @@ class _CustomWheelerPopUpState extends State<CustomWheelerPopUp> {
            ),
            InkWell(
              onTap: (){
-               Navigator.pushNamed(context, BookingScreen.routeName);
-
-               // Navigator.pushNamedAndRemoveUntil(context, CustomWheelerPopUp.routeName, (route) => false);
+               Navigator.pop(context);
+               Navigator.pushNamed(context, BookingScreen.routeName,arguments: "two_wheeler");
              },
              child: Container(
                width: 150,
@@ -59,9 +61,8 @@ class _CustomWheelerPopUpState extends State<CustomWheelerPopUp> {
            ),
              InkWell(
                onTap: (){
-                 Navigator.pushNamed(context, BookingScreen.routeName);
-
-                 // Navigator.pushNamedAndRemoveUntil(context, CustomWheelerPopUp.routeName, (route) => false);
+                 Navigator.pop(context);
+                 Navigator.pushNamed(context, BookingScreen.routeName,arguments: "four_wheeler");
                },
                child: Container(
                  width: 150,

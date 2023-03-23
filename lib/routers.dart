@@ -5,6 +5,7 @@ import 'package:lunaaz_moto/screens/auth/otp_screen.dart';
 import 'package:lunaaz_moto/screens/bike_delivery/booking_detail/booking_detail.dart';
 import 'package:lunaaz_moto/screens/bike_delivery/delivery_dashboard/delivery_dashboard.dart';
 import 'package:lunaaz_moto/screens/bike_delivery/notification_screen/notification_screen.dart';
+import 'package:lunaaz_moto/screens/bike_delivery/select_service_center/dropdown_service_center.dart';
 import 'package:lunaaz_moto/screens/bike_delivery/total_booking_screen/total_booking_screen.dart';
 import 'package:lunaaz_moto/screens/customer/customer_screens/book_form/booking_form.dart';
 import 'package:lunaaz_moto/screens/customer/customer_screens/booking_screen/booking_screen.dart';
@@ -18,6 +19,8 @@ import 'package:lunaaz_moto/screens/service_centre/screens/CustomerBookingDetail
 import 'package:lunaaz_moto/screens/service_centre/screens/customer_list/customer_common_list.dart';
 import 'package:lunaaz_moto/screens/service_centre/screens/vendor_dashboard/vendor_dashboard_screen.dart';
 import 'package:lunaaz_moto/screens/service_centre/screens/vendor_notification/vendor_notification.dart';
+
+import 'screens/customer/customer_screens/cust_booking_detail/customer_booking_detail.dart';
 
 Route<dynamic> generateRoute(RouteSettings routeSettings) {
   final arguments = routeSettings.arguments;
@@ -57,6 +60,12 @@ Route<dynamic> generateRoute(RouteSettings routeSettings) {
     case BookingForm.routeName:
       return CustomPageRoute(
         child:   BookingForm(),
+        routeSettings: routeSettings,
+      );
+
+    case CustomerBookingDetail.routeName:
+      return CustomPageRoute(
+        child:   CustomerBookingDetail(),
         routeSettings: routeSettings,
       );
 
@@ -149,6 +158,12 @@ Route<dynamic> generateRoute(RouteSettings routeSettings) {
     case BookingDetail.routeName:
       return CustomPageRoute(
         child:  const BookingDetail(),
+        routeSettings: routeSettings,
+      );
+
+    case ServiceCenterDropDown.routeName:
+      return CustomPageRoute(
+        child:  const ServiceCenterDropDown(),
         routeSettings: routeSettings,
       );
 

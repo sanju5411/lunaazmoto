@@ -1,42 +1,22 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
-import 'package:lunaaz_moto/common/widgets/custom_button.dart';
 import 'package:lunaaz_moto/constants/global_variables.dart';
-import 'package:lunaaz_moto/models/customer/service_booking_list/service_booking_list_model.dart';
-import 'package:lunaaz_moto/models/drivers/new_services.dart';
-import 'package:lunaaz_moto/screens/bike_delivery/delivery_dashboard/delivery_dashboard.dart';
-import 'package:lunaaz_moto/screens/bike_delivery/select_service_center/dropdown_service_center.dart';
-import 'package:lunaaz_moto/services/api_service.dart';
-class BookingDetail extends StatefulWidget {
-  static const String routeName = '/booking_detail';
-  const BookingDetail({Key? key}) : super(key: key);
+import 'package:lunaaz_moto/models/customer/service_model/service_model.dart';
+
+class CustomerBookingDetail extends StatefulWidget {
+  static const String routeName = '/customer_booking_detail';
+
+  const CustomerBookingDetail({Key? key}) : super(key: key);
 
   @override
-  State<BookingDetail> createState() => _BookingDetailState();
+  State<CustomerBookingDetail> createState() => _CustomerBookingDetailState();
 }
 
-class _BookingDetailState extends State<BookingDetail> {
-
-  changeBookingStatus(String status, int bookingId) async{
-    Map<String, String> jsonInput = {
-      "status" : status,
-    };
-    BookingList bookingList = await ApiService.changeServiceStatus(bookingId : bookingId,jsonInput: jsonEncode(jsonInput));
-    if(bookingList != null){
-
-      Fluttertoast.showToast(msg: "${bookingList.message}");
-    }
-  }
-
-
+class _CustomerBookingDetailState extends State<CustomerBookingDetail> {
   @override
   Widget build(BuildContext context) {
-    final bookingData = ModalRoute.of(context)?.settings.arguments as NewServices;
+    final bookingData = ModalRoute.of(context)?.settings.arguments as ServiceModel;
     var bookingId = bookingData.bookingId;
 
-    print("BookingDetailState===>${jsonEncode(bookingData)}");
     Size screenSize = MediaQuery.of(context).size;
 
 
@@ -90,7 +70,7 @@ class _BookingDetailState extends State<BookingDetail> {
                       subtitle: Text("${bookingData.bookedDate}, ${bookingData.bookedTime}\nNewyork, United States\n${bookingData.bookingUser?.email}",
                         style: const TextStyle(fontWeight: FontWeight.w500,fontSize: 12,color: Color(0xFF8C8FA5)),),
                       trailing:  Container(
-                        padding: EdgeInsets.symmetric(horizontal: 8,vertical: 5),
+                          padding: EdgeInsets.symmetric(horizontal: 8,vertical: 5),
                           decoration: const BoxDecoration(
                               borderRadius: BorderRadius.all(Radius.circular(10)),
                               color: Color(0xFFE8F0FF)
@@ -239,55 +219,6 @@ class _BookingDetailState extends State<BookingDetail> {
                             ),
                           ),
                           const SizedBox(height: 20,),
-                          Row(
-                            children: [
-                              GestureDetector(
-                                onTap: (){
-                                  changeBookingStatus("accepted",bookingId!);
-                                  Navigator.pushNamed(context, ServiceCenterDropDown.routeName);
-                                },
-                                child: Container(
-                                  color: const Color.fromRGBO(96, 177, 14, 0.15),
-                                  height: 40,
-                                  width: 100,
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: Row(
-                                      mainAxisAlignment: MainAxisAlignment.center,
-                                      children: const [
-                                        Icon(Icons.check_circle_outline_outlined,color: Color(0xFF60B10E),),
-                                        const SizedBox(width: 5,),
-                                        Text("Accept",style: TextStyle(color: Color(0xFF60B10E)),)
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              const SizedBox(width: 50,),
-                              GestureDetector(
-                                onTap: (){
-                                  changeBookingStatus("",bookingId!);
-                                },
-                                child: Container(
-                                  color: const Color(0xFFFFE0E0),
-                                  height: 40,
-                                  width: 100,
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: Row(
-                                      mainAxisAlignment: MainAxisAlignment.center,
-                                      children: const [
-                                        Icon(Icons.cancel_outlined,color: Color(0xFFFF2121),),
-                                        const SizedBox(width: 5,),
-                                        Text("Reject",style: TextStyle(color: Color(0xFFFF2121)),)
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                              )
-                            ],
-                          ),
-                          const SizedBox(height: 20,)
 
                         ],
                       ),

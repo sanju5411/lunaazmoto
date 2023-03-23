@@ -34,6 +34,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         primarySwatch: Colors.blue,
+        scaffoldBackgroundColor: CustomColor.backgroundColor,
       ),
         onGenerateRoute: (routeSettings) => generateRoute(routeSettings),
       home: const SplashScreen()

@@ -7,15 +7,19 @@ import 'package:lunaaz_moto/common/widgets/custom_button.dart';
 import 'package:lunaaz_moto/common/widgets/custom_last_services.dart';
 import 'package:lunaaz_moto/configs/api_config.dart';
 import 'package:lunaaz_moto/constants/global_variables.dart';
+import 'package:lunaaz_moto/models/auth/user/user.dart';
 import 'package:lunaaz_moto/models/customer/banner/banner_image.dart';
 import 'package:lunaaz_moto/models/customer/dashboard_model.dart';
 import 'package:lunaaz_moto/models/customer/happy_customer/happy_customer.dart';
 import 'package:lunaaz_moto/models/customer/service_model/service_model.dart';
+import 'package:lunaaz_moto/screens/bike_delivery/booking_detail/booking_detail.dart';
 import 'package:lunaaz_moto/screens/customer/customer_screens/booking_screen/booking_screen.dart';
+import 'package:lunaaz_moto/screens/customer/customer_screens/cust_booking_detail/customer_booking_detail.dart';
 import 'package:lunaaz_moto/screens/customer/customer_screens/my_services/my_services.dart';
 import 'package:lunaaz_moto/screens/customer/customer_screens/profile_screen/profile_screen.dart';
 import 'package:lunaaz_moto/screens/customer/customer_screens/side_navbar/side_navbar.dart';
 import 'package:lunaaz_moto/services/api_service.dart';
+import 'package:lunaaz_moto/services/shared_preferences_service.dart';
 
 class DashboardScreen extends StatefulWidget {
   static const String routeName = '/dashboard_screen';
@@ -37,12 +41,16 @@ class _DashboardScreenState extends State<DashboardScreen> {
   int? totalBookingCount = 0;
   List<dynamic> lastServices = [];
   List<ServiceModel> serviceModel = [];
+  String? imageData = "";
 
 
   _getDashboardData() async {
 
+    AuthUser authUser = await SharedPreferencesService.getAuthUserData();
+
     setState(() {
       loading = true;
+      imageData = ApiConfig.baseUrl+authUser.avatar.toString();
     });
 
 
@@ -95,17 +103,17 @@ class _DashboardScreenState extends State<DashboardScreen> {
       appBar: AppBar(
         backgroundColor: CustomColor.primaryColor,
         elevation: 0,
-        title: Text("Lunaaz Moto",style: TextStyle(color: CustomColor.whiteColor),
+        title: const  Text("Lunaaz Moto",style: TextStyle(color: CustomColor.whiteColor),
         ),
         centerTitle: true,
         actions: [
           InkWell(
             onTap: () => Navigator.pushNamed(context, ProfileScreen.routeName),
             child: CircleAvatar(
-              backgroundImage: AssetImage("assets/images/dpp.jpg"),
+              backgroundImage: NetworkImage(imageData!),
             ),
           ),
-          SizedBox(width: 15,)
+          const SizedBox(width: 15,)
         ],
       ),
       drawer: Drawer(
@@ -262,7 +270,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                     )
                 ),
                 child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     const SizedBox(height: 15,),
                     Padding(
@@ -279,7 +287,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                 colors: [
 
                                   Color(0xffEC5FA3),
-                                  Color(0xffD72F81),
+                                  Color(0xffd53883),
 
                                 ],
                               ),
@@ -288,15 +296,15 @@ class _DashboardScreenState extends State<DashboardScreen> {
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                Text("Total Service",style: TextStyle(color: CustomColor.whiteColor,fontSize: 20),),
-                                SizedBox(height: 10,),
+                                const Text("Total Service",style: TextStyle(color: CustomColor.whiteColor,fontSize: 20),),
+                                const SizedBox(height: 10,),
                                 CircleAvatar(
                                   backgroundColor: CustomColor.whiteColor,
-                                  child: Text(totalBookingCount.toString(),style: TextStyle(color: Color(0xffD72F81),fontSize: 18,fontWeight: FontWeight.w600),),
+                                  child: Text(totalBookingCount.toString(),style: const TextStyle(color: Color(0xffD72F81),fontSize: 18,fontWeight: FontWeight.w600),),
                                 )
                               ],),
                           ), //total service
-                          Spacer(),
+                          const Spacer(),
                           Container(
                             height:screenSize.height * 0.2,
                             width: screenSize.width * 0.4,
@@ -314,11 +322,11 @@ class _DashboardScreenState extends State<DashboardScreen> {
                             child:  Column(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                Text("Today Service",style: TextStyle(color: CustomColor.whiteColor,fontSize: 20),),
-                                SizedBox(height: 10,),
+                                const Text("Today Service",style: TextStyle(color: CustomColor.whiteColor,fontSize: 20),),
+                                const SizedBox(height: 10,),
                                 CircleAvatar(
                                   backgroundColor: CustomColor.whiteColor,
-                                  child: Text(todayBookingCount.toString(),style: TextStyle(color: Color(0xffCF8849),fontSize: 18,fontWeight: FontWeight.w600),),
+                                  child: Text(todayBookingCount.toString(),style: const TextStyle(color: Color(0xffCF8849),fontSize: 18,fontWeight: FontWeight.w600),),
                                 )
                               ],),
                           ), //today service
@@ -335,31 +343,100 @@ class _DashboardScreenState extends State<DashboardScreen> {
                         ),
                         variant: Variant.booknowbtn,
                         onTap: () {
-                          showDialog(context: context, builder: (context) => CustomWheelerPopUp(),);
-                          Navigator.push(context, MaterialPageRoute(builder: (context) => BookingScreen(),
-                          ),
-                          );
+                          showDialog(context: context, builder: (context) => const CustomWheelerPopUp(),);
                         },
 
                       ),
                     ),
                     const SizedBox(height: 15,),
-                    Row(
-                      children: [
-                        const Padding(
-                          padding: const EdgeInsets.only(left: 20,top: 20,bottom: 10),
-                          child: Text("Last Services",style: TextStyle(fontWeight: FontWeight.w700,fontSize: 25),),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 18),
+                      child: Container(
+
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(20),
+                            gradient: const LinearGradient(
+                              begin: Alignment.topRight,
+                              end: Alignment.bottomLeft,
+                              colors: [
+                                Color(0xff8f35ff),
+                                Color(0xffc898ff),
+                              ],
+                            )
+                        ),
+                        child:  Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 24,vertical: 15),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children:  [
+                              Row(
+                                children: const [
+                                  Text("Current Package",style: TextStyle(color: CustomColor.whiteColor,fontSize: 23,fontWeight: FontWeight.w700),),
+                               Spacer(),
+                                  Text("Basic",style: TextStyle(color: CustomColor.whiteColor,fontSize: 20,fontWeight: FontWeight.w700),),
+
+                                ],
+                              ),
+                              const SizedBox(height: 6,),
+                              const Padding(
+                                padding: EdgeInsets.symmetric(horizontal: 4),
+                                child: Divider(color: CustomColor.whiteColor,),
+                              ),
+                              const SizedBox(height: 6,),
+                              Row(children: const [
+                              Text(
+                                "Expire Date",style: TextStyle(color: CustomColor.whiteColor,fontSize: 20),
+                              ),
+                              Spacer(),
+                              Text(
+                                  "12/2/2023",style: TextStyle(color: CustomColor.whiteColor,fontSize: 15),
+                                ),
+                              ],),
+                              const SizedBox(height: 6,),
+                              Row(
+                                children: [
+                                const Text(
+                                  "1200/-",style: TextStyle(color: CustomColor.whiteColor,fontSize: 30),
+                                ),
+                                const Spacer(),
+                                Container(
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(10),
+                                    color: Colors.red
+                                  ),
+                                  child: const  Padding(
+                                    padding:  EdgeInsets.all(8.0),
+                                    child: Text(
+                                      "UPGRADE",style: TextStyle(color: CustomColor.whiteColor,fontSize: 15),
+                                    ),
+                                  ),
+                                ),
+                              ],),
+
+
+                            ],
+                          ),
                         ),
 
+                      ),
+                    ),
+                    const SizedBox(height: 15,),
+                    Row(
+
+                      children: [
+                        const Padding(
+                          padding:  EdgeInsets.only(left: 20,top: 20,bottom: 10),
+                          child: Text("Last Services",style: TextStyle(fontWeight: FontWeight.w700,fontSize: 25),),
+                        ),
                         const Spacer(),
 
                         Padding(
-                          padding: EdgeInsets.all(8.0),
+                          padding: const  EdgeInsets.symmetric(horizontal: 23),
                           child: Align(
                               alignment: Alignment.centerRight,
                               child: InkWell(
                                   onTap: () => Navigator.pushNamed(context, MyServicesScreen.routeName),
-                                  child: Text("View all > ",style: TextStyle(color: CustomColor.primaryColor,fontSize: 20,fontWeight: FontWeight.w700),))),
+                                  child: const Text("View all",style: TextStyle(color: CustomColor.primaryColor,fontSize: 20,fontWeight: FontWeight.w700),))),
                         ),
                       ],
                     ),
@@ -367,84 +444,89 @@ class _DashboardScreenState extends State<DashboardScreen> {
                     serviceModel.isNotEmpty ?
                     SizedBox(
                       width: screenSize.width,
-                      height: 570,
+                      height: 460,
                       child: ListView.builder(
                           itemCount: serviceModel.length,
-                          physics: NeverScrollableScrollPhysics(),
+                          physics: const  NeverScrollableScrollPhysics(),
                           itemBuilder: (BuildContext context, int index) {
-                            print("Last Servies--->${jsonEncode(serviceModel[index].bookingCenter)}");
-                            return Padding(
-                              padding: const EdgeInsets.symmetric(horizontal: 20,vertical: 16),
-                              child: Container(
-                                //height: screenSize.height * 0.18,
-                                width: screenSize.width,
-                                decoration:  BoxDecoration(
-                                    color: CustomColor.whiteColor,
-                                    boxShadow: const
-                                    [
-                                      BoxShadow(
-                                        color: Colors.grey,
-                                        offset: Offset(
-                                          5.0,
-                                          5.0,
+                            print("Last Services--->${jsonEncode(serviceModel[index].bookingCenter)}");
+                            return InkWell(
+                              onTap: (){
+                                Navigator.pushNamed(context, CustomerBookingDetail.routeName,arguments: serviceModel[index],);
+                              },
+                              child: Padding(
+                                padding: const EdgeInsets.symmetric(horizontal: 20,vertical: 16),
+                                child: Container(
+                                  //height: screenSize.height * 0.18,
+                                  width: screenSize.width,
+                                  decoration:  BoxDecoration(
+                                      color: CustomColor.whiteColor,
+                                      boxShadow: const
+                                      [
+                                        BoxShadow(
+                                          color: Color(0xfffad7d7),
+                                          offset: Offset(
+                                            1.0,
+                                            1.0,
+                                          ),
+                                          blurRadius: 19.0,
+                                          spreadRadius: 1.0,
+                                        ), //BoxShadow
+                                        BoxShadow(
+                                          color: Colors.white,
+                                          offset: Offset(0.0, 0.0),
+                                          blurRadius: 0.0,
+                                          spreadRadius: 0.0,
+                                        ), //BoxShadow
+                                      ],
+                                      borderRadius: BorderRadius.circular(20)
+                                  ),
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(10.0),
+                                    child: Column(
+                                      children: [
+                                        Row(
+                                          children: [
+                                            Column(
+                                              crossAxisAlignment: CrossAxisAlignment.start,
+                                              children:  [
+                                                const SizedBox(height: 10,),
+                                                // Text(serviceModel[index].bookingCenter != null ?
+                                                // serviceModel[index].bookingCenter!.shopName.toString():"",
+                                                //   style: const TextStyle(fontSize: 18,fontWeight: FontWeight.w600),),
+                                                const SizedBox(height: 3,),
+                                                Row(children: [
+                                                  const Text("Booking ID -"),
+                                                  const SizedBox(width: 7,),
+                                                  Text(lastServices[index].bookingId.toString())
+                                                ],)
+                                              ],
+                                            ),
+                                            const Spacer(),
+                                            Text(lastServices[index].bookingDate.toString()),
+                                          ],
                                         ),
-                                        blurRadius: 10.0,
-                                        spreadRadius: 2.0,
-                                      ), //BoxShadow
-                                      BoxShadow(
-                                        color: Colors.white,
-                                        offset: Offset(0.0, 0.0),
-                                        blurRadius: 0.0,
-                                        spreadRadius: 0.0,
-                                      ), //BoxShadow
-                                    ],
-                                    borderRadius: BorderRadius.circular(20)
-                                ),
-                                child: Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Column(
-                                    children: [
-                                      Row(
-                                        children: [
-                                          Column(
-                                            crossAxisAlignment: CrossAxisAlignment.start,
-                                            children:  [
-                                              const SizedBox(height: 10,),
-                                              Text(serviceModel[index].bookingCenter != null ?
-                                              serviceModel[index].bookingCenter!.shopName.toString():"",
-                                                style: const TextStyle(fontSize: 18,fontWeight: FontWeight.w600),),
-                                              const SizedBox(height: 3,),
-                                              Row(children: [
-                                                const Text("Booking ID -"),
-                                                const SizedBox(width: 7,),
-                                                Text(lastServices[index].bookingId.toString())
-                                              ],)
-                                            ],
-                                          ),
-                                          Spacer(),
-                                          Text(lastServices[index].bookingDate.toString()),
-                                        ],
-                                      ),
-                                      SizedBox(height: 35,),
-                                      Row(
-                                        children: [
-                                          Column(
-                                            crossAxisAlignment: CrossAxisAlignment.start,
-                                            children:  [
-                                              Text("General Service",style: TextStyle(fontSize: 18,fontWeight: FontWeight.w600,color: CustomColor.primaryColor),),
-                                              SizedBox(height: 3,),
-                                              Row(children: [
-                                                Text("Vehicle No. -"),
-                                                SizedBox(width: 7,),
-                                                Text((lastServices[index].bookingVehNum.toString()),),
-                                              ],)
-                                            ],
-                                          ),
-                                          Spacer(),
-                                          Text((lastServices[index].bookingPaymentStatus.toString()),style: TextStyle(color: Colors.blueAccent,fontWeight: FontWeight.w600),),
-                                        ],
-                                      )
-                                    ],
+                                        const SizedBox(height: 26,),
+                                        Row(
+                                          children: [
+                                            Column(
+                                              crossAxisAlignment: CrossAxisAlignment.start,
+                                              children:  [
+                                                const Text("General Service",style: TextStyle(fontSize: 18,fontWeight: FontWeight.w600,color: CustomColor.primaryColor),),
+                                                const SizedBox(height: 3,),
+                                                Row(children: [
+                                                  const Text("Vehicle No. -"),
+                                                  const SizedBox(width: 7,),
+                                                  Text((lastServices[index].bookingVehNum.toString()),),
+                                                ],)
+                                              ],
+                                            ),
+                                            const Spacer(),
+                                            Text((lastServices[index].bookingPaymentStatus.toString()),style: const TextStyle(color: Colors.blueAccent,fontWeight: FontWeight.w700,fontSize: 17),),
+                                          ],
+                                        )
+                                      ],
+                                    ),
                                   ),
                                 ),
                               ),
@@ -464,7 +546,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                             [
                               BoxShadow(
                                 color: Colors.grey,
-                                offset: const Offset(
+                                offset:  Offset(
                                   5.0,
                                   5.0,
                                 ),
@@ -473,7 +555,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                               ), //BoxShadow
                               BoxShadow(
                                 color: Colors.white,
-                                offset: const Offset(0.0, 0.0),
+                                offset:  Offset(0.0, 0.0),
                                 blurRadius: 0.0,
                                 spreadRadius: 0.0,
                               ), //BoxShadow
@@ -496,15 +578,15 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                   ],
                                 ),
                               ),
-                              Spacer(),
+                              const Spacer(),
                               Container(
                                   decoration: BoxDecoration(
                                     color: CustomColor.primaryColor,
                                     borderRadius: BorderRadius.circular(15),
 
                                   ),
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(10.0),
+                                  child: const Padding(
+                                    padding:  EdgeInsets.all(10.0),
                                     child: Icon(Icons.arrow_forward_outlined,color: CustomColor.whiteColor,),
                                   ))
                             ],
@@ -519,8 +601,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
             ],
           ),
         ),
-      ) : Center(child: CircularProgressIndicator())
-
+      ) : const Center(child: CircularProgressIndicator(),),
     );
   }
 

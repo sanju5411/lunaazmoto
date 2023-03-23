@@ -60,6 +60,11 @@ class NewServices {
     bookingUser = json['booking_user'] != null
         ? AuthUser.fromJson(json['booking_user'])
         : null;
+
+    bookingAddress = json['booking_address']!= null
+        ? new UserAddress.fromJson(json['booking_address'])
+        : null;
+
     bookingAddress = json['booking_address'] != null ? UserAddress.fromJson(json['booking_address']): null;
     bookingPackage = json['booking_package'] != null
         ? BookingPackage.fromJson(json['booking_package'])
@@ -92,7 +97,9 @@ class NewServices {
     if (bookingUser != null) {
       data['booking_user'] = bookingUser!.toJson();
     }
-    data['booking_address'] = bookingAddress;
+    if(bookingAddress != null){
+      data['booking_address'] = bookingAddress;
+    }
     if (bookingPackage != null) {
       data['booking_package'] = bookingPackage!.toJson();
     }
