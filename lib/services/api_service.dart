@@ -12,6 +12,7 @@ import 'package:lunaaz_moto/models/customer/dashboard_model.dart';
 import 'package:lunaaz_moto/models/customer/service_booking_list/service_booking_list_model.dart';
 import 'package:lunaaz_moto/models/customer/service_model/package_model/package_main_model.dart';
 import 'package:lunaaz_moto/models/customer/service_model/package_model/package_model.dart';
+import 'package:lunaaz_moto/models/drivers/booking_list_main_model.dart';
 import 'package:lunaaz_moto/models/profile/profile_model.dart';
 import 'package:lunaaz_moto/models/register/register.dart';
 import 'package:lunaaz_moto/services/shared_preferences_service.dart';
@@ -257,6 +258,27 @@ class ApiService {
     } catch (e) {
       print("BOOKING_LIST_ERROR>>> $e");
       return BookingList();
+    }
+  }
+
+  static Future<BookingListMainModel> getBookingListWithKey({required Object jsonInput}) async {
+    Uri uri = Uri.parse('${ApiConfig.apiV1}/${ApiConfig.bookingListWithKeyDriver}');
+    String token = await SharedPreferencesService.getApiToken();
+    headers.addAll({'Authorization': 'Bearer $token'});
+
+    try {
+      var res = await post(
+          uri,
+          headers: headers,
+          body : jsonInput
+      );
+      print("BOOKING_LIST_ERROR>>> $uri");
+      print("BOOKING_LIST_ERROR>>> $jsonInput");
+      var json = jsonDecode(res.body);
+      return BookingListMainModel.fromJson(json);
+    } catch (e) {
+      print("BOOKING_LIST_ERROR>>> $e");
+      return BookingListMainModel();
     }
   }
 

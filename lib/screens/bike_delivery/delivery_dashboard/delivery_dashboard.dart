@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:lunaaz_moto/screens/bike_delivery/booking_detail/booking_detail.dart';
 import 'package:lunaaz_moto/screens/bike_delivery/deliver_navbar/deliver_navbar.dart';
 import 'package:lunaaz_moto/screens/bike_delivery/total_booking_screen/total_booking_screen.dart';
@@ -178,7 +179,7 @@ class _DeliveryDashboardState extends State<DeliveryDashboard> {
                                      children: [
                                        Text("$todayDelivered",style: const TextStyle(fontSize: 26,fontWeight: FontWeight.w600,color: Color(0xFFFF2121)),),
                                        const SizedBox(height: 10,),
-                                       const Text("Today\nBooking",textAlign: TextAlign.center,style: TextStyle(fontSize: 13,fontWeight: FontWeight.w500),)
+                                       const Text("Today's\nDelivered",textAlign: TextAlign.center,style: TextStyle(fontSize: 13,fontWeight: FontWeight.w500),)
                                      ],
                                    )
                                ),
@@ -246,7 +247,11 @@ class _DeliveryDashboardState extends State<DeliveryDashboard> {
                left: 20,
                child:  GestureDetector(
                  onTap: (){
-                   Navigator.pushNamed(context, TotalBookingScreen.routeName,arguments: "Total Booking");
+                   if(int.parse(totalBooking.toString()) > 0){
+                     Navigator.pushNamed(context, TotalBookingScreen.routeName,arguments: "Total Booking");
+                   }else{
+                     Fluttertoast.showToast(msg: "No Data Found");
+                   }
                  },
                  child: Container(
                    height: 110,
@@ -275,7 +280,12 @@ class _DeliveryDashboardState extends State<DeliveryDashboard> {
                right: 20,
                child:  GestureDetector(
                  onTap: (){
-                   Navigator.pushNamed(context, TotalBookingScreen.routeName,arguments: "Today Booking");
+                   if(int.parse(todayNewBooking.toString()) > 0){
+                     Navigator.pushNamed(context, TotalBookingScreen.routeName,arguments: "Today Booking");
+                   }else{
+                     Fluttertoast.showToast(msg: "No Data Found");
+                   }
+
                  },
                  child: Container(
                      height: 110,
