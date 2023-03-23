@@ -6,7 +6,7 @@ class CustomColor {
   static const secondaryColor = Color.fromRGBO(191, 89, 61, 1);
   static const secondaryDarkColor = Color.fromRGBO(110, 52, 34, 1.0);
   static const accentColor = Color.fromRGBO(224, 211, 45, 1.0);
-  static const backgroundLightColor = Color.fromRGBO(250, 236, 214, 1);
+  static const backgroundColor = Color.fromRGBO(250, 236, 214, 1);
   static const backgroundDarkColor = Color.fromRGBO(194, 185, 164, 1.0);
   static const backgroundActiveColor = Color.fromRGBO(129, 217, 111, 1.0);
   static const backgroundPauseColor = Color.fromRGBO(224, 147, 48, 1.0);

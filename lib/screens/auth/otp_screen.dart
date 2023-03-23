@@ -7,7 +7,6 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:lunaaz_moto/common/widgets/custom_button.dart';
 import 'package:lunaaz_moto/constants/global_variables.dart';
 import 'package:lunaaz_moto/models/register/register.dart';
-import 'package:lunaaz_moto/screens/auth/login_screen.dart';
 import 'package:lunaaz_moto/screens/bike_delivery/delivery_dashboard/delivery_dashboard.dart';
 import 'package:lunaaz_moto/screens/customer/customer_screens/dashboard_screen/dashboard_screen.dart';
 import 'package:lunaaz_moto/screens/customer/customer_screens/fill_form/fill_out_form.dart';
@@ -15,16 +14,12 @@ import 'package:lunaaz_moto/screens/service_centre/screens/vendor_dashboard/vend
 import 'package:lunaaz_moto/services/api_service.dart';
 import 'package:lunaaz_moto/services/device_info_service.dart';
 import 'package:lunaaz_moto/services/shared_preferences_service.dart';
-import 'package:otp_text_field/otp_text_field.dart';
-import 'package:otp_text_field/style.dart';
 import 'package:pin_input_text_field/pin_input_text_field.dart';
 
 class OtpScreen extends StatefulWidget {
   static const String routeName = '/otp_screen';
 
-  const OtpScreen(
-      {Key? key})
-      : super(key: key);
+  const OtpScreen({Key? key}) : super(key: key);
 
   @override
   State<OtpScreen> createState() => _OtpScreenState();
@@ -50,24 +45,22 @@ class _OtpScreenState extends State<OtpScreen> {
 
   bool isRegistered = false;
 
-
   @override
   void initState() {
     getIsRegistered();
     super.initState();
   }
 
-  getIsRegistered () async {
+  getIsRegistered() async {
     bool isRegi = await SharedPreferencesService.isRegistered();
     setState(() {
       isRegistered = isRegi;
     });
   }
 
-
   initLoad(data) {
-    if(isInitLoaded) return;
-    if(data['mobile'] != "") {
+    if (isInitLoaded) return;
+    if (data['mobile'] != "") {
       setState(() {
         isInitLoaded = true;
         mobile = data['mobile'];
@@ -81,9 +74,7 @@ class _OtpScreenState extends State<OtpScreen> {
   sendOTP() async {
     auth.verifyPhoneNumber(
         phoneNumber: '$countryCode$mobile',
-        verificationCompleted: (PhoneAuthCredential credential) async {
-
-        },
+        verificationCompleted: (PhoneAuthCredential credential) async {},
         verificationFailed: (FirebaseAuthException exception) {
           print(exception.message);
         },
@@ -95,12 +86,12 @@ class _OtpScreenState extends State<OtpScreen> {
 
   @override
   Widget build(BuildContext context) {
-    Map<String, String> data = ModalRoute.of(context)!.settings.arguments as Map<String, String>;
+    Map<String, String> data =
+        ModalRoute.of(context)!.settings.arguments as Map<String, String>;
     initLoad(data);
 
     Size screenSize = MediaQuery.of(context).size;
     return Scaffold(
-      backgroundColor: CustomColor.backgroundLightColor,
       body: SingleChildScrollView(
         child: Stack(
           children: [
@@ -239,8 +230,8 @@ class _OtpScreenState extends State<OtpScreen> {
 
       String routeName = DashboardScreen.routeName;
       if (userType == "customer") {
-
-        routeName = isRegistered ? DashboardScreen.routeName : FillformScreen.routeName;
+        routeName =
+            isRegistered ? DashboardScreen.routeName : FillformScreen.routeName;
       } else if (userType == "service_center") {
         routeName = ServiceDashboard.routeName;
       } else if (userType == "driver") {
@@ -269,7 +260,7 @@ class _OtpScreenState extends State<OtpScreen> {
     });
     PhoneAuthCredential credential = PhoneAuthProvider.credential(
         verificationId: verificationIDReceived,
-        smsCode:_pinEditingController.text);
+        smsCode: _pinEditingController.text);
     try {
       await auth.signInWithCredential(credential);
       print("register function calledddddd>>>>>>>>>>>>>>>>>>>");
@@ -281,8 +272,5 @@ class _OtpScreenState extends State<OtpScreen> {
       Fluttertoast.showToast(msg: "${e}   Enter valid otp");
       print("JSON>>>>>${e}");
     }
-
   }
-
-
 }
