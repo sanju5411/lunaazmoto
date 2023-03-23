@@ -100,7 +100,6 @@ class _OtpScreenState extends State<OtpScreen> {
 
     Size screenSize = MediaQuery.of(context).size;
     return Scaffold(
-      backgroundColor: CustomColor.backgroundLightColor,
       body: SingleChildScrollView(
         child: Stack(
           children: [

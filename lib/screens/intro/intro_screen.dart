@@ -37,7 +37,7 @@ class _IntroScreenState extends State<IntroScreen> {
 
     return IntroductionScreen(
       key: introKey,
-      globalBackgroundColor: Colors.white,
+      globalBackgroundColor: CustomColor.backgroundColor,
       allowImplicitScrolling: true,
       autoScrollDuration: 3000,
 

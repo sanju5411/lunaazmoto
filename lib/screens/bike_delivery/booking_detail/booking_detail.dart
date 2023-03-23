@@ -7,6 +7,7 @@ import 'package:lunaaz_moto/constants/global_variables.dart';
 import 'package:lunaaz_moto/models/customer/service_booking_list/service_booking_list_model.dart';
 import 'package:lunaaz_moto/models/drivers/new_services.dart';
 import 'package:lunaaz_moto/screens/bike_delivery/delivery_dashboard/delivery_dashboard.dart';
+import 'package:lunaaz_moto/screens/bike_delivery/select_service_center/dropdown_service_center.dart';
 import 'package:lunaaz_moto/services/api_service.dart';
 class BookingDetail extends StatefulWidget {
   static const String routeName = '/booking_detail';
@@ -243,6 +244,7 @@ class _BookingDetailState extends State<BookingDetail> {
                               GestureDetector(
                                 onTap: (){
                                   changeBookingStatus("accepted",bookingId!);
+                                  Navigator.pushNamed(context, ServiceCenterDropDown.routeName);
                                 },
                                 child: Container(
                                   color: const Color.fromRGBO(96, 177, 14, 0.15),

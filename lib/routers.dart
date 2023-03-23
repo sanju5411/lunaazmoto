@@ -5,6 +5,7 @@ import 'package:lunaaz_moto/screens/auth/otp_screen.dart';
 import 'package:lunaaz_moto/screens/bike_delivery/booking_detail/booking_detail.dart';
 import 'package:lunaaz_moto/screens/bike_delivery/delivery_dashboard/delivery_dashboard.dart';
 import 'package:lunaaz_moto/screens/bike_delivery/notification_screen/notification_screen.dart';
+import 'package:lunaaz_moto/screens/bike_delivery/select_service_center/dropdown_service_center.dart';
 import 'package:lunaaz_moto/screens/bike_delivery/total_booking_screen/total_booking_screen.dart';
 import 'package:lunaaz_moto/screens/customer/customer_screens/book_form/booking_form.dart';
 import 'package:lunaaz_moto/screens/customer/customer_screens/booking_screen/booking_screen.dart';
@@ -157,6 +158,12 @@ Route<dynamic> generateRoute(RouteSettings routeSettings) {
     case BookingDetail.routeName:
       return CustomPageRoute(
         child:  const BookingDetail(),
+        routeSettings: routeSettings,
+      );
+
+    case ServiceCenterDropDown.routeName:
+      return CustomPageRoute(
+        child:  const ServiceCenterDropDown(),
         routeSettings: routeSettings,
       );
 

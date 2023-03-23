@@ -57,7 +57,6 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget build(BuildContext context) {
     Size screenSize = MediaQuery.of(context).size;
     return Scaffold(
-      backgroundColor: CustomColor.backgroundLightColor,
       body: Stack(
         children: [
           SingleChildScrollView(
@@ -117,7 +116,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                       _mobileTextError = "Invalid Mobile Number";
                                     });
                                   }
-                                  else{
+                                  else if(phone.length < 10){
                                     _mobileTextError  = "Enter 10 digit number";
                                   }
                                   if (phone.length == 10) {
@@ -277,7 +276,8 @@ class _LoginScreenState extends State<LoginScreen> {
                               userType = "";
                               multiUserType = false;
                             }),
-                            text: "Cancel",
+
+                            textWidget: Text("Cancel",style: TextStyle(color: CustomColor.primaryColor),),
                             variant: Variant.cancel,
                           ),
                         ),
