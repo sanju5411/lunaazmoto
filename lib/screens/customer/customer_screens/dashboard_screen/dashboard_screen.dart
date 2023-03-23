@@ -103,7 +103,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
       appBar: AppBar(
         backgroundColor: CustomColor.primaryColor,
         elevation: 0,
-        title: Text("Lunaaz Moto",style: TextStyle(color: CustomColor.whiteColor),
+        title: const  Text("Lunaaz Moto",style: TextStyle(color: CustomColor.whiteColor),
         ),
         centerTitle: true,
         actions: [
@@ -113,7 +113,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
               backgroundImage: NetworkImage(imageData!),
             ),
           ),
-          SizedBox(width: 15,)
+          const SizedBox(width: 15,)
         ],
       ),
       drawer: Drawer(
@@ -296,15 +296,15 @@ class _DashboardScreenState extends State<DashboardScreen> {
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                Text("Total Service",style: TextStyle(color: CustomColor.whiteColor,fontSize: 20),),
-                                SizedBox(height: 10,),
+                                const Text("Total Service",style: TextStyle(color: CustomColor.whiteColor,fontSize: 20),),
+                                const SizedBox(height: 10,),
                                 CircleAvatar(
                                   backgroundColor: CustomColor.whiteColor,
-                                  child: Text(totalBookingCount.toString(),style: TextStyle(color: Color(0xffD72F81),fontSize: 18,fontWeight: FontWeight.w600),),
+                                  child: Text(totalBookingCount.toString(),style: const TextStyle(color: Color(0xffD72F81),fontSize: 18,fontWeight: FontWeight.w600),),
                                 )
                               ],),
                           ), //total service
-                          Spacer(),
+                          const Spacer(),
                           Container(
                             height:screenSize.height * 0.2,
                             width: screenSize.width * 0.4,
@@ -322,11 +322,11 @@ class _DashboardScreenState extends State<DashboardScreen> {
                             child:  Column(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                Text("Today Service",style: TextStyle(color: CustomColor.whiteColor,fontSize: 20),),
-                                SizedBox(height: 10,),
+                                const Text("Today Service",style: TextStyle(color: CustomColor.whiteColor,fontSize: 20),),
+                                const SizedBox(height: 10,),
                                 CircleAvatar(
                                   backgroundColor: CustomColor.whiteColor,
-                                  child: Text(todayBookingCount.toString(),style: TextStyle(color: Color(0xffCF8849),fontSize: 18,fontWeight: FontWeight.w600),),
+                                  child: Text(todayBookingCount.toString(),style: const TextStyle(color: Color(0xffCF8849),fontSize: 18,fontWeight: FontWeight.w600),),
                                 )
                               ],),
                           ), //today service
@@ -343,7 +343,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                         ),
                         variant: Variant.booknowbtn,
                         onTap: () {
-                          showDialog(context: context, builder: (context) => CustomWheelerPopUp(),);
+                          showDialog(context: context, builder: (context) => const CustomWheelerPopUp(),);
                         },
 
                       ),
@@ -355,7 +355,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(20),
-                            gradient: LinearGradient(
+                            gradient: const LinearGradient(
                               begin: Alignment.topRight,
                               end: Alignment.bottomLeft,
                               colors: [
@@ -370,20 +370,20 @@ class _DashboardScreenState extends State<DashboardScreen> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children:  [
                               Row(
-                                children: [
+                                children: const [
                                   Text("Current Package",style: TextStyle(color: CustomColor.whiteColor,fontSize: 23,fontWeight: FontWeight.w700),),
                                Spacer(),
                                   Text("Basic",style: TextStyle(color: CustomColor.whiteColor,fontSize: 20,fontWeight: FontWeight.w700),),
 
                                 ],
                               ),
-                              SizedBox(height: 6,),
-                              Padding(
+                              const SizedBox(height: 6,),
+                              const Padding(
                                 padding: EdgeInsets.symmetric(horizontal: 4),
                                 child: Divider(color: CustomColor.whiteColor,),
                               ),
-                              SizedBox(height: 6,),
-                              Row(children: [
+                              const SizedBox(height: 6,),
+                              Row(children: const [
                               Text(
                                 "Expire Date",style: TextStyle(color: CustomColor.whiteColor,fontSize: 20),
                               ),
@@ -392,19 +392,20 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                   "12/2/2023",style: TextStyle(color: CustomColor.whiteColor,fontSize: 15),
                                 ),
                               ],),
-                              SizedBox(height: 6,),
-                              Row(children: [
-                                Text(
+                              const SizedBox(height: 6,),
+                              Row(
+                                children: [
+                                const Text(
                                   "1200/-",style: TextStyle(color: CustomColor.whiteColor,fontSize: 30),
                                 ),
-                                Spacer(),
+                                const Spacer(),
                                 Container(
                                   decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(10),
                                     color: Colors.red
                                   ),
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(8.0),
+                                  child: const  Padding(
+                                    padding:  EdgeInsets.all(8.0),
                                     child: Text(
                                       "UPGRADE",style: TextStyle(color: CustomColor.whiteColor,fontSize: 15),
                                     ),
@@ -424,18 +425,18 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
                       children: [
                         const Padding(
-                          padding: const EdgeInsets.only(left: 20,top: 20,bottom: 10),
+                          padding:  EdgeInsets.only(left: 20,top: 20,bottom: 10),
                           child: Text("Last Services",style: TextStyle(fontWeight: FontWeight.w700,fontSize: 25),),
                         ),
                         const Spacer(),
 
                         Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 23),
+                          padding: const  EdgeInsets.symmetric(horizontal: 23),
                           child: Align(
                               alignment: Alignment.centerRight,
                               child: InkWell(
                                   onTap: () => Navigator.pushNamed(context, MyServicesScreen.routeName),
-                                  child: Text("View all",style: TextStyle(color: CustomColor.primaryColor,fontSize: 20,fontWeight: FontWeight.w700),))),
+                                  child: const Text("View all",style: TextStyle(color: CustomColor.primaryColor,fontSize: 20,fontWeight: FontWeight.w700),))),
                         ),
                       ],
                     ),
@@ -446,9 +447,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
                       height: 460,
                       child: ListView.builder(
                           itemCount: serviceModel.length,
-                          physics: NeverScrollableScrollPhysics(),
+                          physics: const  NeverScrollableScrollPhysics(),
                           itemBuilder: (BuildContext context, int index) {
-                            print("Last Servies--->${jsonEncode(serviceModel[index].bookingCenter)}");
+                            print("Last Services--->${jsonEncode(serviceModel[index].bookingCenter)}");
                             return InkWell(
                               onTap: (){
                                 Navigator.pushNamed(context, CustomerBookingDetail.routeName,arguments: serviceModel[index],);
@@ -463,7 +464,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                       boxShadow: const
                                       [
                                         BoxShadow(
-                                          color: Color(0xffffb2b2),
+                                          color: Color(0xfffad7d7),
                                           offset: Offset(
                                             1.0,
                                             1.0,
@@ -501,27 +502,27 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                                 ],)
                                               ],
                                             ),
-                                            Spacer(),
+                                            const Spacer(),
                                             Text(lastServices[index].bookingDate.toString()),
                                           ],
                                         ),
-                                        SizedBox(height: 26,),
+                                        const SizedBox(height: 26,),
                                         Row(
                                           children: [
                                             Column(
                                               crossAxisAlignment: CrossAxisAlignment.start,
                                               children:  [
-                                                Text("General Service",style: TextStyle(fontSize: 18,fontWeight: FontWeight.w600,color: CustomColor.primaryColor),),
-                                                SizedBox(height: 3,),
+                                                const Text("General Service",style: TextStyle(fontSize: 18,fontWeight: FontWeight.w600,color: CustomColor.primaryColor),),
+                                                const SizedBox(height: 3,),
                                                 Row(children: [
-                                                  Text("Vehicle No. -"),
-                                                  SizedBox(width: 7,),
+                                                  const Text("Vehicle No. -"),
+                                                  const SizedBox(width: 7,),
                                                   Text((lastServices[index].bookingVehNum.toString()),),
                                                 ],)
                                               ],
                                             ),
-                                            Spacer(),
-                                            Text((lastServices[index].bookingPaymentStatus.toString()),style: TextStyle(color: Colors.blueAccent,fontWeight: FontWeight.w700,fontSize: 17),),
+                                            const Spacer(),
+                                            Text((lastServices[index].bookingPaymentStatus.toString()),style: const TextStyle(color: Colors.blueAccent,fontWeight: FontWeight.w700,fontSize: 17),),
                                           ],
                                         )
                                       ],
@@ -545,7 +546,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                             [
                               BoxShadow(
                                 color: Colors.grey,
-                                offset: const Offset(
+                                offset:  Offset(
                                   5.0,
                                   5.0,
                                 ),
@@ -554,7 +555,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                               ), //BoxShadow
                               BoxShadow(
                                 color: Colors.white,
-                                offset: const Offset(0.0, 0.0),
+                                offset:  Offset(0.0, 0.0),
                                 blurRadius: 0.0,
                                 spreadRadius: 0.0,
                               ), //BoxShadow
@@ -577,15 +578,15 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                   ],
                                 ),
                               ),
-                              Spacer(),
+                              const Spacer(),
                               Container(
                                   decoration: BoxDecoration(
                                     color: CustomColor.primaryColor,
                                     borderRadius: BorderRadius.circular(15),
 
                                   ),
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(10.0),
+                                  child: const Padding(
+                                    padding:  EdgeInsets.all(10.0),
                                     child: Icon(Icons.arrow_forward_outlined,color: CustomColor.whiteColor,),
                                   ))
                             ],
@@ -600,8 +601,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
             ],
           ),
         ),
-      ) : Center(child: CircularProgressIndicator())
-
+      ) : const Center(child: CircularProgressIndicator(),),
     );
   }
 

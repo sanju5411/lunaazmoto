@@ -30,7 +30,7 @@ class IntroScreen extends StatelessWidget {
 
     return IntroductionScreen(
       key: introKey,
-      globalBackgroundColor: Colors.white,
+      globalBackgroundColor: CustomColor.backgroundColor,
       allowImplicitScrolling: true,
       autoScrollDuration: 4000,
       pages: [
