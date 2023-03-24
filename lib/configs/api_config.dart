@@ -14,9 +14,9 @@ class ApiConfig {
   static const String bookinglist = "customers/bookings";
   static const String bookingChangeStatus = "drivers/bookings/change-status";
   static const String bookingListWithKeyDriver = "drivers/bookings";
-  // static const String updateRating = "rating/update";
-  // static const String orderSave = "order/save";
-  // static const String favorites = "favourites";
+  static const String serviceCenterList = "drivers/service-centers";
+  static const String assingCenter = "drivers/bookings/assing-center";
+  static const String bookingDetails = "drivers/bookings/detail";
   // static const String setFavorite = "favourites/update";
   // static const String services = "services";
   // static const String offers = "offers";

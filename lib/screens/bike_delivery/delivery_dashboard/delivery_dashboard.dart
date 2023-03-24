@@ -132,56 +132,83 @@ class _DeliveryDashboardState extends State<DeliveryDashboard> {
                            child: Row(
                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
                              children: [
-                               Container(
-                                   height: 110,
-                                   width: 110,
-                                   decoration:  BoxDecoration(
-                                       border: Border.all(color: const Color(0xFFA5D872)),
-                                       borderRadius: const BorderRadius.all(Radius.circular(20))
-                                   ),
-                                   child: Column(
-                                     crossAxisAlignment: CrossAxisAlignment.center,
-                                     mainAxisAlignment: MainAxisAlignment.center,
-                                     children: [
-                                       Text("${totalBooking}",style: const TextStyle(fontSize: 26,fontWeight: FontWeight.w600,color: Color(0xFF6FC11D)),),
-                                       SizedBox(height: 10,),
-                                       Text("Today\nBooking",textAlign: TextAlign.center,style: TextStyle(fontSize: 13,fontWeight: FontWeight.w500),)
-                                     ],
-                                   )
+                               GestureDetector(
+                                 onTap: (){
+                                   if(int.parse(todayNewBooking.toString()) > 0){
+                                     Navigator.pushNamed(context, TotalBookingScreen.routeName,arguments: "Today Booking");
+                                   }else{
+                                     Fluttertoast.showToast(msg: "No Data Found");
+                                   }
+                                 },
+                                 child: Container(
+                                     height: 110,
+                                     width: 110,
+                                     decoration:  BoxDecoration(
+                                         border: Border.all(color: const Color(0xFFA5D872)),
+                                         borderRadius: const BorderRadius.all(Radius.circular(20))
+                                     ),
+                                     child: Column(
+                                       crossAxisAlignment: CrossAxisAlignment.center,
+                                       mainAxisAlignment: MainAxisAlignment.center,
+                                       children: [
+                                         Text("${todayNewBooking}",style: const TextStyle(fontSize: 26,fontWeight: FontWeight.w600,color: Color(0xFF6FC11D)),),
+                                         SizedBox(height: 10,),
+                                         Text("Today\nBooking",textAlign: TextAlign.center,style: TextStyle(fontSize: 13,fontWeight: FontWeight.w500),)
+                                       ],
+                                     )
+                                 ),
                                ),
-                               Container(
-                                   height: 110,
-                                   width: 110,
-                                   decoration:  BoxDecoration(
-                                       border: Border.all(color: const Color(0xFFEFA315)),
-                                       borderRadius: const BorderRadius.all(Radius.circular(20))
-                                   ),
-                                   child: Column(
-                                     crossAxisAlignment: CrossAxisAlignment.center,
-                                     mainAxisAlignment: MainAxisAlignment.center,
-                                     children: [
-                                       Text("${todayPickUp}",style: const TextStyle(fontSize: 26,fontWeight: FontWeight.w600,color: Color(0xFFEFA315)),),
-                                       SizedBox(height: 10,),
-                                       Text("Today\nPicked Up",textAlign: TextAlign.center,style: TextStyle(fontSize: 13,fontWeight: FontWeight.w500),)
-                                     ],
-                                   )
+                               GestureDetector(
+                                 onTap: (){
+                                   if(int.parse(todayPickUp.toString()) > 0){
+                                     //Navigator.pushNamed(context, TotalBookingScreen.routeName,arguments: "Today Pick Up");
+                                   }else{
+                                     Fluttertoast.showToast(msg: "No Data Found");
+                                   }
+                                 },
+                                 child: Container(
+                                     height: 110,
+                                     width: 110,
+                                     decoration:  BoxDecoration(
+                                         border: Border.all(color: const Color(0xFFEFA315)),
+                                         borderRadius: const BorderRadius.all(Radius.circular(20))
+                                     ),
+                                     child: Column(
+                                       crossAxisAlignment: CrossAxisAlignment.center,
+                                       mainAxisAlignment: MainAxisAlignment.center,
+                                       children: [
+                                         Text("${todayPickUp}",style: const TextStyle(fontSize: 26,fontWeight: FontWeight.w600,color: Color(0xFFEFA315)),),
+                                         SizedBox(height: 10,),
+                                         Text("Today\nPicked Up",textAlign: TextAlign.center,style: TextStyle(fontSize: 13,fontWeight: FontWeight.w500),)
+                                       ],
+                                     )
+                                 ),
                                ),
-                               Container(
-                                   height: 110,
-                                   width: 110,
-                                   decoration:  BoxDecoration(
-                                       border: Border.all(color: const Color(0xFFFF2121)),
-                                       borderRadius: const BorderRadius.all(Radius.circular(20))
-                                   ),
-                                   child: Column(
-                                     crossAxisAlignment: CrossAxisAlignment.center,
-                                     mainAxisAlignment: MainAxisAlignment.center,
-                                     children: [
-                                       Text("$todayDelivered",style: const TextStyle(fontSize: 26,fontWeight: FontWeight.w600,color: Color(0xFFFF2121)),),
-                                       const SizedBox(height: 10,),
-                                       const Text("Today's\nDelivered",textAlign: TextAlign.center,style: TextStyle(fontSize: 13,fontWeight: FontWeight.w500),)
-                                     ],
-                                   )
+                               GestureDetector(
+                                 onTap: (){
+                                   if(int.parse(todayDelivered.toString()) > 0){
+                                     //Navigator.pushNamed(context, TotalBookingScreen.routeName,arguments: "Today Delivery");
+                                   }else{
+                                     Fluttertoast.showToast(msg: "No Data Found");
+                                   }
+                                 },
+                                 child: Container(
+                                     height: 110,
+                                     width: 110,
+                                     decoration:  BoxDecoration(
+                                         border: Border.all(color: const Color(0xFFFF2121)),
+                                         borderRadius: const BorderRadius.all(Radius.circular(20))
+                                     ),
+                                     child: Column(
+                                       crossAxisAlignment: CrossAxisAlignment.center,
+                                       mainAxisAlignment: MainAxisAlignment.center,
+                                       children: [
+                                         Text("$todayDelivered",style: const TextStyle(fontSize: 26,fontWeight: FontWeight.w600,color: Color(0xFFFF2121)),),
+                                         const SizedBox(height: 10,),
+                                         const Text("Today's\nDelivered",textAlign: TextAlign.center,style: TextStyle(fontSize: 13,fontWeight: FontWeight.w500),)
+                                       ],
+                                     )
+                                 ),
                                ),
                              ],
                            ),

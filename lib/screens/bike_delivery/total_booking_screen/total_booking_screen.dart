@@ -20,6 +20,7 @@ class _TotalBookingScreenState extends State<TotalBookingScreen> {
 
   bool isApiCalled = false;
   List<NewServices> newService = [];
+  bool isLoading = true;
 
   @override
   void initState() {
@@ -39,6 +40,11 @@ class _TotalBookingScreenState extends State<TotalBookingScreen> {
       setState(() {
         isApiCalled = true;
         newService = driverMainModel.bookings!;
+        isLoading = false;
+      });
+    }else{
+      setState(() {
+        isLoading = false;
       });
     }
 
@@ -57,11 +63,9 @@ class _TotalBookingScreenState extends State<TotalBookingScreen> {
         type = "total_booking";
       }else if(appBarTitle == "Today Booking"){
         type = "today";
-      }else if(appBarTitle == ""){
+      }else if(appBarTitle == "Today Pick Up"){
         type = "";
-      }else if(appBarTitle == ""){
-        type = "";
-      }else if(appBarTitle == ""){
+      }else if(appBarTitle == "Today Delivery"){
         type = "";
       }
       getDataFromBookingApi(type);
@@ -95,7 +99,16 @@ class _TotalBookingScreenState extends State<TotalBookingScreen> {
           ),
         ],
       ),
-      body: Container(
+      body: isLoading ? Container(
+        height: screenSize.height,
+        decoration: const BoxDecoration(
+          borderRadius: BorderRadius.only(topLeft: Radius.circular(20),topRight: Radius.circular(20)),
+          color: CustomColor.whiteColor,
+        ),
+        child: Center(
+          child: CircularProgressIndicator(),
+        ),
+      ): Container(
         width: screenSize.width,
         decoration: const BoxDecoration(
           borderRadius: BorderRadius.only(topLeft: Radius.circular(20),topRight: Radius.circular(20)),
@@ -199,13 +212,13 @@ class _TotalBookingScreenState extends State<TotalBookingScreen> {
                             ),
                             title: Text("${newService[index].bookingUser?.name}",style: TextStyle(fontWeight: FontWeight.w600,fontSize: 15),),
                             subtitle: Text("${newService[index].bookedDate}, ${newService[index].bookedTime}",style: TextStyle(fontWeight: FontWeight.w500,fontSize: 12,color: Color(0xFF8C8FA5)),),
-                       trailing: Column(
-                           children: [
-                             Icon(Icons.remove_red_eye,color: Colors.cyan,),
-                             SizedBox(height: 10,),
-                             Text("New Booking",style: TextStyle(color: Colors.deepPurpleAccent),)
-                           ],
-                       ),
+                            trailing: Column(
+                              children: [
+                                Icon(Icons.remove_red_eye,color: Colors.cyan,),
+                                SizedBox(height: 10,),
+                                Text("New Booking",style: TextStyle(color: Colors.deepPurpleAccent),)
+                              ],
+                            ),
                           ),
                         ),
                       ),
@@ -214,7 +227,7 @@ class _TotalBookingScreenState extends State<TotalBookingScreen> {
 
 
 
-          ],),
+            ],),
         ),
       ),
     );
