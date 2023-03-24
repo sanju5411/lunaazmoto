@@ -74,15 +74,18 @@ class _DashboardScreenState extends State<DashboardScreen> {
           print("last service>>>>>>>>>${jsonEncode(serviceModel[0].bookingCenter)}<<<<<<<<<<<");
 
         }
-       todayBookingCount = _dashboard!.todayBookings!;
-       totalBookingCount = _dashboard!.totalBookings!;
+       todayBookingCount = _dashboard!.todayBookings ?? 0;
+
+       totalBookingCount = _dashboard!.totalBookings ?? 0;
         setState(() {
           loading = false;
         });
       });
     }
     // _createSlider();
+
     _createBannerSlider();
+
   }
 
   @override
@@ -118,9 +121,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
       ),
       drawer: Drawer(
         child:NavCusDrawer()
-      ),
+       ),
       body: !loading ?
-      StretchingOverscrollIndicator(
+            StretchingOverscrollIndicator(
         axisDirection: AxisDirection.down,
         child: SingleChildScrollView(
           child: Column(

@@ -9,6 +9,8 @@ import 'package:lunaaz_moto/models/customer/service_model/service_model.dart';
 import 'package:lunaaz_moto/screens/customer/customer_screens/book_form/booking_form.dart';
 import 'package:lunaaz_moto/services/api_service.dart';
 
+import '../../../../common/widgets/choose_vehicle.dart';
+
 class MyServicesScreen extends StatefulWidget {
   static const String routeName = '/my_services_screen';
 
@@ -110,10 +112,15 @@ class _MyServicesScreenState extends State<MyServicesScreen> {
 
                               ),
 
-                              child: Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Text("New Booking",style:
-                                TextStyle(color: CustomColor.whiteColor),
+                              child: InkWell(
+                                onTap: (){
+                                  Navigator.pushNamed(context, CustomWheelerPopUp.routeName);
+                                },
+                                child: Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Text("New Booking",style:
+                                  TextStyle(color: CustomColor.whiteColor),
+                                  ),
                                 ),
                               ),
                             ),

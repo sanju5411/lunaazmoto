@@ -1,8 +1,12 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:lunaaz_moto/constants/global_variables.dart';
+import 'package:lunaaz_moto/models/service_center/service_centers.dart';
 import 'package:lunaaz_moto/screens/customer/customer_screens/profile_screen/profile_screen.dart';
 import 'package:lunaaz_moto/screens/service_centre/screens/customer_list/customer_common_list.dart';
 import 'package:lunaaz_moto/screens/service_centre/screens/navVendorBar/vendor_nav_bar.dart';
+import 'package:lunaaz_moto/services/api_service.dart';
 
 class ServiceDashboard extends StatefulWidget {
   static const String routeName = '/service_centre';
@@ -15,6 +19,35 @@ class ServiceDashboard extends StatefulWidget {
 }
 
 class _ServiceDashboardState extends State<ServiceDashboard> {
+
+
+
+  void _setServiceDashData() async {
+
+    //ServiceCenters _serviceCenters = await ApiService.getServiceDashboard("service-center");
+   // print("service dashboard data>>>>>${jsonEncode(_serviceCenters)}>>>>");
+
+
+    // if(bookingList.status  == "success"){
+    //   onGoingList = bookingList!.onGoingBookings!;
+    //   lastBookings = bookingList!.bookings!;
+    //   setState(() {
+    //     loading = false;
+    //   });
+    // }
+
+  }
+
+  @override
+  void initState() {
+
+   // _setServiceDashData();
+
+    super.initState();
+    //  WidgetsBinding.instance.addObserver(this);
+  }
+
+
   @override
   Widget build(BuildContext context) {
     Size screenSize = MediaQuery.of(context).size;

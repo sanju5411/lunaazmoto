@@ -59,7 +59,7 @@ Route<dynamic> generateRoute(RouteSettings routeSettings) {
 
     case BookingForm.routeName:
       return CustomPageRoute(
-        child:   BookingForm(),
+        child:   const BookingForm(),
         routeSettings: routeSettings,
       );
 

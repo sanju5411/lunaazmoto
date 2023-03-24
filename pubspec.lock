@@ -768,6 +768,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.8.0"
+  multi_dropdown:
+    dependency: "direct main"
+    description:
+      name: multi_dropdown
+      sha256: "65b8f505b251c5173e8eff64c09cd37460d8f8be906c2069a03815ad2641dcd1"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.0.9"
   nested:
     dependency: transitive
     description:
@@ -1048,6 +1056,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.1.5"
+  shimmer:
+    dependency: "direct main"
+    description:
+      name: shimmer
+      sha256: "1f1009b5845a1f88f1c5630212279540486f97409e9fc3f63883e71070d107bf"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.0.0"
   sky_engine:
     dependency: transitive
     description: flutter

@@ -68,6 +68,7 @@ dependencies:
   geolocator: ^9.0.2
   geocoding: ^2.1.0
   multi_dropdown: ^1.0.9
+  shimmer: ^2.0.0
 
 
 

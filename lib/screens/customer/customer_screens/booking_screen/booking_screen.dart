@@ -37,6 +37,8 @@ class _BookingScreenState extends State<BookingScreen> {
 
 
   String rupees = "₹";
+  bool isPackage = true;
+
 
 
   @override
@@ -50,17 +52,20 @@ class _BookingScreenState extends State<BookingScreen> {
 
   getAllPackagesList(String appBarTitle) async{
 
+
     Map<String, String> jsonInput = {
       'package_type': appBarTitle,
     };
     PackagesMainModel packagesModel = await ApiService.packages(jsonInput: jsonEncode(jsonInput));
     print("packages?>>>>${jsonEncode(packagesModel)}>>>>>>");
 
+
       _bookingPackage = packagesModel;
       if(_bookingPackage?.packages != null){
         _packages = _bookingPackage?.packages!;
         setState(() {
           loading = false;
+          isPackage = false;
         });
 
       }
@@ -128,9 +133,12 @@ class _BookingScreenState extends State<BookingScreen> {
 
   @override
   Widget build(BuildContext context) {
-
     final appBarTitle = ModalRoute.of(context)?.settings.arguments as String;
-    getAllPackagesList(appBarTitle);
+    if(isPackage){
+      getAllPackagesList(appBarTitle);
+    }
+
+
 
     Size screenSize = MediaQuery.of(context).size;
     return Scaffold(

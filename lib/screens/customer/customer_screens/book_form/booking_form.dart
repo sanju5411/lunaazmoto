@@ -41,6 +41,7 @@ class _BookingFormState extends State<BookingForm> {
 
 
   bool _validate = false;
+  var isDisabled = true;
 
   @override
   void initState() {
@@ -95,7 +96,9 @@ class _BookingFormState extends State<BookingForm> {
 
 
   void _showDatePicker() {
+
     showDatePicker(
+      currentDate: DateTime.now(),
       context: context,
       initialDate: DateTime.now(),
       firstDate: DateTime(2000),
@@ -215,6 +218,7 @@ class _BookingFormState extends State<BookingForm> {
   @override
   Widget build(BuildContext context) {
 
+
     final packageId = ModalRoute.of(context)?.settings.arguments as int;
 
     Size screenSize = MediaQuery.of(context).size;
@@ -230,14 +234,14 @@ class _BookingFormState extends State<BookingForm> {
             Navigator.pop(context);
 
           },
-          child: Icon(Icons.arrow_back)
+          child: const Icon(Icons.arrow_back)
           ,),
-        title: Text("Booking Form",style: TextStyle(color: Colors.white),),
+        title: const Text("Booking Form",style: TextStyle(color: Colors.white),),
       ),
       body: SingleChildScrollView(
         child: Column(
           children: [
-            SizedBox(height: 50,),
+            const SizedBox(height: 50,),
             Container(
               width: screenSize.width,
               //height: screenSize.height,
@@ -253,15 +257,15 @@ class _BookingFormState extends State<BookingForm> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    SizedBox(height: 15,),
+                    const SizedBox(height: 15,),
                     const Text("Booking Service",style: TextStyle(
                       fontSize: 30,
                       fontWeight: FontWeight.w800
                     ),),
                     const SizedBox(height: 20,),
-                    SizedBox(height: 10,),
-                    Text("Vehicle Name",style: TextStyle(fontSize: 20,fontWeight: FontWeight.w600),),
-                    SizedBox(height: 10,),
+                    const SizedBox(height: 10,),
+                    const Text("Vehicle Name",style: TextStyle(fontSize: 20,fontWeight: FontWeight.w600),),
+                    const SizedBox(height: 10,),
                     Container(
                   decoration: BoxDecoration(
                     boxShadow: const [
@@ -278,12 +282,13 @@ class _BookingFormState extends State<BookingForm> {
                     decoration: InputDecoration(
                       fillColor: Colors.white,
                       filled: true,
-                      suffixIcon: const Icon(
-                        Icons.person,
+                      suffixIcon:
+
+                      const Icon(
+                        Icons.car_repair,
                         color: Color(0xffc40000),
                       ),
                       hintText: 'Enter Vehicle Name',
-
                       enabledBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(15.0),
                         borderSide: const BorderSide(
@@ -507,19 +512,7 @@ class _BookingFormState extends State<BookingForm> {
                       child:  Row(
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
-                          // Text('Online Cash'),
-                          // Radio(
-                          //
-                          //   value: 1,
-                          //   groupValue: _radioSelected,
-                          //   activeColor: Colors.blue,
-                          //   onChanged: (value) {
-                          //     setState(() {
-                          //       _radioSelected = value as int;
-                          //       _radioVal  = 'Online Cash';
-                          //     });
-                          //   },
-                          // ),
+
                           Radio(
                             value: 2,
                             groupValue: _radioSelected,
@@ -532,6 +525,20 @@ class _BookingFormState extends State<BookingForm> {
                             },
                           ),
                           Text('Cash On Delivery'),
+                          Spacer(),
+                          Text('Online Cash'),
+                          Radio(
+                            toggleable: false,
+                            value: 1,
+                            groupValue: _radioSelected,
+                            activeColor: Colors.blue,
+                            onChanged: (value) {
+                              // setState(() {
+                              //   _radioSelected = value as int;
+                              //   _radioVal  = 'Online Cash';
+                              // });
+                            },
+                          ),
 
                         ],
                       ),
