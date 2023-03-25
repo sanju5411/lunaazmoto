@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
@@ -44,12 +45,23 @@ class _LoginScreenState extends State<LoginScreen> {
   TextEditingController phoneController = TextEditingController();
 
   FirebaseAuth auth = FirebaseAuth.instance;
+  final FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance;
 
   String verificationIDRecived = "";
+
+
+  _getFCMToken() async {
+    await _firebaseMessaging.getToken().then((value) {
+      _fcmToken = value ?? "";
+    });
+  }
+
+
 
   @override
   void initState() {
     SharedPreferencesService.setFirstFalse();
+    _getFCMToken();
     super.initState();
   }
 
@@ -395,6 +407,7 @@ class _LoginScreenState extends State<LoginScreen> {
     print('LOGIN_RES ${jsonEncode(login)}');
 
     if (login.status == "success") {
+
 
       if (login.token != null) {
         await SharedPreferencesService.setApiToken(apiToken: login.token!);

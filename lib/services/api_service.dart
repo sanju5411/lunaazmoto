@@ -44,6 +44,7 @@ class ApiService {
   }
 
   static Future<Login> login({required Object jsonInput}) async {
+
     Uri uri = Uri.parse('${ApiConfig.apiV1}/${ApiConfig.login}');
     try {
       var res = await post(uri,headers: headers,body: jsonInput,);

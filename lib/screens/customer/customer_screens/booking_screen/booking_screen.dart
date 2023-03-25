@@ -149,6 +149,7 @@ class _BookingScreenState extends State<BookingScreen> {
         leading: InkWell(
           onTap: () {
             Navigator.pop(context);
+
           },
           child: const Icon(
             Icons.arrow_back,
