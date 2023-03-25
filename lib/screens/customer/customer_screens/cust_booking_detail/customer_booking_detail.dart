@@ -67,7 +67,7 @@ class _CustomerBookingDetailState extends State<CustomerBookingDetail> {
                         backgroundImage: NetworkImage("https://cdn.hswstatic.com/gif/play/0b7f4e9b-f59c-4024-9f06-b3dc12850ab7-1920-1080.jpg"), // No matter how big it is, it won't overflow
                       ),
                       title: Text("${bookingData.bookingUser?.name}",style: const TextStyle(fontWeight: FontWeight.w600,fontSize: 15),),
-                      subtitle: Text("${bookingData.bookedDate}, ${bookingData.bookedTime}\nNewyork, United States\n${bookingData.bookingUser?.email}",
+                      subtitle: Text("${bookingData.bookedDate}, ${bookingData.bookedTime}\nNewyork,  United States\n${bookingData.bookingUser?.email}",
                         style: const TextStyle(fontWeight: FontWeight.w500,fontSize: 12,color: Color(0xFF8C8FA5)),),
                       trailing:  Container(
                           padding: EdgeInsets.symmetric(horizontal: 8,vertical: 5),
