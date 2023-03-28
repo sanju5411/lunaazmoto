@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:lunaaz_moto/common/widgets/custom_button.dart';
 import 'package:lunaaz_moto/constants/global_variables.dart';
 import 'package:lunaaz_moto/models/customer/user_address_model/user_address_model.dart';
@@ -18,14 +19,26 @@ class AddAddressScreen extends StatefulWidget {
 
 class _AddAddressScreenState extends State<AddAddressScreen> {
 
-  bool isLoading = true;
+  final TextEditingController _titleController =       TextEditingController();
+  final TextEditingController _nameController =      TextEditingController();
+  final TextEditingController _mobileController = TextEditingController();
+  final TextEditingController _addressLine1Controller   = TextEditingController();
+  final TextEditingController _addressLine2Controller     = TextEditingController();
+  final TextEditingController _localityController        =     TextEditingController();
+  final TextEditingController _landmarkController        =     TextEditingController();
+  final TextEditingController _cityController        =     TextEditingController();
+  final TextEditingController _pincodeController        =     TextEditingController();
+  final TextEditingController _stateController        =     TextEditingController();
+  final TextEditingController _countryController        =     TextEditingController();
+
+  bool isLoading = false;
 
   @override
   void initState() {
 
 
 
-   // _setBookingFormData();
+
     super.initState();
 
   }
@@ -34,7 +47,9 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
 
 
 
-    isLoading = true;
+    setState(() {
+      isLoading = true;
+    });
 
     AuthAddress _authAddress = await ApiService.setAddressForm(jsonInput: jsonEncode(jsonInput));
 
@@ -72,6 +87,7 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
           children: [
             SizedBox(height: 20,),
             CustomButton(
+
                 onTap: (){},
               text: 'Current Location',
 
@@ -87,9 +103,10 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
                   child: Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 10.0),
                     child: CustomButton(
+                     // variant: (_titleController.text == "Home") ? Variant.primary: Variant.booknowbtn,
                       onTap: () {
                         setState(() {
-
+                          _titleController.text = "Home";
                         });
                       },
                       text:'Home',
@@ -103,7 +120,7 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
                     child: CustomButton(
                       onTap: () {
                         setState(() {
-
+                          _titleController.text = "Office";
                         });
                       },
                       text: 'Office',
@@ -118,11 +135,10 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
                       child: CustomButton(
                         onTap: () {
                           setState(() {
-
+                            _titleController.text = "Other";
                           });
                         },
                         text:'Other',
-
                         height: 30,
                       ),
                     )),
@@ -130,7 +146,7 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
             ),
             const SizedBox(height: 20),
             TextFormField(
-              controller: mobileController,
+              controller: _nameController,
               decoration: CustomInputDecoration.textInputDecoration.copyWith(
                 labelText: 'Name',
                 hintText: 'Enter Your Name',
@@ -140,7 +156,7 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
             const SizedBox(height: 20),
 
             TextFormField(
-              controller: mobileController,
+              controller: _mobileController,
               decoration: CustomInputDecoration.textInputDecoration.copyWith(
                 labelText: 'Mobile Number',
                 hintText: 'Enter Your Mobile Number',
@@ -149,7 +165,7 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
             ),
             const SizedBox(height: 20),
             TextFormField(
-              controller: mobileController,
+              controller: _addressLine1Controller,
               decoration: CustomInputDecoration.textInputDecoration.copyWith(
                 labelText: 'Address Line 1',
                 hintText: 'Enter Address Line 1',
@@ -158,7 +174,7 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
             ),
             const SizedBox(height: 20),
             TextFormField(
-              controller: mobileController,
+              controller: _addressLine2Controller,
               decoration: CustomInputDecoration.textInputDecoration.copyWith(
                 labelText: 'Address Line 2',
                 hintText: 'Enter Address Line 2',
@@ -167,7 +183,7 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
             ),
             const SizedBox(height: 20),
             TextFormField(
-              controller: mobileController,
+              controller: _localityController,
               decoration: CustomInputDecoration.textInputDecoration.copyWith(
                 labelText: 'Locality',
                 hintText: 'Enter Your Locality',
@@ -176,7 +192,7 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
             ),
             const SizedBox(height: 20),
             TextFormField(
-              controller: mobileController,
+              controller: _landmarkController,
               decoration: CustomInputDecoration.textInputDecoration.copyWith(
                 labelText: 'Landmark',
                 hintText: 'Enter Your Landmark',
@@ -188,7 +204,7 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
               children: [
                 Flexible(
                   child: TextFormField(
-                    controller: cityController,
+                    controller: _cityController,
                     decoration:
                     CustomInputDecoration.textInputDecoration.copyWith(
                       labelText: 'City',
@@ -200,7 +216,7 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
                 const SizedBox(width: 20),
                 Flexible(
                   child: TextFormField(
-                    controller: cityController,
+                    controller: _pincodeController,
                     decoration:
                     CustomInputDecoration.textInputDecoration.copyWith(
                       labelText: 'Pincode',
@@ -216,7 +232,7 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
               children: [
                 Flexible(
                   child: TextFormField(
-                    controller: cityController,
+                    controller: _stateController,
                     decoration:
                     CustomInputDecoration.textInputDecoration.copyWith(
                       labelText: 'State',
@@ -228,7 +244,7 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
                 const SizedBox(width: 20),
                 Flexible(
                   child: TextFormField(
-                    controller: cityController,
+                    controller: _countryController,
                     decoration:
                     CustomInputDecoration.textInputDecoration.copyWith(
                       labelText: 'Country',
@@ -242,79 +258,78 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
             const SizedBox(height: 20),
             CustomButton(
               onTap: () async {
-                // var vehicleName  = _vehicNameController.text.toString();
-                // var phoneNumber  = _phoneController.text.toString();
-                // var serviceDate  = _serviceDateController.text.toString();
-                // var serviceTime  = _serviceTimeController.text.toString();
-                // var vehicleNum  = _vehicleNumController.text.toString();
-                // var address  = _addressController.text.toString();
-                //
-                // Map<String, String> jsonInput = {
-                //   "user_address_id": "1",
-                //   "package_id": packageId.toString(),
-                //   "booked_date": serviceDate,
-                //   "booked_time": serviceTime,
-                //   "vehicle_type":"two_wheeler",
-                //   "vehicle_name": vehicleName,
-                //   "vehicle_number": vehicleNum,
-                //   "instructions":"instructions",
-                //   "payment_method":_radioSelected.toString(),
-                //   "payment_details":"",
-                //   "payment_status":"due",
-                //   "user_address": addressId.toString(),
-                // };
-                //
-                // bool saveData = true;
-                //
-                // if(vehicleName.isEmpty){
-                //   saveData = false;
-                //   Fluttertoast.showToast(msg: "Please Enter Vehicle Name");
-                //   return;
-                // }
-                //
-                // if(phoneNumber.isEmpty){
-                //   saveData = false;
-                //   Fluttertoast.showToast(msg: "Please Enter Phone Number");
-                //   return;
-                // }
-                //
-                // if(serviceDate.isEmpty){
-                //   saveData = false;
-                //   Fluttertoast.showToast(msg: "Please Enter Date");
-                //   return;
-                // }
-                //
-                // if(serviceTime.isEmpty){
-                //   saveData = false;
-                //   Fluttertoast.showToast(msg: "Please Enter Time");
-                //   return;
-                // }
-                //
-                // if(vehicleNum.isEmpty){
-                //   saveData = false;
-                //   Fluttertoast.showToast(msg: "Please Enter Vehicle Number");
-                //   return;
-                // }
-                //
-                // // if(address.isEmpty){
-                // //   saveData = false;
-                // //   Fluttertoast.showToast(msg: "Please Enter Address");
-                // //   return;
-                // // }
-                //
-                // if(saveData){
-                //   _setBookingFormData(jsonInput);
-                // }
-                //
-                // print("object${saveData}");
-                //
-                // print("object>>>>${_radioVal.toString()}>>>>");
-                //
-                // print("mapp>>>>>>>>>>&&&>>${jsonEncode(jsonInput)}>>>>>>>>>>>>");
-                //
+                var title  = _titleController.text.toString();
+                var name  = _nameController.text.toString();
+                var mobile  = _mobileController.text.toString();
+                var address1  = _addressLine1Controller.text.toString();
+                var address2  = _addressLine2Controller.text.toString();
+                var locality  = _localityController.text.toString();
+                var landmark  = _landmarkController.text.toString();
+                var city  = _cityController.text.toString();
+                var pincode  = _pincodeController.text.toString();
+                var state  = _stateController.text.toString();
+                var country  = _countryController.text.toString();
+
+                Map<String, String> jsonInput = {
+                  "title":title,
+                  "name":name,
+                  "mobile":mobile,
+                  "alternate_mobile":"",
+                  "address_line1":address1,
+                  "address_line2":address2,
+                  "locality":locality,
+                  "landmark":landmark,
+                  "pincode":pincode,
+                  "city":city,
+                  "state":state,
+                  "country":country,
+                  "latitude":"",
+                  "longitude":""
+                };
+
+                bool saveData = true;
+
+                if(address1.isEmpty){
+                  saveData = false;
+                  Fluttertoast.showToast(msg: "Please Enter Address Line 1");
+                  return;
+                }
+
+                if(city.isEmpty){
+                  saveData = false;
+                  Fluttertoast.showToast(msg: "Please Enter City");
+                  return;
+                }
+
+                if(pincode.isEmpty){
+                  saveData = false;
+                  Fluttertoast.showToast(msg: "Please Enter Pincode");
+                  return;
+                }
+
+                if(state.isEmpty){
+                  saveData = false;
+                  Fluttertoast.showToast(msg: "Please Enter State");
+                  return;
+                }
+
+                if(country.isEmpty){
+                  saveData = false;
+                  Fluttertoast.showToast(msg: "Please Enter Country");
+                  return;
+                }
+
+
+                if(saveData){
+                  _setBookingFormData(jsonInput);
+                }
+
+
+
 
               },
-              text: 'Update Address',
+              loading: isLoading,
+              text: 'Save Address',
              // loading: _loading,
             )
           ],

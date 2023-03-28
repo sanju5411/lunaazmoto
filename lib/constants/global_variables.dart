@@ -11,6 +11,7 @@ class CustomColor {
   static const backgroundActiveColor = Color.fromRGBO(129, 217, 111, 1.0);
   static const backgroundPauseColor = Color.fromRGBO(224, 147, 48, 1.0);
   static const booknowbtnColor = Color.fromRGBO(78, 108, 80, 1);
+  static const primaryColorLight = Color.fromRGBO(255, 108, 108, 1.0);
 
   static const successColor = Color.fromRGBO(91, 178, 39, 1.0);
 

@@ -1,16 +1,19 @@
+import 'package:lunaaz_moto/models/customer/active_packages/active_package.dart';
 import 'package:lunaaz_moto/models/customer/banner/banner_image.dart';
 import 'package:lunaaz_moto/models/customer/happy_customer/happy_customer.dart';
 import 'package:lunaaz_moto/models/customer/service_model/service_model.dart';
 
 class Dashboard {
   Dashboard({
-    this.status,
+     this.status,
     this.message,
-   this.happyCustomers,
-   this.banners,
-   this.serviceModel,
+    this.banners,
+    this.happyCustomers,
+     this.activePackages,
     this.todayBookings,
+     this.serviceModel,
     this.totalBookings,
+   // required this.popularPackage,
   });
 
   String? status;
@@ -19,6 +22,8 @@ class Dashboard {
    List<HappyCustomer>? happyCustomers;
   List<BannerImage>? banners;
  List<ServiceModel>? serviceModel;
+ List<ActivePackage>? activePackages;
+ //List<ServiceModel>? popularPackage;
 
   int? totalBookings;
   int? todayBookings;
@@ -28,6 +33,10 @@ class Dashboard {
     message: json["message"],
     todayBookings: json["today_bookings"],
     totalBookings: json["total_bookings"],
+
+    activePackages: json["active_packages"] == null || json["active_packages"] == ""
+        ? null
+        : List<ActivePackage>.from(json["active_packages"].map((x) => ActivePackage.fromJson(x))),
 
     happyCustomers: json["happy_customers"] == null || json["happy_customers"] == ""
         ? null
@@ -51,6 +60,11 @@ class Dashboard {
     "message": message,
     "today_bookings" : todayBookings,
     "total_bookings" : totalBookings,
+
+    "active_packages": activePackages == null || activePackages == ""
+        ? null
+        : List<ActivePackage>.from(activePackages!.map((x) => x.toJson())),
+
     "happy_customers": happyCustomers == null
         ? null
         : List<HappyCustomer>.from(happyCustomers!.map((x) => x.toJson())),
