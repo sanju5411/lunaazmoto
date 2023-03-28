@@ -10,8 +10,10 @@ import 'package:lunaaz_moto/constants/global_variables.dart';
 import 'package:lunaaz_moto/models/auth/login/login.dart';
 import 'package:lunaaz_moto/models/auth/user/user.dart';
 import 'package:lunaaz_moto/models/profile/user_data.dart';
+import 'package:lunaaz_moto/screens/bike_delivery/delivery_dashboard/delivery_dashboard.dart';
 import 'package:lunaaz_moto/screens/customer/customer_screens/dashboard_screen/dashboard_screen.dart';
 import 'package:lunaaz_moto/screens/customer/customer_screens/profile_screen/profile_screen.dart';
+import 'package:lunaaz_moto/screens/service_centre/screens/vendor_dashboard/vendor_dashboard_screen.dart';
 import 'package:lunaaz_moto/screens/splash_screen.dart';
 import 'package:lunaaz_moto/services/api_service.dart';
 import 'package:lunaaz_moto/services/shared_preferences_service.dart';
@@ -53,7 +55,7 @@ class FillformScreenState extends State<FillformScreen> {
       _nameController.text = _userData != null ? _userData!.name ?? "" : "";
       _emailController.text = _userData != null ? _userData!.email ?? "" : "";
       _mobileController.text = _userData != null ? _userData!.mobile ?? "" : "";
-      print("${jsonEncode(_userData)}");
+      print("getpfdata>>>>>${jsonEncode(_userData)}");
     });
   }
 
@@ -72,7 +74,7 @@ class FillformScreenState extends State<FillformScreen> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               const Text(
-                "Fill out of this form",
+                "Profile",
                 style: TextStyle(fontWeight: FontWeight.w800, fontSize: 25),
               ),
               const SizedBox(
@@ -308,6 +310,7 @@ class FillformScreenState extends State<FillformScreen> {
 
 
   _updateProfile() async {
+   // print("userData>>${widget.}")
     if (_nameController.text.isEmpty) {
       Fluttertoast.showToast(msg: "Please enter full name");
       return;
@@ -323,22 +326,62 @@ class FillformScreenState extends State<FillformScreen> {
       avatar: path != null ? File(path!) : null,
     );
 
-    if (login.status != null &&
-        login.status == "success" &&
-        login.user != null) {
-      if (mounted) {
-        print("auth data upd profile>>>>${jsonEncode(login.user)}");
-        await SharedPreferencesService.setAuthUser(authUser: login.user!);
-        Fluttertoast.showToast(msg: login.message ?? "Update successfully")
-            .then((value) =>  Navigator.pushNamed(context, DashboardScreen.routeName));
-        SharedPreferencesService.setRegistered(registered: true);
+    bool savePfData = true;
+
+
+    var name  = _nameController.text.toString();
+    var email  = _emailController.text.toString();
+    var mobile  = _mobileController.text.toString();
+
+
+    if(name.isEmpty){
+      savePfData = false;
+      Fluttertoast.showToast(msg: "Please Enter Name");
+      return;
+    }
+
+    if(email.isEmpty){
+      savePfData = false;
+      Fluttertoast.showToast(msg: "Please Enter Email");
+      return;
+    }
+    if(mobile.isEmpty){
+      savePfData = false;
+      Fluttertoast.showToast(msg: "Please Enter Mobile Number");
+      return;
+    }
+
+    if(savePfData){
+      if (login.status != null &&
+          login.status == "success" &&
+          login.user != null) {
+        if (mounted) {
+          print("auth data upd profile>>>>${jsonEncode(login.user)}");
+          await SharedPreferencesService.setAuthUser(authUser: login.user!);
+
+          Fluttertoast.showToast(msg: login.message ?? "Update successfully")
+              .then((value) => {
+            if(_userData?.userType == "driver"){
+              Navigator.pushNamed(context, DeliveryDashboard.routeName)
+            }
+            else if(_userData?.userType == "service_center"){
+              Navigator.pushNamed(context, ServiceDashboard.routeName)
+            }
+            else{
+                Navigator.pushNamed(context, DashboardScreen.routeName)
+              }
+          } );
+          SharedPreferencesService.setRegistered(registered: true);
+
+        }
+      } else {
+        Fluttertoast.showToast(msg: "Failed to save address, Try again..");
+
 
       }
-    } else {
-      Fluttertoast.showToast(msg: "Failed to save address, Try again..");
-
-
     }
+
+
   }
 }
 

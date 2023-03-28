@@ -15,68 +15,79 @@ class _CustomWheelerPopUpState extends State<CustomWheelerPopUp> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0x7ea8a8a8),
+      backgroundColor: const Color(0x73d9d9d9),
       body: AlertDialog(
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(30),
+          borderRadius: BorderRadius.circular(20),
         ),
         alignment: Alignment.center,
-        title: Text("Select :-"),
+        title: const Text("Please select service"),
+
         actionsAlignment: MainAxisAlignment.center,
         actions: [
          Column(
-           crossAxisAlignment: CrossAxisAlignment.start,
+           crossAxisAlignment: CrossAxisAlignment.center,
            children: [
 
            SizedBox(
-             height: 10,
+             height: 8,
            ),
-           InkWell(
-             onTap: (){
-               Navigator.pop(context);
-               Navigator.pushNamed(context, BookingScreen.routeName,arguments: "two_wheeler",);
-             },
-             child: Container(
-               width: 150,
-                 decoration: BoxDecoration(color: CustomColor.primaryColor,borderRadius: BorderRadius.circular(13),),
-                 child: const Padding(
-                   padding:  EdgeInsets.symmetric(vertical: 8,horizontal: 16),
-                   child: Align(
-                     alignment: Alignment.center,
-                     child: Text(
-                       "Bike Service",
-                       style: TextStyle(
-                           fontSize: 20,
-                           color: CustomColor.whiteColor,
-                           fontWeight: FontWeight.w700),
-                     ),
-                   ),
-                 )),
-           ),
+          InkWell(
+            onTap: (){
+              Navigator.pop(context);
+              Navigator.pushNamed(context, BookingScreen.routeName,arguments: "two_wheeler",);
+            },
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              child: Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(17),
+                  color: Color(0xffff5050)
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+
+
+                    Icon(Icons.pedal_bike,color: CustomColor.whiteColor,),
+                      SizedBox(width: 20,),
+                      Text("Bike Service",style: TextStyle(fontSize: 23,color: CustomColor.whiteColor),),
+                  ],),
+                ),
+              ),
+            ),
+          ),
            SizedBox(
              height: 10,
            ),
              InkWell(
                onTap: (){
                  Navigator.pop(context);
-                 Navigator.pushNamed(context, BookingScreen.routeName,arguments: "four_wheeler");
+                 Navigator.pushNamed(context, BookingScreen.routeName,arguments: "four_wheeler",);
                },
-               child: Container(
-                 width: 150,
-                   decoration: BoxDecoration(color: CustomColor.primaryColor,borderRadius: BorderRadius.circular(13),),
-                   child: const Padding(
-                     padding:  EdgeInsets.symmetric(vertical: 8,horizontal: 16),
-                     child: Align(
-                       alignment: Alignment.center,
-                       child: Text(
-                        "Car Wash",
-                         style: TextStyle(
-                             fontSize: 20,
-                             color: CustomColor.whiteColor,
-                             fontWeight: FontWeight.w700),
-                       ),
-                     ),
-                   )),
+               child: Padding(
+                 padding: const EdgeInsets.symmetric(horizontal: 20),
+                 child: Container(
+                   decoration: BoxDecoration(
+                       borderRadius: BorderRadius.circular(17),
+                       color: const Color(0xffff5050)
+                   ),
+                   child: Padding(
+                     padding: const EdgeInsets.all(8.0),
+                     child: Row(
+                       mainAxisAlignment: MainAxisAlignment.center,
+                       children: const [
+
+
+                         Icon(Icons.car_crash,color: CustomColor.whiteColor,),
+                         SizedBox(width: 20,),
+                         Text("Car Wash",style: TextStyle(fontSize: 23,color: CustomColor.whiteColor),),
+                       ],),
+                   ),
+                 ),
+               ),
              ),
            SizedBox(
              height: 10,
@@ -87,3 +98,9 @@ class _CustomWheelerPopUpState extends State<CustomWheelerPopUp> {
     );
   }
 }
+
+
+// onTap: (){
+// Navigator.pop(context);
+// Navigator.pushNamed(context, BookingScreen.routeName,arguments: "two_wheeler",);
+// },

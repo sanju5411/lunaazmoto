@@ -49,7 +49,7 @@ class ApiService {
     try {
       var res = await post(uri,headers: headers,body: jsonInput,);
       var json = jsonDecode(res.body);
-      print('Object >>>>>${json}');
+      print('Object >>>>>${jsonInput}');
       return Login.fromJson(json);
     } catch (e) {
       debugPrint("LOGIN_API_ERROR>>> $e");
@@ -73,7 +73,7 @@ class ApiService {
     }
   }
 
-  static Future<Login> updateProfile({required String name, String? email, File? avatar,String? mobile}) async {
+    static Future<Login> updateProfile({required String name, String? email, File? avatar,String? mobile}) async {
     Uri uri = Uri.parse("${ApiConfig.apiV1}/${ApiConfig.updateProfile}");
     String token = await SharedPreferencesService.getApiToken();
     headers.addAll({'Authorization': 'Bearer $token'});
@@ -176,6 +176,7 @@ class ApiService {
         headers: headers,
         body: jsonInput,
       );
+
       var json = jsonDecode(res.body);
       return PackagesMainModel.fromJson(json);
     } catch (e) {
@@ -183,6 +184,7 @@ class ApiService {
       return PackagesMainModel();
     }
   }
+
 
   static Future<DriverMainModel> getDriverDashboardData() async {
     Uri uri = Uri.parse('${ApiConfig.apiV1}/${ApiConfig.driversDashboard}');

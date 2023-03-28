@@ -372,6 +372,7 @@ class _LoginScreenState extends State<LoginScreen> {
       'country_code': _countryCode,
       'mobile': _mobileNumber,
       'user_type': userType,
+      'fcm_token': _fcmToken,
     };
     Navigator.pushNamed(context, OtpScreen.routeName, arguments: data).then((value) {
       setState(() {

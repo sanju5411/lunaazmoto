@@ -6,10 +6,12 @@ import 'package:lunaaz_moto/screens/bike_delivery/booking_detail/booking_detail.
 import 'package:lunaaz_moto/screens/bike_delivery/delivery_dashboard/delivery_dashboard.dart';
 import 'package:lunaaz_moto/screens/bike_delivery/notification_screen/notification_screen.dart';
 import 'package:lunaaz_moto/screens/bike_delivery/total_booking_screen/total_booking_screen.dart';
+import 'package:lunaaz_moto/screens/customer/customer_screens/all_packages/all_packages.dart';
 import 'package:lunaaz_moto/screens/customer/customer_screens/book_form/booking_form.dart';
 import 'package:lunaaz_moto/screens/customer/customer_screens/booking_screen/booking_screen.dart';
 import 'package:lunaaz_moto/screens/customer/customer_screens/dashboard_screen/dashboard_screen.dart';
 import 'package:lunaaz_moto/screens/customer/customer_screens/fill_form/fill_out_form.dart';
+import 'package:lunaaz_moto/screens/customer/customer_screens/my_services/my_service_detail.dart';
 import 'package:lunaaz_moto/screens/customer/customer_screens/my_services/my_services.dart';
 import 'package:lunaaz_moto/screens/customer/customer_screens/profile_screen/profile_screen.dart';
 import 'package:lunaaz_moto/screens/customer/customer_screens/side_navbar/side_navbar.dart';
@@ -68,6 +70,12 @@ Route<dynamic> generateRoute(RouteSettings routeSettings) {
         routeSettings: routeSettings,
       );
 
+    case MyServiceDetail.routeName:
+      return CustomPageRoute(
+        child:   const MyServiceDetail(),
+        routeSettings: routeSettings,
+      );
+
     case BookingScreen.routeName:
       return CustomPageRoute(
         child:   BookingScreen(),
@@ -87,6 +95,11 @@ Route<dynamic> generateRoute(RouteSettings routeSettings) {
         routeSettings: routeSettings,
       );
 
+    case AllPackages.routeName:
+      return CustomPageRoute(
+        child:  const AllPackages(),
+        routeSettings: routeSettings,
+      );
 
     case FillformScreen.routeName:
       return CustomPageRoute(

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:lunaaz_moto/constants/global_variables.dart';
 import 'package:lunaaz_moto/models/auth/user/user.dart';
 import 'package:lunaaz_moto/screens/auth/login_screen.dart';
+import 'package:lunaaz_moto/screens/customer/customer_screens/all_packages/all_packages.dart';
 import 'package:lunaaz_moto/screens/customer/customer_screens/profile_screen/profile_screen.dart';
 import 'package:lunaaz_moto/services/shared_preferences_service.dart';
 import 'package:path/path.dart';
@@ -52,6 +53,16 @@ class NavCusDrawer extends StatelessWidget {
             onTap: () => {
               Navigator.of(context).pop(),
               Navigator.push(context, MaterialPageRoute(builder: (context) => Scaffold(body: Center(child: Text("Setting"),),)))
+            },
+          ),
+          ListTile(
+            leading: Icon(Icons.border_color),
+            title: Text('My Packages'),
+            onTap: () => {
+
+              Navigator.of(context).pop(),
+              Navigator.pushNamed(context, AllPackages.routeName),
+
             },
           ),
           ListTile(

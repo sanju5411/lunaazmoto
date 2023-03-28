@@ -167,19 +167,21 @@ class ProfileScreenState extends State<ProfileScreen> {
                 thickness: 1,
                 color: Colors.grey[300],
               ),
-              SizedBox(height: 20,),
+              const SizedBox(height: 20,),
               Row(
                 children: [
+
                   Image.asset("assets/images/my_servicess.png"),
-                  SizedBox(width: 20,),
-                  Text("My Services",style: CustomStyle.primaryTextStyle,),
+                  const SizedBox(width: 20,),
+                  const Text("My Services",style: CustomStyle.primaryTextStyle,),
+
                 ],
               ),
               Divider(
                 thickness: 1,
                 color: Colors.grey[300],
               ),
-              SizedBox(height: 20,),
+             const SizedBox(height: 20,),
 
               CustomButton(
                   onTap: (){

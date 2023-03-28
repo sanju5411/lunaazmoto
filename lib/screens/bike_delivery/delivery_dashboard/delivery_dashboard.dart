@@ -206,7 +206,7 @@ class _DeliveryDashboardState extends State<DeliveryDashboard> {
                                          Text("$todayDelivered",style: const TextStyle(fontSize: 26,fontWeight: FontWeight.w600,color: Color(0xFFFF2121)),),
                                          const SizedBox(height: 10,),
                                          const Text("Today's\nDelivered",textAlign: TextAlign.center,style: TextStyle(fontSize: 13,fontWeight: FontWeight.w500),)
-                                       ], 
+                                       ],
                                      )
                                  ),
                                ),

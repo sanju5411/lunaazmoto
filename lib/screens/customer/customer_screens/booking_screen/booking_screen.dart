@@ -15,7 +15,6 @@ import 'package:lunaaz_moto/services/api_service.dart';
 import '../../../../models/customer/service_model/package_model/package_main_model.dart';
 
 class BookingScreen extends StatefulWidget {
-
   static const String routeName = '/booking_packages';
   const BookingScreen({Key? key}) : super(key: key);
 
@@ -24,7 +23,6 @@ class BookingScreen extends StatefulWidget {
 }
 
 class _BookingScreenState extends State<BookingScreen> {
-
   PackagesMainModel? _bookingPackage;
   List<BookingPackage>? _packages;
   // List<PackageBenefits>? packageBenefits;
@@ -32,14 +30,10 @@ class _BookingScreenState extends State<BookingScreen> {
   String? _currentAddress;
   Position? _currentPosition;
 
-
   TextEditingController _pLocation = TextEditingController();
-
 
   String rupees = "₹";
   bool isPackage = true;
-
-
 
   @override
   void initState() {
@@ -47,29 +41,24 @@ class _BookingScreenState extends State<BookingScreen> {
 
     super.initState();
     _pLocation.text = "";
-
   }
 
-  getAllPackagesList(String appBarTitle) async{
-
-
+  getAllPackagesList(String appBarTitle) async {
     Map<String, String> jsonInput = {
       'package_type': appBarTitle,
     };
-    PackagesMainModel packagesModel = await ApiService.packages(jsonInput: jsonEncode(jsonInput));
+    PackagesMainModel packagesModel =
+        await ApiService.packages(jsonInput: jsonEncode(jsonInput));
     print("packages?>>>>${jsonEncode(packagesModel)}>>>>>>");
 
-
-      _bookingPackage = packagesModel;
-      if(_bookingPackage?.packages != null){
-        _packages = _bookingPackage?.packages!;
-        setState(() {
-          loading = false;
-          isPackage = false;
-        });
-
-      }
-
+    _bookingPackage = packagesModel;
+    if (_bookingPackage?.packages != null) {
+      _packages = _bookingPackage?.packages!;
+      setState(() {
+        loading = false;
+        isPackage = false;
+      });
+    }
   }
 
   Future<bool> _handleLocationPermission() async {
@@ -103,12 +92,12 @@ class _BookingScreenState extends State<BookingScreen> {
 
   Future<void> _getAddressFromLatLng(Position position) async {
     await placemarkFromCoordinates(
-        _currentPosition!.latitude, _currentPosition!.longitude)
+            _currentPosition!.latitude, _currentPosition!.longitude)
         .then((List<Placemark> placemarks) {
       Placemark place = placemarks[0];
       setState(() {
         _pLocation.text = _currentAddress =
-        '${place.street}, ${place.subLocality}, ${place.subAdministrativeArea}, ${place.postalCode}';
+            '${place.street}, ${place.subLocality}, ${place.subAdministrativeArea}, ${place.postalCode}';
       });
     }).catchError((e) {
       debugPrint(e);
@@ -128,17 +117,12 @@ class _BookingScreenState extends State<BookingScreen> {
     });
   }
 
-
-
-
   @override
   Widget build(BuildContext context) {
     final appBarTitle = ModalRoute.of(context)?.settings.arguments as String;
-    if(isPackage){
+    if (isPackage) {
       getAllPackagesList(appBarTitle);
     }
-
-
 
     Size screenSize = MediaQuery.of(context).size;
     return Scaffold(
@@ -149,7 +133,6 @@ class _BookingScreenState extends State<BookingScreen> {
         leading: InkWell(
           onTap: () {
             Navigator.pop(context);
-
           },
           child: const Icon(
             Icons.arrow_back,
@@ -160,18 +143,17 @@ class _BookingScreenState extends State<BookingScreen> {
       body: Padding(
         padding: const EdgeInsets.only(top: 5),
         child: Column(
-         mainAxisSize: MainAxisSize.max,
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.max,
           children: [
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 10),
-              child: SingleChildScrollView(
+                padding: const EdgeInsets.symmetric(horizontal: 10),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                    const SizedBox(
-                      height: 15,
-                    ),
-                     Text(
+                    Text(
                       "Online Bike, Car",
                       style: TextStyle(
                           fontSize: 30, color: CustomColor.whiteColor),
@@ -186,35 +168,8 @@ class _BookingScreenState extends State<BookingScreen> {
                           color: CustomColor.whiteColor,
                           fontWeight: FontWeight.w700),
                     ),
-                    const SizedBox(
-                      height: 20,
-                    ),
-                    TextField(
-                      controller: _pLocation,
-                      decoration: InputDecoration(
-                          suffixIcon: InkWell(
-                              onTap: ()
-                              {
-                                _getCurrentPosition();
-                              },
-                              child: const Icon(
-                                Icons.my_location,
-                                color: CustomColor.primaryColor,
-                              )),
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(20.0),
-                          ),
-                          filled: true,
-                          hintStyle: TextStyle(color: Colors.grey),
-                          hintText: "Current Location",
-                          fillColor: Colors.white),
-                      readOnly: true,
-                    )
                   ],
-                ),
-              ),
-            ),
-
+                )),
             const SizedBox(
               height: 30,
             ),
@@ -244,111 +199,202 @@ class _BookingScreenState extends State<BookingScreen> {
                       const SizedBox(
                         height: 20,
                       ),
-                      !loading?
-                      SizedBox(
-                        width: screenSize.width,
-                        height: screenSize.height * 0.45,
-                        child: ListView.builder(
-                            itemCount: _packages?.length,
-                            //physics: NeverScrollableScrollPhysics(),
-                            scrollDirection: Axis.horizontal,
-                            itemBuilder: (BuildContext context, int index) {
+                      !loading
+                          ? SizedBox(
 
-                              return InkWell(
-                                onTap: (){
-                                  Navigator.pushNamed(context, BookingForm.routeName,arguments: _packages![index].packageId);
-                                },
-                                child: Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Container(
-                                    width: 280,
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(20),
-                                      gradient: const LinearGradient(
-                                        begin: Alignment.topRight,
-                                        end: Alignment.bottomLeft,
-                                        colors: [
-
-                                          Color(0xffFB5A7C),
-                                          Color(0xffFE6585),
-                                          Color(0xffFE184A),
-
-                                        ],
-                                      ),
-                                    ),
-                                    child: Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
+                             width: screenSize.width,
+                              height: screenSize.height * 0.45,
+                              child: ListView.builder(
+                                  itemCount: _packages?.length,
+                                  //physics: NeverScrollableScrollPhysics(),
+                                  scrollDirection: Axis.horizontal,
+                                  itemBuilder:
+                                      (BuildContext context, int index) {
+                                    return Stack(
                                       children: [
-                                        const SizedBox(height: 10,),
-
-                                        Padding(
-                                          padding: const EdgeInsets.all(8.0),
-                                          child: const Text("LunaazMoto",style: TextStyle(fontSize: 15,color: CustomColor.whiteColor),),
-                                        ),
-
-                                        const SizedBox(height: 5,),
-                                        Padding(
-                                          padding: const EdgeInsets.all(8.0),
-                                          child:  Text((_packages![index].packageName == null)? "": _packages![index].packageName!,style: TextStyle(fontSize: 40, fontWeight: FontWeight.w800,color: CustomColor.whiteColor),),
-                                        ),
-                                        SizedBox(height: 20,),
-                                        Container(
-                                          height: 10,
-                                          width: screenSize.width,
-                                          decoration: BoxDecoration(
-                                            gradient: const LinearGradient(
-                                              begin: Alignment.bottomRight,
-                                              end: Alignment.bottomLeft,
-                                              colors: [
-                                                Color(0xffFB5A7C),
-                                                Color(0xffFE6585),
-                                                Color(0xffFE184A),
-
-                                              ],
+                                        InkWell(
+                                          onTap: () {
+                                            Navigator.pushNamed(
+                                                context, BookingForm.routeName,
+                                                arguments: _packages![index]
+                                                    .packageId);
+                                          },
+                                          child: Padding(
+                                            padding: const EdgeInsets.all(8.0),
+                                            child: Container(
+                                              width: 280,
+                                              decoration: BoxDecoration(
+                                                borderRadius:
+                                                    BorderRadius.circular(20),
+                                                gradient: const LinearGradient(
+                                                  begin: Alignment.topRight,
+                                                  end: Alignment.bottomLeft,
+                                                  colors: [
+                                                    Color(0xffFB5A7C),
+                                                    Color(0xffFE6585),
+                                                    Color(0xffFE184A),
+                                                  ],
+                                                ),
+                                              ),
+                                              child: Column(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: [
+                                                  const SizedBox(
+                                                    height: 10,
+                                                  ),
+                                                  Padding(
+                                                    padding:
+                                                        const EdgeInsets.all(
+                                                            8.0),
+                                                    child: const Text(
+                                                      "LunaazMoto",
+                                                      style: TextStyle(
+                                                          fontSize: 15,
+                                                          color: CustomColor
+                                                              .whiteColor),
+                                                    ),
+                                                  ),
+                                                  const SizedBox(
+                                                    height: 5,
+                                                  ),
+                                                  Padding(
+                                                    padding:
+                                                        const EdgeInsets.all(
+                                                            8.0),
+                                                    child: Text(
+                                                      (_packages![index]
+                                                                  .packageName ==
+                                                              null)
+                                                          ? ""
+                                                          : _packages![index]
+                                                              .packageName!,
+                                                      style: TextStyle(
+                                                          fontSize: 40,
+                                                          fontWeight:
+                                                              FontWeight.w800,
+                                                          color: CustomColor
+                                                              .whiteColor),
+                                                    ),
+                                                  ),
+                                                  SizedBox(
+                                                    height: 20,
+                                                  ),
+                                                  Container(
+                                                    height: 10,
+                                                    width: screenSize.width,
+                                                    decoration: BoxDecoration(
+                                                      gradient:
+                                                          const LinearGradient(
+                                                        begin: Alignment
+                                                            .bottomRight,
+                                                        end: Alignment
+                                                            .bottomLeft,
+                                                        colors: [
+                                                          Color(0xffFB5A7C),
+                                                          Color(0xffFE6585),
+                                                          Color(0xffFE184A),
+                                                        ],
+                                                      ),
+                                                    ),
+                                                  ),
+                                                  SizedBox(
+                                                    height: 20,
+                                                  ),
+                                                  Padding(
+                                                    padding:
+                                                        const EdgeInsets.all(
+                                                            8.0),
+                                                    child: Column(
+                                                      children: [
+                                                        Row(
+                                                          children: [
+                                                            // Text("₹ 1000" ,style: TextStyle(
+                                                            //     color: CustomColor.whiteColor,
+                                                            //     fontSize: 20,
+                                                            //     decoration: TextDecoration.lineThrough
+                                                            // ),),
+                                                            SizedBox(
+                                                              width: 17,
+                                                            ),
+                                                            Text(
+                                                              "₹ ${_packages![index].packagePrice ?? "0"}",
+                                                              style: TextStyle(
+                                                                  color: CustomColor
+                                                                      .whiteColor,
+                                                                  fontSize: 28,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w700),
+                                                            ),
+                                                          ],
+                                                        ),
+                                                        SizedBox(
+                                                          height: 30,
+                                                        ),
+                                                        Padding(
+                                                          padding:
+                                                              const EdgeInsets
+                                                                  .all(8.0),
+                                                          child: Align(
+                                                            alignment: Alignment
+                                                                .topLeft,
+                                                            child: HtmlWidget(
+                                                              _packages![index]
+                                                                  .packageFeaturesName!
+                                                                  .toString(),
+                                                              textStyle: TextStyle(
+                                                                  color: Colors
+                                                                      .white),
+                                                            ),
+                                                          ),
+                                                        ),
+                                                        SizedBox(
+                                                          height: 10,
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  )
+                                                ],
+                                              ),
                                             ),
                                           ),
                                         ),
-                                        SizedBox(height: 20,),
-                                        Padding(
-                                          padding: const EdgeInsets.all(8.0),
-                                          child: Column(children: [
-                                            Row(
-                                              children: [
-                                              // Text("₹ 1000" ,style: TextStyle(
-                                              //     color: CustomColor.whiteColor,
-                                              //     fontSize: 20,
-                                              //     decoration: TextDecoration.lineThrough
-                                              // ),),
-                                              SizedBox(width: 17,),
-                                              Text("₹ ${_packages![index].packagePrice??"0"}",style: TextStyle(
-                                                  color: CustomColor.whiteColor,
-                                                  fontSize: 28,
-                                                  fontWeight: FontWeight.w700
-                                              ),),
-                                            ],),
-                                            SizedBox(height: 30,),
 
-                                            Padding(
-                                              padding: const EdgeInsets.all(8.0),
-                                              child: Align(
-                                                alignment: Alignment.topLeft,
-                                                  child: HtmlWidget(
-                                                    _packages![index].packageFeaturesName!.toString(),
-                                                    textStyle: TextStyle(color: Colors.white),
-                                                  ),
+                                        Positioned(
+                                          bottom:0,
+                                          left:70,
+                                          right:70,
+                                          child: Container(
+                                            decoration: BoxDecoration(
+
+                                              borderRadius:
+                                              BorderRadius.circular(12),
+                                              gradient: const LinearGradient(
+                                                begin: Alignment.topRight,
+                                                end: Alignment.bottomLeft,
+                                                colors: [
+                                                  Color(0xffff859f),
+                                                  Color(0xffff859f),
+                                                  Color(0xffff859f),
+                                                ],
                                               ),
                                             ),
-                                            SizedBox(height: 10,),
-                                          ],),
-                                        )
+                                            child: Padding(
+                                              padding: const EdgeInsets.symmetric(horizontal: 20,vertical: 12),
+                                              child: Center(child: Text("Select",style: TextStyle(color: CustomColor.whiteColor,fontSize: 20),)),
+                                            ),
+                                          )
+                                          ,),
                                       ],
-                                    ),
-                                  ),
-                                ),
-                              );
-                            }),
-                      ) : Center(
-                          child: CircularProgressIndicator(color: Colors.black,),) ,
+                                    );
+                                  }),
+                            )
+                          : Center(
+                              child: CircularProgressIndicator(
+                                color: Colors.black,
+                              ),
+                            ),
                       // : SizedBox()
                     ],
                   ),

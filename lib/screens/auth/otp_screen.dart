@@ -36,6 +36,7 @@ class _OtpScreenState extends State<OtpScreen> {
   String mobile = "";
   String countryCode = "";
   String userType = "customer";
+  String _fcmToken = "";
 
   String smsCode = "";
   TextEditingController _pinEditingController = TextEditingController();
@@ -66,6 +67,7 @@ class _OtpScreenState extends State<OtpScreen> {
         mobile = data['mobile'];
         countryCode = data['country_code'];
         userType = data['user_type'];
+        _fcmToken = data['fcm_token'];
       });
       sendOTP();
     }
@@ -210,6 +212,7 @@ class _OtpScreenState extends State<OtpScreen> {
       'device_id': DeviceInfoService.deviceId ?? "",
       'device_type': DeviceInfoService.deviceType ?? "",
       'user_type': userType,
+      'fcm_token': _fcmToken,
     };
 
     print("Register Data--->$jsonInput");

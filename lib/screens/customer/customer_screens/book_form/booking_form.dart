@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:geocoding/geocoding.dart';
@@ -9,6 +10,7 @@ import 'package:lunaaz_moto/common/widgets/custom_button.dart';
 import 'package:lunaaz_moto/constants/global_variables.dart';
 import 'package:lunaaz_moto/models/auth/user/user.dart';
 import 'package:lunaaz_moto/models/customer/booking_model/booking_model.dart';
+import 'package:lunaaz_moto/models/user_addressModel/user_address_model.dart';
 import 'package:lunaaz_moto/screens/customer/customer_screens/my_services/my_services.dart';
 import 'package:lunaaz_moto/services/api_service.dart';
 import 'package:lunaaz_moto/services/shared_preferences_service.dart';
@@ -27,7 +29,8 @@ class _BookingFormState extends State<BookingForm> {
   AuthUser? _userMob;
   int? _radioSelected;
   String? _radioVal;
- String? _currentAddress;
+  List<dynamic>? _selectedAddress;
+  List<UserAddress> _selectAddress = [];
  Position? _currentPosition;
 
   bool loading = false;
@@ -101,8 +104,8 @@ class _BookingFormState extends State<BookingForm> {
       currentDate: DateTime.now(),
       context: context,
       initialDate: DateTime.now(),
-      firstDate: DateTime(2000),
-      lastDate: DateTime(2025),
+      firstDate: DateTime.now(),
+      lastDate: DateTime(2060),
     ).then((value) {
       setState(() {
         String dateFormat  = "${value!.year}-${value!.month}-${value!.day}";
@@ -183,19 +186,6 @@ class _BookingFormState extends State<BookingForm> {
     return true;
   }
 
-  Future<void> _getAddressFromLatLng(Position position) async {
-    await placemarkFromCoordinates(
-        _currentPosition!.latitude, _currentPosition!.longitude)
-        .then((List<Placemark> placemarks) {
-      Placemark place = placemarks[0];
-      setState(() {
-        _addressController.text = _currentAddress =
-        '${place.street}, ${place.subLocality}, ${place.subAdministrativeArea}, ${place.postalCode}';
-      });
-    }).catchError((e) {
-      debugPrint(e);
-    });
-  }
 
   Future<void> _getCurrentPosition() async {
     final hasPermission = await _handleLocationPermission();
@@ -204,7 +194,6 @@ class _BookingFormState extends State<BookingForm> {
     await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high)
         .then((Position position) {
       setState(() => _currentPosition = position);
-      _getAddressFromLatLng(_currentPosition!);
     }).catchError((e) {
       debugPrint(e);
     });
@@ -236,7 +225,7 @@ class _BookingFormState extends State<BookingForm> {
           },
           child: const Icon(Icons.arrow_back)
           ,),
-        title: const Text("Booking Form",style: TextStyle(color: Colors.white),),
+        title: const Text("Booking Information",style: TextStyle(color: Colors.white,fontSize: 20),),
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -258,7 +247,7 @@ class _BookingFormState extends State<BookingForm> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     const SizedBox(height: 15,),
-                    const Text("Booking Service",style: TextStyle(
+                    const Text("Bike Service or Car Wash",style: TextStyle(
                       fontSize: 30,
                       fontWeight: FontWeight.w800
                     ),),
@@ -299,9 +288,9 @@ class _BookingFormState extends State<BookingForm> {
                     ),
                   ),
                 ),
-                    SizedBox(height: 25,),
-                    Text("Phone Number",style: TextStyle(fontSize: 20,fontWeight: FontWeight.w600),),
-                    SizedBox(height: 10,),
+                    const SizedBox(height: 25,),
+                    const Text("Phone Number",style: TextStyle(fontSize: 20,fontWeight: FontWeight.w600),),
+                    const SizedBox(height: 10,),
                     Container(
                       decoration: BoxDecoration(
                         boxShadow: [
@@ -335,9 +324,9 @@ class _BookingFormState extends State<BookingForm> {
 
                       ),
                     ),
-                    SizedBox(height: 25,),
-                    Text("Service Date",style: TextStyle(fontSize: 20,fontWeight: FontWeight.w600),),
-                    SizedBox(height: 10,),
+                    const SizedBox(height: 25,),
+                    const Text("Service Date",style: TextStyle(fontSize: 20,fontWeight: FontWeight.w600),),
+                    const SizedBox(height: 10,),
                     Container(
                       decoration: BoxDecoration(
                         boxShadow: [
@@ -380,9 +369,9 @@ class _BookingFormState extends State<BookingForm> {
                         },
                       ),
                     ), //date>>>>>>>
-                    SizedBox(height: 25,),
-                    Text("Service Time",style: TextStyle(fontSize: 20,fontWeight: FontWeight.w600),),
-                    SizedBox(height: 10,),
+                    const SizedBox(height: 25,),
+                    const Text("Service Time",style: TextStyle(fontSize: 20,fontWeight: FontWeight.w600),),
+                    const SizedBox(height: 10,),
                     Container(
                       decoration: BoxDecoration(
                         boxShadow: [
@@ -427,9 +416,9 @@ class _BookingFormState extends State<BookingForm> {
                         },
                       ),
                     ),
-                    SizedBox(height: 25,),
-                    Text("Vehicle Number",style: TextStyle(fontSize: 20,fontWeight: FontWeight.w600),),
-                    SizedBox(height: 10,),
+                    const SizedBox(height: 25,),
+                    const Text("Vehicle Number",style: TextStyle(fontSize: 20,fontWeight: FontWeight.w600),),
+                    const SizedBox(height: 10,),
                     Container(
                       decoration: BoxDecoration(
                         boxShadow: [
@@ -462,51 +451,42 @@ class _BookingFormState extends State<BookingForm> {
                         ),
                       ),
                     ),
-                    SizedBox(height: 25,),
-                    Text("Address",style: TextStyle(fontSize: 20,fontWeight: FontWeight.w600),),
-                    SizedBox(height: 10,),
+                    const SizedBox(height: 25,),
+                    const Text("Address",style: TextStyle(fontSize: 20,fontWeight: FontWeight.w600),),
+                    const SizedBox(height: 10,),
                     Container(
                       decoration: BoxDecoration(
-                        boxShadow: [
-                          const BoxShadow(
+                        boxShadow: const [
+                           BoxShadow(
+
                             color: Color(0xffdcdcdc),
                             blurRadius: 10,
+
                           ),
                         ],
                         borderRadius: BorderRadius.circular(15.0),
                       ),
-                      child: TextFormField(
-                        controller: _addressController,
-                        decoration: InputDecoration(
-                          fillColor: Colors.white,
-                          filled: true,
-                          suffixIcon: InkWell(
-                            onTap: (){
-                              _getCurrentPosition();
-                            },
-                            child: const Icon(
-                              Icons.my_location,
-                              color: Color(0xffc40000),
-                            ),
-                          ),
-                          hintText: 'Enter your valid address',
-
-                          enabledBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(15.0),
-                            borderSide: const BorderSide(
-                              color: Colors.white,
-                              width: 3.0,
-                            ),
-                          ),
-                        ),
-                      ),
+                      // child: DropdownButtonHideUnderline(
+                      //   child: ButtonTheme(
+                      //   alignedDropdown: true,
+                      //   child: DropdownButton<List>(
+                      //     value: _address_list,
+                      //     iconSize: 17,
+                      //     icon: (null),
+                      //     style: TextStyle(color: Colors.black,fontSize: 17),
+                      //     hint: Text("select Address"),
+                      //     onChanged: (String newValue){},
+                      //   ),
+                      // ),)
                     ),
-                    SizedBox(height: 20,),
-                    Padding(
+
+
+                    const SizedBox(height: 20,),
+                    const Padding(
                       padding: const EdgeInsets.only(left: 20),
                       child: Text("We Accept only COD",style: TextStyle(color: Colors.red,fontSize: 17),),
                     ),
-                    SizedBox(height: 10,),
+                    const SizedBox(height: 10,),
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 12,vertical: 2),
                       child:  Row(
@@ -543,7 +523,7 @@ class _BookingFormState extends State<BookingForm> {
                         ],
                       ),
                     ),
-                    SizedBox(height: 15,),
+                    const SizedBox(height: 15,),
                     CustomButton(
 
                       onTap: () async {
