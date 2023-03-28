@@ -153,21 +153,21 @@ class _BookingScreenState extends State<BookingScreen> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                    Text(
-                      "Online Bike, Car",
+                    const Text(
+                      "Select your Package",
                       style: TextStyle(
-                          fontSize: 30, color: CustomColor.whiteColor),
+                          fontWeight: FontWeight.w600, fontSize: 27,color: CustomColor.whiteColor),
                     ),
                     const SizedBox(
                       height: 10,
                     ),
-                    const Text(
-                      "Service Booking",
-                      style: TextStyle(
-                          fontSize: 35,
-                          color: CustomColor.whiteColor,
-                          fontWeight: FontWeight.w700),
-                    ),
+                    // const Text(
+                    //   "Service Booking",
+                    //   style: TextStyle(
+                    //       fontSize: 35,
+                    //       color: CustomColor.whiteColor,
+                    //       fontWeight: FontWeight.w700),
+                    // ),
                   ],
                 )),
             const SizedBox(
@@ -191,11 +191,7 @@ class _BookingScreenState extends State<BookingScreen> {
                       const SizedBox(
                         height: 10,
                       ),
-                      const Text(
-                        "Select your Package",
-                        style: TextStyle(
-                            fontWeight: FontWeight.w600, fontSize: 25),
-                      ),
+
                       const SizedBox(
                         height: 20,
                       ),
@@ -380,9 +376,17 @@ class _BookingScreenState extends State<BookingScreen> {
                                                 ],
                                               ),
                                             ),
-                                            child: Padding(
-                                              padding: const EdgeInsets.symmetric(horizontal: 20,vertical: 12),
-                                              child: Center(child: Text("Select",style: TextStyle(color: CustomColor.whiteColor,fontSize: 20),)),
+                                            child: InkWell(
+                                              onTap:(){
+                                                Navigator.pushNamed(
+                                                    context, BookingForm.routeName,
+                                                    arguments: _packages![index]
+                                                        .packageId);
+                                              },
+                                              child: Padding(
+                                                padding: const EdgeInsets.symmetric(horizontal: 20,vertical: 12),
+                                                child: Center(child: Text("Select",style: TextStyle(color: CustomColor.whiteColor,fontSize: 20),)),
+                                              ),
                                             ),
                                           )
                                           ,),

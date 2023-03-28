@@ -6,6 +6,7 @@ import 'package:lunaaz_moto/screens/bike_delivery/booking_detail/booking_detail.
 import 'package:lunaaz_moto/screens/bike_delivery/delivery_dashboard/delivery_dashboard.dart';
 import 'package:lunaaz_moto/screens/bike_delivery/notification_screen/notification_screen.dart';
 import 'package:lunaaz_moto/screens/bike_delivery/total_booking_screen/total_booking_screen.dart';
+import 'package:lunaaz_moto/screens/customer/customer_screens/addresses/add_address_screen.dart';
 import 'package:lunaaz_moto/screens/customer/customer_screens/all_packages/all_packages.dart';
 import 'package:lunaaz_moto/screens/customer/customer_screens/book_form/booking_form.dart';
 import 'package:lunaaz_moto/screens/customer/customer_screens/booking_screen/booking_screen.dart';
@@ -114,6 +115,12 @@ Route<dynamic> generateRoute(RouteSettings routeSettings) {
         routeSettings: routeSettings,
       );
 
+    case AddAddressScreen.routeName:
+      return CustomPageRoute(
+        child:   AddAddressScreen(),
+        direction: AxisDirection.right,
+        routeSettings: routeSettings,
+      );
 
 
 

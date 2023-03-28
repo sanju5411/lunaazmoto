@@ -10,7 +10,11 @@ import 'package:lunaaz_moto/common/widgets/custom_button.dart';
 import 'package:lunaaz_moto/constants/global_variables.dart';
 import 'package:lunaaz_moto/models/auth/user/user.dart';
 import 'package:lunaaz_moto/models/customer/booking_model/booking_model.dart';
+import 'package:lunaaz_moto/models/customer/user_address_model/user_address_model.dart';
+import 'package:lunaaz_moto/models/service_center/service_center_list_main_model.dart';
+import 'package:lunaaz_moto/models/service_center/service_centers.dart';
 import 'package:lunaaz_moto/models/user_addressModel/user_address_model.dart';
+import 'package:lunaaz_moto/screens/customer/customer_screens/addresses/add_address_screen.dart';
 import 'package:lunaaz_moto/screens/customer/customer_screens/my_services/my_services.dart';
 import 'package:lunaaz_moto/services/api_service.dart';
 import 'package:lunaaz_moto/services/shared_preferences_service.dart';
@@ -29,11 +33,12 @@ class _BookingFormState extends State<BookingForm> {
   AuthUser? _userMob;
   int? _radioSelected;
   String? _radioVal;
-  List<dynamic>? _selectedAddress;
-  List<UserAddress> _selectAddress = [];
+  List<Address>? _addressList;
+  int? addressId = 0;
+  String? address = "";
  Position? _currentPosition;
 
-  bool loading = false;
+  bool isLoading = true;
 
   final TextEditingController _vehicNameController =       TextEditingController();
   final TextEditingController _phoneController =      TextEditingController();
@@ -42,7 +47,7 @@ class _BookingFormState extends State<BookingForm> {
   final TextEditingController _vehicleNumController     = TextEditingController();
   final TextEditingController _addressController        =     TextEditingController();
 
-
+  bool _showAddresses = false;
   bool _validate = false;
   var isDisabled = true;
 
@@ -56,13 +61,37 @@ class _BookingFormState extends State<BookingForm> {
 
     _addressController.text = "";
 
+
+
     getProfileData();
     super.initState();
 
+    getServiceCenterListFromApi();
+  }
+
+  getServiceCenterListFromApi() async{
+    AuthAddress _userAddress = await ApiService.getAddressListD();
+    print("object>>>>>${jsonEncode(_userAddress)}");
+    if(_userAddress.status != null){
+      print("hhhh123546>>>");
+      _addressList = _userAddress.addresses;
+      setState(() {
+        isLoading = false;
+      });
+    }else{
+      setState(() {
+        isLoading = false;
+      });
+    }
   }
 
 
+
+
   getProfileData() async{
+
+
+
 
     var userData =  await SharedPreferencesService.getAuthUserData();
     setState(() {
@@ -75,7 +104,7 @@ class _BookingFormState extends State<BookingForm> {
 
 
 
-    loading = true;
+    isLoading = true;
 
     BookingModel bookingModel = await ApiService.setBookingForm(jsonInput: jsonEncode(jsonInput));
 
@@ -83,7 +112,7 @@ class _BookingFormState extends State<BookingForm> {
 
 
     if(bookingModel.status  == "success"){
-      loading = false;
+      isLoading = false;
       setState(() {
         Navigator.of(context)
             .pushReplacementNamed(MyServicesScreen.routeName);
@@ -93,11 +122,11 @@ class _BookingFormState extends State<BookingForm> {
 
 
 
+
+
 }
 
   DateTime _dateTime = DateTime.now();
-
-
   void _showDatePicker() {
 
     showDatePicker(
@@ -116,7 +145,6 @@ class _BookingFormState extends State<BookingForm> {
       });
     });
   }
-
   void _showTimePicker() async{
 
     TimeOfDay?  pickedTime = await showTimePicker(
@@ -227,92 +255,59 @@ class _BookingFormState extends State<BookingForm> {
           ,),
         title: const Text("Booking Information",style: TextStyle(color: Colors.white,fontSize: 20),),
       ),
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            const SizedBox(height: 50,),
-            Container(
-              width: screenSize.width,
-              //height: screenSize.height,
-              decoration: const BoxDecoration(
-                color: CustomColor.whiteColor,
-                borderRadius: BorderRadius.only(
-                  topRight: Radius.circular(20),
-                  topLeft: Radius.circular(20),
-                )
-              ),
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const SizedBox(height: 15,),
-                    const Text("Bike Service or Car Wash",style: TextStyle(
-                      fontSize: 30,
-                      fontWeight: FontWeight.w800
-                    ),),
-                    const SizedBox(height: 20,),
-                    const SizedBox(height: 10,),
-                    const Text("Vehicle Name",style: TextStyle(fontSize: 20,fontWeight: FontWeight.w600),),
-                    const SizedBox(height: 10,),
-                    Container(
-                  decoration: BoxDecoration(
-                    boxShadow: const [
-                      BoxShadow(
-                        color: Color(0xffdcdcdc),
-                        blurRadius: 20,
-                      ),
-                    ],
-                    borderRadius: BorderRadius.circular(15.0),
+      body: Stack(
+        children: [
+          SingleChildScrollView(
+            child: Column(
+              children: [
+                const SizedBox(height: 50,),
+                Container(
+                  width: screenSize.width,
+                  //height: screenSize.height,
+                  decoration: const BoxDecoration(
+                    color: CustomColor.whiteColor,
+                    borderRadius: BorderRadius.only(
+                      topRight: Radius.circular(20),
+                      topLeft: Radius.circular(20),
+                    )
                   ),
-                  child: TextFormField(
-                    controller: _vehicNameController,
-
-                    decoration: InputDecoration(
-                      fillColor: Colors.white,
-                      filled: true,
-                      suffixIcon:
-
-                      const Icon(
-                        Icons.car_repair,
-                        color: Color(0xffc40000),
-                      ),
-                      hintText: 'Enter Vehicle Name',
-                      enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(15.0),
-                        borderSide: const BorderSide(
-                          color: Colors.white,
-                          width: 3.0,
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-                    const SizedBox(height: 25,),
-                    const Text("Phone Number",style: TextStyle(fontSize: 20,fontWeight: FontWeight.w600),),
-                    const SizedBox(height: 10,),
-                    Container(
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 20),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const SizedBox(height: 15,),
+                        const Text("Bike Service or Car Wash",style: TextStyle(
+                          fontSize: 30,
+                          fontWeight: FontWeight.w800
+                        ),),
+                        const SizedBox(height: 20,),
+                        const SizedBox(height: 10,),
+                        const Text("Vehicle Name",style: TextStyle(fontSize: 20,fontWeight: FontWeight.w600),),
+                        const SizedBox(height: 10,),
+                        Container(
                       decoration: BoxDecoration(
-                        boxShadow: [
-                           BoxShadow(
-                             color: Color(0xffdcdcdc),
+                        boxShadow: const [
+                          BoxShadow(
+                            color: Color(0xffdcdcdc),
                             blurRadius: 20,
                           ),
                         ],
                         borderRadius: BorderRadius.circular(15.0),
                       ),
                       child: TextFormField(
-                        controller: _phoneController,
-                        keyboardType: TextInputType.phone,
-                        decoration: InputDecoration(
+                        controller: _vehicNameController,
 
+                        decoration: InputDecoration(
                           fillColor: Colors.white,
                           filled: true,
-                          suffixIcon: const Icon(
-                            Icons.call,
+                          suffixIcon:
+
+                          const Icon(
+                            Icons.car_repair,
                             color: Color(0xffc40000),
                           ),
-                          hintText: 'Enter Phone Number',
+                          hintText: 'Enter Vehicle Name',
                           enabledBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(15.0),
                             borderSide: const BorderSide(
@@ -321,299 +316,435 @@ class _BookingFormState extends State<BookingForm> {
                             ),
                           ),
                         ),
-
                       ),
                     ),
-                    const SizedBox(height: 25,),
-                    const Text("Service Date",style: TextStyle(fontSize: 20,fontWeight: FontWeight.w600),),
-                    const SizedBox(height: 10,),
-                    Container(
-                      decoration: BoxDecoration(
-                        boxShadow: [
-                          const BoxShadow(
-                            color: Color(0xffdcdcdc),
-                            blurRadius: 20,
+                        const SizedBox(height: 25,),
+                        const Text("Phone Number",style: TextStyle(fontSize: 20,fontWeight: FontWeight.w600),),
+                        const SizedBox(height: 10,),
+                        Container(
+                          decoration: BoxDecoration(
+                            boxShadow: [
+                               BoxShadow(
+                                 color: Color(0xffdcdcdc),
+                                blurRadius: 20,
+                              ),
+                            ],
+                            borderRadius: BorderRadius.circular(15.0),
                           ),
-                        ],
-                        borderRadius: BorderRadius.circular(15.0),
-                      ),
-                      child: TextFormField(
-                        controller: _serviceDateController,
-                        decoration: InputDecoration(
-                          fillColor: Colors.white,
-                          filled: true,
-                          suffixIcon: InkWell(
+                          child: TextFormField(
+                            controller: _phoneController,
+                            keyboardType: TextInputType.phone,
+                            decoration: InputDecoration(
+
+                              fillColor: Colors.white,
+                              filled: true,
+                              suffixIcon: const Icon(
+                                Icons.call,
+                                color: Color(0xffc40000),
+                              ),
+                              hintText: 'Enter Phone Number',
+                              enabledBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(15.0),
+                                borderSide: const BorderSide(
+                                  color: Colors.white,
+                                  width: 3.0,
+                                ),
+                              ),
+                            ),
+
+                          ),
+                        ),
+                        const SizedBox(height: 25,),
+                        const Text("Service Date",style: TextStyle(fontSize: 20,fontWeight: FontWeight.w600),),
+                        const SizedBox(height: 10,),
+                        Container(
+                          decoration: BoxDecoration(
+                            boxShadow: [
+                              const BoxShadow(
+                                color: Color(0xffdcdcdc),
+                                blurRadius: 20,
+                              ),
+                            ],
+                            borderRadius: BorderRadius.circular(15.0),
+                          ),
+                          child: TextFormField(
+                            controller: _serviceDateController,
+                            decoration: InputDecoration(
+                              fillColor: Colors.white,
+                              filled: true,
+                              suffixIcon: InkWell(
+                                onTap: (){
+                                  _showDatePicker();
+                                },
+                                child: const Icon(
+                                  Icons.calendar_today,
+                                  color:Color(0xffc40000),
+
+                                ),
+                              ),
+                              hintText: 'MM-DD-YY',
+
+
+                              enabledBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(15.0),
+                                borderSide: const BorderSide(
+                                  color: Colors.white,
+                                  width: 3.0,
+                                ),
+                              ),
+                            ),
+                            readOnly: true,
                             onTap: (){
                               _showDatePicker();
                             },
-                            child: const Icon(
-                              Icons.calendar_today,
-                              color:Color(0xffc40000),
-
-                            ),
                           ),
-                          hintText: 'MM-DD-YY',
-
-
-                          enabledBorder: OutlineInputBorder(
+                        ), //date>>>>>>>
+                        const SizedBox(height: 25,),
+                        const Text("Service Time",style: TextStyle(fontSize: 20,fontWeight: FontWeight.w600),),
+                        const SizedBox(height: 10,),
+                        Container(
+                          decoration: BoxDecoration(
+                            boxShadow: [
+                              const BoxShadow(
+                                color: Color(0xffdcdcdc),
+                                blurRadius: 20,
+                              ),
+                            ],
                             borderRadius: BorderRadius.circular(15.0),
-                            borderSide: const BorderSide(
-                              color: Colors.white,
-                              width: 3.0,
-                            ),
                           ),
-                        ),
-                        readOnly: true,
-                        onTap: (){
-                          _showDatePicker();
-                        },
-                      ),
-                    ), //date>>>>>>>
-                    const SizedBox(height: 25,),
-                    const Text("Service Time",style: TextStyle(fontSize: 20,fontWeight: FontWeight.w600),),
-                    const SizedBox(height: 10,),
-                    Container(
-                      decoration: BoxDecoration(
-                        boxShadow: [
-                          const BoxShadow(
-                            color: Color(0xffdcdcdc),
-                            blurRadius: 20,
-                          ),
-                        ],
-                        borderRadius: BorderRadius.circular(15.0),
-                      ),
-                      child: TextFormField(
-                        controller: _serviceTimeController,
-                        decoration: InputDecoration(
+                          child: TextFormField(
+                            controller: _serviceTimeController,
+                            decoration: InputDecoration(
 
-                          fillColor: Colors.white,
-                          filled: true,
-                          suffixIcon: InkWell(
-                            onTap: () {
+                              fillColor: Colors.white,
+                              filled: true,
+                              suffixIcon: InkWell(
+                                onTap: () {
+                                  _showTimePicker();
+
+                                },
+                                child: const Icon(
+                                  Icons.access_time_filled_outlined,
+                                  color:Color(0xffc40000),
+
+                                ),
+                              ),
+
+                              hintText: 'HH-MM',
+
+                              enabledBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(15.0),
+                                borderSide: const BorderSide(
+                                  color: Colors.white,
+                                  width: 3.0,
+                                ),
+                              ),
+                            ),
+                            readOnly: true,
+                            onTap: (){
                               _showTimePicker();
-
                             },
-                            child: const Icon(
-                              Icons.access_time_filled_outlined,
-                              color:Color(0xffc40000),
-
-                            ),
                           ),
-
-                          hintText: 'HH-MM',
-
-                          enabledBorder: OutlineInputBorder(
+                        ),
+                        const SizedBox(height: 25,),
+                        const Text("Vehicle Number",style: TextStyle(fontSize: 20,fontWeight: FontWeight.w600),),
+                        const SizedBox(height: 10,),
+                        Container(
+                          decoration: BoxDecoration(
+                            boxShadow: [
+                              const BoxShadow(
+                                color: Color(0xffdcdcdc),
+                                blurRadius: 20,
+                              ),
+                            ],
                             borderRadius: BorderRadius.circular(15.0),
-                            borderSide: const BorderSide(
-                              color: Colors.white,
-                              width: 3.0,
+                          ),
+                          child: TextFormField(
+                            controller: _vehicleNumController,
+                            decoration: InputDecoration(
+
+                              fillColor: Colors.white,
+                              filled: true,
+                              suffixIcon: const Icon(
+                                Icons.car_crash_rounded,
+                                color: Color(0xffc40000),
+                              ),
+                              hintText: 'Enter your vehicle number',
+
+                              enabledBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(15.0),
+                                borderSide: const BorderSide(
+                                  color: Colors.white,
+                                  width: 3.0,
+                                ),
+                              ),
                             ),
                           ),
                         ),
-                        readOnly: true,
-                        onTap: (){
-                          _showTimePicker();
-                        },
-                      ),
-                    ),
-                    const SizedBox(height: 25,),
-                    const Text("Vehicle Number",style: TextStyle(fontSize: 20,fontWeight: FontWeight.w600),),
-                    const SizedBox(height: 10,),
-                    Container(
-                      decoration: BoxDecoration(
-                        boxShadow: [
-                          const BoxShadow(
-                            color: Color(0xffdcdcdc),
-                            blurRadius: 20,
-                          ),
-                        ],
-                        borderRadius: BorderRadius.circular(15.0),
-                      ),
-                      child: TextFormField(
-                        controller: _vehicleNumController,
-                        decoration: InputDecoration(
+                        const SizedBox(height: 25,),
+                        Row(
+                          children: [
+                            const Text("Address",style: TextStyle(fontSize: 20,fontWeight: FontWeight.w600),),
+                            Spacer(),
+                           InkWell(
+                             onTap: (){
+                               Navigator.pushNamed(context, AddAddressScreen.routeName);
+                             },
+                             child: Row(children: [
+                               Icon(Icons.my_location,color: Color(0xffc40000),),
+                               SizedBox(width: 6,),
+                               Text("Add",style: TextStyle(color: Color(0xffc40000),fontSize: 23,fontWeight: FontWeight.w700),)
+                             ],),
+                           ),
+                          ],
+                        ),
+                        const SizedBox(height: 18,),
+                        InkWell(
+                          onTap: () {
+                            setState(() {
+                              _showAddresses = true;
+                            });
+                          },
+                          child: Container(
+                            decoration: BoxDecoration(
+                              boxShadow: [
+                                const BoxShadow(
+                                  color: Color(0xffdcdcdc),
+                                  blurRadius: 20,
+                                ),
+                              ],
+                              borderRadius: BorderRadius.circular(15.0),
+                            ),
+                            child: TextFormField(
+                              enabled: false,
+                              controller: _addressController,
+                              decoration: InputDecoration(
 
-                          fillColor: Colors.white,
-                          filled: true,
-                          suffixIcon: const Icon(
-                            Icons.car_crash_rounded,
-                            color: Color(0xffc40000),
-                          ),
-                          hintText: 'Enter your vehicle number',
+                                fillColor: Colors.white,
+                                filled: true,
+                                suffixIcon: const Icon(
+                                  Icons.location_pin,
+                                  color: Color(0xffc40000),
+                                ),
+                                hintText: 'Select Your Address',
 
-                          enabledBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(15.0),
-                            borderSide: const BorderSide(
-                              color: Colors.white,
-                              width: 3.0,
+                                enabledBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(15.0),
+                                  borderSide: const BorderSide(
+                                    color: Colors.white,
+                                    width: 3.0,
+                                  ),
+                                ),
+                              ),
                             ),
                           ),
                         ),
-                      ),
-                    ),
-                    const SizedBox(height: 25,),
-                    const Text("Address",style: TextStyle(fontSize: 20,fontWeight: FontWeight.w600),),
-                    const SizedBox(height: 10,),
-                    Container(
-                      decoration: BoxDecoration(
-                        boxShadow: const [
-                           BoxShadow(
 
-                            color: Color(0xffdcdcdc),
-                            blurRadius: 10,
 
+                        const SizedBox(height: 20,),
+                        const Padding(
+                          padding: const EdgeInsets.only(left: 20),
+                          child: Text("We Accept only COD",style: TextStyle(color: Colors.red,fontSize: 17),),
+                        ),
+                        const SizedBox(height: 10,),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 12,vertical: 2),
+                          child:  Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+
+                              Radio(
+                                value: 2,
+                                groupValue: _radioSelected,
+                                activeColor: Colors.pink,
+                                onChanged: (value) {
+                                  setState(() {
+                                    _radioSelected = value as int?;
+                                    _radioVal  = 'Cash On Delivery';
+                                  });
+                                },
+                              ),
+                              Text('Cash On Delivery'),
+                              Spacer(),
+                              Text('Online Cash'),
+                              Radio(
+                                toggleable: false,
+                                value: 1,
+                                groupValue: _radioSelected,
+                                activeColor: Colors.blue,
+                                onChanged: (value) {
+                                  // setState(() {
+                                  //   _radioSelected = value as int;
+                                  //   _radioVal  = 'Online Cash';
+                                  // });
+                                },
+                              ),
+
+                            ],
                           ),
-                        ],
-                        borderRadius: BorderRadius.circular(15.0),
-                      ),
-                      // child: DropdownButtonHideUnderline(
-                      //   child: ButtonTheme(
-                      //   alignedDropdown: true,
-                      //   child: DropdownButton<List>(
-                      //     value: _address_list,
-                      //     iconSize: 17,
-                      //     icon: (null),
-                      //     style: TextStyle(color: Colors.black,fontSize: 17),
-                      //     hint: Text("select Address"),
-                      //     onChanged: (String newValue){},
-                      //   ),
-                      // ),)
+                        ),
+                        const SizedBox(height: 15,),
+                        CustomButton(
+
+                          onTap: () async {
+                            var vehicleName  = _vehicNameController.text.toString();
+                            var phoneNumber  = _phoneController.text.toString();
+                            var serviceDate  = _serviceDateController.text.toString();
+                            var serviceTime  = _serviceTimeController.text.toString();
+                            var vehicleNum  = _vehicleNumController.text.toString();
+                            var address  = _addressController.text.toString();
+
+                            Map<String, String> jsonInput = {
+                                "user_address_id": "1",
+                                "package_id": packageId.toString(),
+                                "booked_date": serviceDate,
+                                "booked_time": serviceTime,
+                                "vehicle_type":"two_wheeler",
+                                "vehicle_name": vehicleName,
+                                "vehicle_number": vehicleNum,
+                                "instructions":"instructions",
+                                "payment_method":_radioSelected.toString(),
+                                "payment_details":"",
+                                "payment_status":"due",
+                                "user_address": addressId.toString(),
+                            };
+
+                            bool saveData = true;
+
+                            if(vehicleName.isEmpty){
+                              saveData = false;
+                              Fluttertoast.showToast(msg: "Please Enter Vehicle Name");
+                               return;
+                            }
+
+                            if(phoneNumber.isEmpty){
+                              saveData = false;
+                              Fluttertoast.showToast(msg: "Please Enter Phone Number");
+                              return;
+                            }
+
+                            if(serviceDate.isEmpty){
+                              saveData = false;
+                              Fluttertoast.showToast(msg: "Please Enter Date");
+                              return;
+                            }
+
+                            if(serviceTime.isEmpty){
+                              saveData = false;
+                              Fluttertoast.showToast(msg: "Please Enter Time");
+                              return;
+                            }
+
+                            if(vehicleNum.isEmpty){
+                              saveData = false;
+                              Fluttertoast.showToast(msg: "Please Enter Vehicle Number");
+                              return;
+                            }
+
+                            // if(address.isEmpty){
+                            //   saveData = false;
+                            //   Fluttertoast.showToast(msg: "Please Enter Address");
+                            //   return;
+                            // }
+
+                            if(saveData){
+                              _setBookingFormData(jsonInput);
+                            }
+
+                            print("object${saveData}");
+
+                           print("object>>>>${_radioVal.toString()}>>>>");
+
+                            print("mapp>>>>>>>>>>&&&>>${jsonEncode(jsonInput)}>>>>>>>>>>>>");
+
+
+                          },
+                          text: "Book Service",
+
+                        ),
+                        SizedBox(height: 25,),
+                      ],
                     ),
-
-
-                    const SizedBox(height: 20,),
-                    const Padding(
-                      padding: const EdgeInsets.only(left: 20),
-                      child: Text("We Accept only COD",style: TextStyle(color: Colors.red,fontSize: 17),),
-                    ),
-                    const SizedBox(height: 10,),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 12,vertical: 2),
-                      child:  Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-
-                          Radio(
-                            value: 2,
-                            groupValue: _radioSelected,
-                            activeColor: Colors.pink,
-                            onChanged: (value) {
-                              setState(() {
-                                _radioSelected = value as int?;
-                                _radioVal  = 'Cash On Delivery';
-                              });
-                            },
-                          ),
-                          Text('Cash On Delivery'),
-                          Spacer(),
-                          Text('Online Cash'),
-                          Radio(
-                            toggleable: false,
-                            value: 1,
-                            groupValue: _radioSelected,
-                            activeColor: Colors.blue,
-                            onChanged: (value) {
-                              // setState(() {
-                              //   _radioSelected = value as int;
-                              //   _radioVal  = 'Online Cash';
-                              // });
-                            },
-                          ),
-
-                        ],
-                      ),
-                    ),
-                    const SizedBox(height: 15,),
-                    CustomButton(
-
-                      onTap: () async {
-                        var vehicleName  = _vehicNameController.text.toString();
-                        var phoneNumber  = _phoneController.text.toString();
-                        var serviceDate  = _serviceDateController.text.toString();
-                        var serviceTime  = _serviceTimeController.text.toString();
-                        var vehicleNum  = _vehicleNumController.text.toString();
-                        var address  = _addressController.text.toString();
-
-                        Map<String, String> jsonInput = {
-                            "user_address_id": "1",
-                            "package_id": packageId.toString(),
-                            "booked_date": serviceDate,
-                            "booked_time": serviceTime,
-                            "vehicle_type":"two_wheeler",
-                            "vehicle_name": vehicleName,
-                            "vehicle_number": vehicleNum,
-                            "instructions":"instructions",
-                            "payment_method":_radioSelected.toString(),
-                            "payment_details":"",
-                            "payment_status":"due",
-                            "user_address": address,
-                        };
-
-                        bool saveData = true;
-
-                        if(vehicleName.isEmpty){
-                          saveData = false;
-                          Fluttertoast.showToast(msg: "Please Enter Vehicle Name");
-                           return;
-                        }
-
-                        if(phoneNumber.isEmpty){
-                          saveData = false;
-                          Fluttertoast.showToast(msg: "Please Enter Phone Number");
-                          return;
-                        }
-
-                        if(serviceDate.isEmpty){
-                          saveData = false;
-                          Fluttertoast.showToast(msg: "Please Enter Date");
-                          return;
-                        }
-
-                        if(serviceTime.isEmpty){
-                          saveData = false;
-                          Fluttertoast.showToast(msg: "Please Enter Time");
-                          return;
-                        }
-
-                        if(vehicleNum.isEmpty){
-                          saveData = false;
-                          Fluttertoast.showToast(msg: "Please Enter Vehicle Number");
-                          return;
-                        }
-
-                        if(address.isEmpty){
-                          saveData = false;
-                          Fluttertoast.showToast(msg: "Please Enter Address");
-                          return;
-                        }
-
-                        if(saveData){
-                          _setBookingFormData(jsonInput);
-                        }
-
-                        print("object${saveData}");
-
-                       print("object>>>>${_radioVal.toString()}>>>>");
-
-                        print("mapp>>>>>>>>>>&&&>>${jsonEncode(jsonInput)}>>>>>>>>>>>>");
-
-
-                      },
-                      text: "Book Service",
-
-                    ),
-                    SizedBox(height: 25,),
-                  ],
+                  ),
                 ),
+              ],
+            ),
+          ),
+          _showAddresses
+              ? Container(
+            width: screenSize.width,
+            height: screenSize.height,
+            color: Colors.black87,
+            child:  Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Container(
+
+                decoration: BoxDecoration(color: CustomColor.whiteColor,borderRadius: BorderRadius.circular(14)),
+                child: ListView.builder(
+                    shrinkWrap: true,
+                    //scrollDirection: Axis.vertical,
+                    physics: ScrollPhysics(),
+                    itemCount: _addressList?.length,
+                    itemBuilder: (BuildContext context, index) {
+                      return InkWell(
+                        onTap: (){
+                          setState(() {
+                            _showAddresses = false;
+                          });
+                          addressId = _addressList![index].id;
+                          address =  _addressList![index].fullAddress;
+                          _addressController.text = address!;
+
+                        },
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 24,vertical: 10),
+                          child: Row(
+                            children: [
+                              Container(
+                                width:270,
+                                  padding: const EdgeInsets.all(10),
+                                  decoration:  BoxDecoration(
+                                    borderRadius: BorderRadius.circular(15),
+                                    color: Color(0xffffecec),
+                                  ),
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Text(
+                                      "${_addressList![index].addressLine1},"
+                                          "${_addressList![index].addressLine2},"
+                                          "${_addressList![index].locality},"
+                                          "${_addressList![index].landmark},"
+                                          "${_addressList![index].city},"
+                                          "${_addressList![index].pincode},"
+                                          "\n${_addressList![index].state},"
+                                          "${_addressList![index].country}."
+                                      ,style: TextStyle(),),
+                                  )
+                              ),
+                              SizedBox(width: 6,),
+                              Container(
+                                decoration: BoxDecoration(color: CustomColor.primaryColor,borderRadius: BorderRadius.circular(14)),
+                                  child: Padding(
+                                padding: const EdgeInsets.all(10.0),
+                                child: Text("Select",style: TextStyle(fontSize: 14,color: CustomColor.whiteColor),),
+                              )),
+                            ],
+                          ),
+                        ),
+                      );
+                    }),
               ),
             ),
-          ],
-        ),
+          )
+              : const SizedBox(),
+        ],
       ),
     );
   }
 }
 
+// userType = _userTypes[index];
+//TextSpan(text: _addressList![index].city),
 
 
 

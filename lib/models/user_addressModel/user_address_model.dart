@@ -20,6 +20,7 @@ class UserAddress {
   String? status;
   String? createdAt;
   String? updatedAt;
+  String? fullAddress;
 
   UserAddress(
       {this.id,
@@ -42,7 +43,9 @@ class UserAddress {
         this.details,
         this.status,
         this.createdAt,
-        this.updatedAt});
+        this.updatedAt,
+        this.fullAddress,
+      });
 
   UserAddress.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -66,6 +69,7 @@ class UserAddress {
     status = json['status'];
     createdAt = json['created_at'];
     updatedAt = json['updated_at'];
+    fullAddress = json['full_address'];
   }
 
   Map<String, dynamic> toJson() {
@@ -91,6 +95,7 @@ class UserAddress {
     data['status'] = status;
     data['created_at'] = createdAt;
     data['updated_at'] = updatedAt;
+    data['full_address'] = fullAddress;
     return data;
   }
 }

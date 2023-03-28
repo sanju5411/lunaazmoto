@@ -69,3 +69,31 @@ class CustomStyle {
     fontSize: 14,
   );
 }
+class CustomInputDecoration {
+  static const InputDecoration textInputDecoration = InputDecoration(
+    contentPadding: EdgeInsets.all(15),
+    isDense: true,
+    filled: true,
+    fillColor: Colors.white,
+    labelText: "Label",
+    hintText: "Enter Your Name",
+    focusedBorder: OutlineInputBorder(
+      borderRadius: BorderRadius.all(Radius.circular(10.0)),
+      borderSide: BorderSide(
+        color: Color(0xFFFFA085),
+      ),
+    ),
+    enabledBorder: OutlineInputBorder(
+      borderRadius: BorderRadius.all(Radius.circular(10.0)),
+      borderSide: BorderSide(
+        color: Color(0xFFFFA085),
+      ),
+    ),
+    border: OutlineInputBorder(
+      borderRadius: BorderRadius.all(Radius.circular(10.0)),
+      borderSide: BorderSide(
+        color: Color(0xFFFFA085),
+      ),
+    ),
+  );
+}

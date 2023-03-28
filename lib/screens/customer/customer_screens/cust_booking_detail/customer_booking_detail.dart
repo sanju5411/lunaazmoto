@@ -15,6 +15,7 @@ class _CustomerBookingDetailState extends State<CustomerBookingDetail> {
   @override
   Widget build(BuildContext context) {
     final bookingData = ModalRoute.of(context)?.settings.arguments as ServiceModel;
+    print("<<<<<<<<<<${bookingData}>>>>>>>>>>>>>");
     var bookingId = bookingData.bookingId;
 
     Size screenSize = MediaQuery.of(context).size;
@@ -38,50 +39,7 @@ class _CustomerBookingDetailState extends State<CustomerBookingDetail> {
         child: Column(
           children: [
             const SizedBox(height: 15,),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20),
-              child: Container(
-                margin: const EdgeInsets.all(8),
-                decoration: BoxDecoration(
-                    color: Colors.white, // Your desired background color
-                    borderRadius: BorderRadius.circular(10),
-                    boxShadow: const [
-                      BoxShadow(color: Color.fromRGBO(
-                          209, 255, 255, 0.5058823529411764), blurRadius: 10),
-                    ]
-                ),
-                child:  InkWell(
-                  onTap: (){
-                    // Navigator.pushNamed(context, CustomerBookingInfo.routeName);
-                  },
-                  child: ListTile(
-                      contentPadding:
-                      const EdgeInsets.symmetric(vertical: 20, horizontal: 16),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(15),
-                        side: const BorderSide(
-                          color: Colors.black,
-                        ),
-                      ),
 
-                      title: Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 10),
-                        child: Text("${bookingData.bookingUser?.name}",style: const TextStyle(fontWeight: FontWeight.w600,fontSize: 20),),
-                      ),
-                      subtitle: Text("${bookingData.bookedDate},   ${bookingData.bookedTime}\n${bookingData.bookingUser?.email}",
-                        style: const TextStyle(fontWeight: FontWeight.w500,fontSize: 18,color: Color(0xFF8C8FA5)),),
-                      trailing:  Container(
-                          padding: EdgeInsets.symmetric(horizontal: 8,vertical: 5),
-                          decoration: const BoxDecoration(
-                              borderRadius: BorderRadius.all(Radius.circular(10)),
-                              color: Color(0xFFE8F0FF)
-                          ),
-                          child: const Text("New Booking",style: TextStyle(color: Color(0xFF1D3A70)),))
-                  ),
-                ),
-              ),
-            ),
-            const SizedBox(height: 40,),
             Container(
               //height: screenSize.height,
               width: screenSize.width,
@@ -185,7 +143,7 @@ class _CustomerBookingDetailState extends State<CustomerBookingDetail> {
                               mainAxisAlignment: MainAxisAlignment.start,
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                  Text("City : ${bookingData.bookingAddress?.city}",style: TextStyle(color: Colors.grey,fontWeight: FontWeight.w600,fontSize: 18),),
+                                  Text("City : ${bookingData.bookingAddress?.fullAddress}",style: TextStyle(color: Colors.grey,fontWeight: FontWeight.w600,fontSize: 18),),
                                   SizedBox(height: 8,),
 
                               ],

@@ -620,7 +620,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
                               print("Last Services--->${jsonEncode(serviceModel[index].bookingCenter)}");
                               return InkWell(
                                 onTap: (){
+
                                   Navigator.pushNamed(context, CustomerBookingDetail.routeName,arguments: serviceModel[index],);
+
                                 },
                                 child: Padding(
                                   padding: const EdgeInsets.symmetric(horizontal: 20,vertical: 16),
@@ -667,12 +669,19 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                                   Row(children: [
                                                     const Text("Booking ID -"),
                                                     const SizedBox(width: 7,),
-                                                    Text(lastServices[index].bookingId.toString())
-                                                  ],)
+                                                    Text(
+
+                                                      lastServices[index].bookingId.toString(),
+
+                                                    ),
+                                                  ],
+                                                  ),
                                                 ],
                                               ),
+
                                               const Spacer(),
                                               Text(lastServices[index].bookingDate.toString()),
+
                                             ],
                                           ),
                                           const SizedBox(height: 26,),

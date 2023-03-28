@@ -12,11 +12,13 @@ import 'package:lunaaz_moto/models/customer/dashboard_model.dart';
 import 'package:lunaaz_moto/models/customer/service_booking_list/service_booking_list_model.dart';
 import 'package:lunaaz_moto/models/customer/service_model/package_model/package_main_model.dart';
 import 'package:lunaaz_moto/models/customer/service_model/package_model/package_model.dart';
+import 'package:lunaaz_moto/models/customer/user_address_model/user_address_model.dart';
 import 'package:lunaaz_moto/models/drivers/booking_list_main_model.dart';
 import 'package:lunaaz_moto/models/profile/profile_model.dart';
 import 'package:lunaaz_moto/models/register/register.dart';
 import 'package:lunaaz_moto/models/service_center/booking_details_main_model.dart';
 import 'package:lunaaz_moto/models/service_center/service_center_list_main_model.dart';
+import 'package:lunaaz_moto/models/user_addressModel/user_address_model.dart';
 import 'package:lunaaz_moto/services/shared_preferences_service.dart';
 import 'package:path/path.dart';
 import 'package:profile/profile.dart';
@@ -339,6 +341,43 @@ class ApiService {
       return BookingDetailsMainModel();
     }
 
+  }
+
+  static Future<AuthAddress> getAddressListD() async{
+    Uri uri = Uri.parse('${ApiConfig.apiV1}/${ApiConfig.getAddress}');
+    String token = await SharedPreferencesService.getApiToken();
+    headers.addAll({'Authorization': 'Bearer $token'});
+
+    try {
+      var res = await get(
+        uri,
+        headers: headers,
+      );
+      var json = jsonDecode(res.body);
+      return AuthAddress.fromJson(json);
+    } catch (e) {
+      print("ADDRESS_LIST_ERROR>>> $e");
+      return AuthAddress();
+    }
+  }
+
+  static Future<AuthAddress> setAddressForm({required Object jsonInput}) async {
+    Uri uri = Uri.parse('${ApiConfig.apiV1}/${ApiConfig.saveBookingForm}');
+    String token = await SharedPreferencesService.getApiToken();
+    headers.addAll({'Authorization': 'Bearer $token'});
+
+    try {
+      var res = await post(
+        uri,
+        headers: headers,
+        body: jsonInput,
+      );
+      var json = jsonDecode(res.body);
+      return AuthAddress.fromJson(json);
+    } catch (e) {
+      print("Booking_FORM_ERROR>>> $e");
+      return AuthAddress();
+    }
   }
 
 
