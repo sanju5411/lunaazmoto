@@ -35,6 +35,7 @@ class _TotalBookingScreenState extends State<TotalBookingScreen> {
       "bookings" : type,
     };
 
+    print('typee>>>${type}');
     BookingListMainModel driverMainModel = await ApiService.getBookingListWithKey(jsonInput: jsonEncode(jsonInput));
     print("<----$type booking List--->${jsonEncode(driverMainModel)}");
     if(driverMainModel.status != null){
@@ -59,16 +60,22 @@ class _TotalBookingScreenState extends State<TotalBookingScreen> {
     print("Page Title :: $appBarTitle");
 
     if(!isApiCalled){
+
+      print("iugugug?>>>>><<<<");
       String type = "";
       if(appBarTitle == "Total Booking"){
         type = "total_bookings";
-      }else if(appBarTitle == "Today My Booking"){
+      }else if(appBarTitle == "Today my Booking"){
         type = "today_my_bookings";
       }else if(appBarTitle == "Today Pick Up"){
         type = "picked";
       }else if(appBarTitle == "Today Delivery"){
         type = "drop_to_customer";
       }
+      else if(appBarTitle == "Today Booking"){
+        type = "drop_to_customer";
+      }
+
       if(type != "") getDataFromBookingApi(type);
     }
 
