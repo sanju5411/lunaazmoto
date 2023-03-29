@@ -8,6 +8,7 @@ import 'package:lunaaz_moto/common/widgets/custom_last_services.dart';
 import 'package:lunaaz_moto/configs/api_config.dart';
 import 'package:lunaaz_moto/constants/global_variables.dart';
 import 'package:lunaaz_moto/models/auth/user/user.dart';
+import 'package:lunaaz_moto/models/customer/active_packages/active_package.dart';
 import 'package:lunaaz_moto/models/customer/banner/banner_image.dart';
 import 'package:lunaaz_moto/models/customer/dashboard_model.dart';
 import 'package:lunaaz_moto/models/customer/happy_customer/happy_customer.dart';
@@ -42,6 +43,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
   List<dynamic> lastServices = [];
   List<ServiceModel> serviceModel = [];
   String? imageData = "";
+  List<ActivePackage> _activePackages = [];
 
 
   _getDashboardData() async {
@@ -71,6 +73,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
             _dashboard!.serviceModel!.isNotEmpty) {
           lastServices = _dashboard!.serviceModel!;
           serviceModel = _dashboard!.serviceModel!;
+          _activePackages = _dashboard!.activePackages!;
           print("last service>>>>>>>>>${jsonEncode(serviceModel[0].bookingCenter)}<<<<<<<<<<<");
 
         }
@@ -427,163 +430,187 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
                       ),
                     ),
-                    const SizedBox(height: 15,),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 18),
-                      child: Container(
-
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(20),
-                            gradient: const LinearGradient(
-                              begin: Alignment.topRight,
-                              end: Alignment.bottomLeft,
-                              colors: [
-                                Color(0xff8f35ff),
-                                Color(0xffc898ff),
-                              ],
-                            )
-                        ),
-                        child:  Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 24,vertical: 15),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children:  [
-                              Row(
-                                children:  [
-                                  Text("Current Package",style: TextStyle(color: CustomColor.whiteColor,fontSize: 23,fontWeight: FontWeight.w700),),
-                                  Spacer(),
-                                  Row(
-                                    children: [
-                                      Icon(Icons.directions_bike,color: CustomColor.whiteColor,),
-                                      SizedBox(width: 6,),
-                                      Text("Bike",style: TextStyle(color: CustomColor.whiteColor,fontSize: 20,fontWeight: FontWeight.w700),),
-                                    ],
-                                  ),
-
-                                ],
-                              ),
-                              const SizedBox(height: 6,),
-                              const Padding(
-                                padding: EdgeInsets.symmetric(horizontal: 4),
-                                child: Divider(color: CustomColor.whiteColor,),
-                              ),
-                              const SizedBox(height: 6,),
-                              Row(children: const [
-                              Text(
-                                "Expire Date",style: TextStyle(color: CustomColor.whiteColor,fontSize: 20),
-                              ),
-                              Spacer(),
-                              Text(
-                                  "12/2/2023",style: TextStyle(color: CustomColor.whiteColor,fontSize: 15),
-                                ),
-                              ],),
-                              const SizedBox(height: 6,),
-                              Row(
-                                children: [
-                                const Text(
-                                  "1200/-",style: TextStyle(color: CustomColor.whiteColor,fontSize: 30),
-                                ),
-                                const Spacer(),
-                                Container(
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(10),
-                                    color: Colors.red
-                                  ),
-                                  child: const  Padding(
-                                    padding:  EdgeInsets.all(8.0),
-                                    child: Text(
-                                      "UPGRADE",style: TextStyle(color: CustomColor.whiteColor,fontSize: 15),
-                                    ),
-                                  ),
-                                ),
-                              ],),
+                    const SizedBox(height: 20,),
 
 
-                            ],
-                          ),
-                        ),
+                    if(_activePackages.isNotEmpty)...[
+                      SizedBox(
+                        height: 150.00 * (double.parse(_activePackages.length.toString())),
+                        width: screenSize.width,
+                        child: ListView.builder(
+                            itemCount: _activePackages.length,
+                            physics: const  NeverScrollableScrollPhysics(),
 
-                      ),
-                    ),
-                    const SizedBox(height: 15,),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 18),
-                      child: Container(
+                            itemBuilder: (BuildContext context, int index) {
+                              print("Last Services--->${jsonEncode(serviceModel[index].bookingCenter)}");
+                              if(_activePackages[index].activeVehicleType == "two_wheeler"){
+                                return   Padding(
+                                  padding: const EdgeInsets.symmetric(horizontal: 18),
+                                  child: Container(
 
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(20),
-                            gradient: const LinearGradient(
-                              begin: Alignment.topRight,
-                              end: Alignment.bottomLeft,
-                              colors: [
-                                Color(0xfff5295a),
-                                Color(0xfffc9da8),
-                              ],
-                            )
-                        ),
-                        child:  Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 24,vertical: 15),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children:  [
-                              Row(
-                                children:  [
-                                  Text("Current Package",style: TextStyle(color: CustomColor.whiteColor,fontSize: 23,fontWeight: FontWeight.w700),),
-                                  Spacer(),
-                                  Row(
-                                    children: [
-                                      Icon(Icons.car_crash,color: CustomColor.whiteColor,),
-                                      SizedBox(width: 6,),
-                                      Text("Car",style: TextStyle(color: CustomColor.whiteColor,fontSize: 20,fontWeight: FontWeight.w700),),
-                                    ],
-                                  ),
-
-                                ],
-                              ),
-                              const SizedBox(height: 6,),
-                              const Padding(
-                                padding: EdgeInsets.symmetric(horizontal: 4),
-                                child: Divider(color: CustomColor.whiteColor,),
-                              ),
-                              const SizedBox(height: 6,),
-                              Row(children: const [
-                                Text(
-                                  "Expire Date",style: TextStyle(color: CustomColor.whiteColor,fontSize: 20),
-                                ),
-                                Spacer(),
-                                Text(
-                                  "12/4/2023",style: TextStyle(color: CustomColor.whiteColor,fontSize: 15),
-                                ),
-                              ],),
-                              const SizedBox(height: 6,),
-                              Row(
-                                children: [
-                                  const Text(
-                                    "900/-",style: TextStyle(color: CustomColor.whiteColor,fontSize: 30),
-                                  ),
-                                  const Spacer(),
-                                  Container(
                                     decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(10),
-                                        color: Colors.deepPurple
+                                        borderRadius: BorderRadius.circular(20),
+                                        gradient: const LinearGradient(
+                                          begin: Alignment.topRight,
+                                          end: Alignment.bottomLeft,
+                                          colors: [
+                                            Color(0xff8f35ff),
+                                            Color(0xffc898ff),
+                                          ],
+                                        )
                                     ),
-                                    child: const  Padding(
-                                      padding:  EdgeInsets.all(8.0),
-                                      child: Text(
-                                        "UPGRADE",style: TextStyle(color: CustomColor.whiteColor,fontSize: 15),
+                                    child:  Padding(
+                                      padding: const EdgeInsets.symmetric(horizontal: 24,vertical: 15),
+                                      child: Column(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children:  [
+                                          Row(
+                                            children:  [
+                                              Text("Current Package",style: TextStyle(color: CustomColor.whiteColor,fontSize: 23,fontWeight: FontWeight.w700),),
+                                              Spacer(),
+                                              Row(
+                                                children: [
+                                                  Icon(Icons.directions_bike,color: CustomColor.whiteColor,),
+                                                  SizedBox(width: 6,),
+                                                  Text("Bike",style: TextStyle(color: CustomColor.whiteColor,fontSize: 20,fontWeight: FontWeight.w700),),
+                                                ],
+                                              ),
+
+                                            ],
+                                          ),
+                                          const SizedBox(height: 6,),
+                                          const Padding(
+                                            padding: EdgeInsets.symmetric(horizontal: 4),
+                                            child: Divider(color: CustomColor.whiteColor,),
+                                          ),
+                                          const SizedBox(height: 6,),
+                                          Row(children:  [
+                                            Text(
+                                              "Expire Date",style: TextStyle(color: CustomColor.whiteColor,fontSize: 20),
+                                            ),
+                                            Spacer(),
+                                            Text(
+                                              _activePackages[index].activeEndDate.toString(),style: TextStyle(color: CustomColor.whiteColor,fontSize: 15),
+                                            ),
+                                          ],),
+                                          const SizedBox(height: 6,),
+                                          Row(
+                                            children: [
+                                              const Text(
+                                                "1200/-",style: TextStyle(color: CustomColor.whiteColor,fontSize: 30),
+                                              ),
+                                              const Spacer(),
+                                              Container(
+                                                decoration: BoxDecoration(
+                                                    borderRadius: BorderRadius.circular(10),
+                                                    color: Colors.red
+                                                ),
+                                                child: const  Padding(
+                                                  padding:  EdgeInsets.all(8.0),
+                                                  child: Text(
+                                                    "UPGRADE",style: TextStyle(color: CustomColor.whiteColor,fontSize: 15),
+                                                  ),
+                                                ),
+                                              ),
+                                            ],),
+
+
+                                        ],
                                       ),
                                     ),
+
                                   ),
-                                ],),
+                                );
+                              }
+                              else{
+                                return   Padding(
+                                  padding: const EdgeInsets.symmetric(horizontal: 18),
+                                  child: Container(
+
+                                    decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(20),
+                                        gradient: const LinearGradient(
+                                          begin: Alignment.topRight,
+                                          end: Alignment.bottomLeft,
+                                          colors: [
+                                            Color(0xfff5295a),
+                                            Color(0xfffc9da8),
+                                          ],
+                                        )
+                                    ),
+                                    child:  Padding(
+                                      padding: const EdgeInsets.symmetric(horizontal: 24,vertical: 15),
+                                      child: Column(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children:  [
+                                          Row(
+                                            children:  [
+                                              Text("Current Package",style: TextStyle(color: CustomColor.whiteColor,fontSize: 23,fontWeight: FontWeight.w700),),
+                                              Spacer(),
+                                              Row(
+                                                children: [
+                                                  Icon(Icons.car_crash,color: CustomColor.whiteColor,),
+                                                  SizedBox(width: 6,),
+                                                  Text("Car",style: TextStyle(color: CustomColor.whiteColor,fontSize: 20,fontWeight: FontWeight.w700),),
+                                                ],
+                                              ),
+
+                                            ],
+                                          ),
+                                          const SizedBox(height: 6,),
+                                          const Padding(
+                                            padding: EdgeInsets.symmetric(horizontal: 4),
+                                            child: Divider(color: CustomColor.whiteColor,),
+                                          ),
+                                          const SizedBox(height: 6,),
+                                          Row(children: const [
+                                            Text(
+                                              "Expire Date",style: TextStyle(color: CustomColor.whiteColor,fontSize: 20),
+                                            ),
+                                            Spacer(),
+                                            Text(
+                                              "12/4/2023",style: TextStyle(color: CustomColor.whiteColor,fontSize: 15),
+                                            ),
+                                          ],),
+                                          const SizedBox(height: 6,),
+                                          Row(
+                                            children: [
+                                              const Text(
+                                                "900/-",style: TextStyle(color: CustomColor.whiteColor,fontSize: 30),
+                                              ),
+                                              const Spacer(),
+                                              Container(
+                                                decoration: BoxDecoration(
+                                                    borderRadius: BorderRadius.circular(10),
+                                                    color: Colors.deepPurple
+                                                ),
+                                                child: const  Padding(
+                                                  padding:  EdgeInsets.all(8.0),
+                                                  child: Text(
+                                                    "UPGRADE",style: TextStyle(color: CustomColor.whiteColor,fontSize: 15),
+                                                  ),
+                                                ),
+                                              ),
+                                            ],),
 
 
-                            ],
-                          ),
-                        ),
+                                        ],
+                                      ),
+                                    ),
 
+                                  ),
+                                );
+                              }
+                            }),
                       ),
-                    ),
-                    const SizedBox(height: 15,),
+                      const SizedBox(height: 15,),
+
+
+                    ],
+
+
+
+
                     Row(
 
                       children: [
@@ -622,7 +649,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                 onTap: (){
 
                                   Navigator.pushNamed(context, CustomerBookingDetail.routeName,arguments: serviceModel[index],);
-
                                 },
                                 child: Padding(
                                   padding: const EdgeInsets.symmetric(horizontal: 20,vertical: 16),

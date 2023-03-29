@@ -363,7 +363,8 @@ class ApiService {
   }
 
   static Future<AuthAddress> setAddressForm({required Object jsonInput}) async {
-    Uri uri = Uri.parse('${ApiConfig.apiV1}/${ApiConfig.saveBookingForm}');
+    Uri uri = Uri.parse('${ApiConfig.apiV1}/${ApiConfig.saveAddress}');
+
     String token = await SharedPreferencesService.getApiToken();
     headers.addAll({'Authorization': 'Bearer $token'});
 
@@ -373,10 +374,11 @@ class ApiService {
         headers: headers,
         body: jsonInput,
       );
+      print(jsonInput);
       var json = jsonDecode(res.body);
       return AuthAddress.fromJson(json);
     } catch (e) {
-      print("Booking_FORM_ERROR>>> $e");
+      print("SET_ADDRESS_ERROR>>> $e");
       return AuthAddress();
     }
   }

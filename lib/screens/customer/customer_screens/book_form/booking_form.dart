@@ -33,7 +33,7 @@ class _BookingFormState extends State<BookingForm> {
   AuthUser? _userMob;
   int? _radioSelected;
   String? _radioVal;
-  List<Address>? _addressList;
+  List<Addresses>? _addressList;
   int? addressId = 0;
   String? address = "";
  Position? _currentPosition;
@@ -63,10 +63,11 @@ class _BookingFormState extends State<BookingForm> {
 
 
 
-    getProfileData();
-    super.initState();
 
+    super.initState();
     getServiceCenterListFromApi();
+    getProfileData();
+
   }
 
   getServiceCenterListFromApi() async{
@@ -75,6 +76,7 @@ class _BookingFormState extends State<BookingForm> {
     if(_userAddress.status != null){
       print("hhhh123546>>>");
       _addressList = _userAddress.addresses;
+
       setState(() {
         isLoading = false;
       });
@@ -709,7 +711,9 @@ class _BookingFormState extends State<BookingForm> {
                                   ),
                                   child: Padding(
                                     padding: const EdgeInsets.all(8.0),
-                                    child: Text(
+                                    child:
+                                        _addressList != null?
+                                    Text(
                                       "${_addressList![index].addressLine1},"
                                           "${_addressList![index].addressLine2},"
                                           "${_addressList![index].locality},"
@@ -718,7 +722,7 @@ class _BookingFormState extends State<BookingForm> {
                                           "${_addressList![index].pincode},"
                                           "\n${_addressList![index].state},"
                                           "${_addressList![index].country}."
-                                      ,style: TextStyle(),),
+                                      ,style: TextStyle(),): Text("No Address")
                                   )
                               ),
                               SizedBox(width: 6,),

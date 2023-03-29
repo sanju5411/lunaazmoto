@@ -15,7 +15,7 @@ class NavCusDrawer extends StatelessWidget {
   Widget build(BuildContext context) {
     AuthUser? _authUser;
 
-    Size screenSize = MediaQuery.of(context).size;
+   // Size screenSize = MediaQuery.of(context).size;
 
     return Drawer(
      // width:100,
