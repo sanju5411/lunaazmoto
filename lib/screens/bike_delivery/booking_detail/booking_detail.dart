@@ -1,7 +1,9 @@
 import 'dart:convert';
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:lunaaz_moto/configs/api_config.dart';
 import 'package:lunaaz_moto/constants/global_variables.dart';
 import 'package:lunaaz_moto/models/customer/service_booking_list/service_booking_list_model.dart';
 import 'package:lunaaz_moto/models/drivers/new_services.dart';
@@ -27,6 +29,9 @@ class _BookingDetailState extends State<BookingDetail> {
   bool isLoading = true;
   bool isgettingProfile = true;
   NewServices? bookingData;
+  bool dropedShowView = false;
+  bool pickFromVendorShowView = false;
+  bool dropToCustomer = false;
 
 
   changeBookingStatus(String status, int bookingId) async{
@@ -34,13 +39,16 @@ class _BookingDetailState extends State<BookingDetail> {
       "status" : status,
     };
     BookingList bookingList = await ApiService.changeServiceStatus(bookingId : bookingId,jsonInput: jsonEncode(jsonInput));
-    if(bookingList != null){
+    print("Change Booking Status--->${jsonEncode(bookingList)}");
+    if(bookingList.status != null){
       setState(() {
         showServiceCenter = true;
         showAcceptRejectButton = false;
         _bookingId = bookingId;
       });
       Fluttertoast.showToast(msg: "${bookingList.message}");
+    }else if(bookingList.status == null){
+
     }
   }
 
@@ -65,14 +73,15 @@ class _BookingDetailState extends State<BookingDetail> {
     }
   }
 
-  assingServiceCenterForService() async{
+  assingServiceCenterForService(var _bookingIdData) async{
     Map<String, String> jsonInput = {
       "center_id" : serviceCenterId.toString(),
     };
-    ServiceCenterListMainModel mainModel = await ApiService.assingServiceCenter(bookingId: _bookingId, jsonInput: jsonEncode(jsonInput));
+    ServiceCenterListMainModel mainModel = await ApiService.assingServiceCenter(bookingId: _bookingIdData, jsonInput: jsonEncode(jsonInput));
     print("main Model --->${jsonEncode(mainModel)}");
     if(mainModel.status != null){
       Fluttertoast.showToast(msg: "${mainModel.message}");
+      getBookingDetailsFromApi(_bookingIdData!);
       setState(() {
         showServiceCenter = false;
       });
@@ -80,6 +89,7 @@ class _BookingDetailState extends State<BookingDetail> {
   }
 
   getBookingDetailsFromApi(int bookingId) async{
+    print(bookingId);
     setState(() {
       isgettingProfile = true;
     });
@@ -92,9 +102,39 @@ class _BookingDetailState extends State<BookingDetail> {
           showAcceptRejectButton = false;
           if(bookingData?.bookingCenter != null){
             showServiceCenter = false;
+            dropedShowView = true;
+            pickFromVendorShowView = false;
+            dropToCustomer = false;
           }else{
             showServiceCenter = true;
+            dropedShowView = false;
+            pickFromVendorShowView = false;
+            dropToCustomer = false;
           }
+        }else if(bookingData?.bookingStatus == "dropped_at_vendor"){
+          setState(() {
+            showAcceptRejectButton = false;
+            dropedShowView = false;
+            showServiceCenter = false;
+            pickFromVendorShowView = false;
+            dropToCustomer = false;
+          });
+        }else if(bookingData?.bookingStatus == "service_completed"){
+          setState(() {
+            showAcceptRejectButton = false;
+            dropedShowView = false;
+            showServiceCenter = false;
+            pickFromVendorShowView = true;
+            dropToCustomer = false;
+          });
+        }else if(bookingData?.bookingStatus == "picked_at_vendor"){
+          setState(() {
+            showAcceptRejectButton = false;
+            dropedShowView = false;
+            showServiceCenter = false;
+            pickFromVendorShowView = false;
+            dropToCustomer = true;
+          });
         }
 
       });
@@ -161,11 +201,11 @@ class _BookingDetailState extends State<BookingDetail> {
                           color: Colors.black,
                         ),
                       ),
-                      leading: const CircleAvatar(
-                        backgroundImage: NetworkImage("https://cdn.hswstatic.com/gif/play/0b7f4e9b-f59c-4024-9f06-b3dc12850ab7-1920-1080.jpg"), // No matter how big it is, it won't overflow
+                      leading: CircleAvatar(
+                        backgroundImage: NetworkImage(ApiConfig.baseUrl+bookingData!.bookingUser!.avatar.toString()), // No matter how big it is, it won't overflow
                       ),
                       title: Text("${bookingData?.bookingUser?.name}",style: const TextStyle(fontWeight: FontWeight.w600,fontSize: 15),),
-                      subtitle: Text("${bookingData?.bookedDate}, ${bookingData?.bookedTime}\nNewyork, United States\n${bookingData?.bookingUser?.email}",
+                      subtitle: Text("${bookingData?.bookedDate}, ${bookingData?.bookedTime}\n${bookingData!.bookingAddress!.fullAddress}\n${bookingData?.bookingUser?.email}",
                         style: const TextStyle(fontWeight: FontWeight.w500,fontSize: 12,color: Color(0xFF8C8FA5)),),
                       trailing:  Container(
                           padding: EdgeInsets.symmetric(horizontal: 8,vertical: 5),
@@ -181,7 +221,6 @@ class _BookingDetailState extends State<BookingDetail> {
             const SizedBox(height: 40,),
             Container(
               //height: screenSize.height,
-              width: screenSize.width,
               decoration: const BoxDecoration(
                   borderRadius: BorderRadius.only(topRight: Radius.circular(50),topLeft: Radius.circular(50),),
                   color: CustomColor.primaryColor
@@ -217,56 +256,78 @@ class _BookingDetailState extends State<BookingDetail> {
                             ],
                             const SizedBox(height: 5,),
                             Text("${bookingData?.bookedDate}  @ ${bookingData?.bookedTime}",style: const TextStyle(fontSize: 17,color: CustomColor.whiteColor,fontWeight: FontWeight.w600),),
+                            const SizedBox(height: 5,),
+                            Text("Status :${bookingData?.bookingStatus} ",
+                              overflow: TextOverflow.ellipsis,
+                              maxLines: 2,
+                              style: const TextStyle(fontSize: 15,color: CustomColor.whiteColor,fontWeight: FontWeight.w600),),
                           ],)
                       ],
                     ),
                   ),
                   const SizedBox(height: 20,),
                   Container(
-                    width: screenSize.width,
                     decoration: const BoxDecoration(
                         color: CustomColor.whiteColor,
                         borderRadius: BorderRadius.only(topRight: Radius.circular(50),topLeft: Radius.circular(50))
                     ),
                     child: Padding(
-                      padding: const EdgeInsets.only(left: 40),
+                      padding: const EdgeInsets.all(0),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           const SizedBox(height: 25,),
-                          Row(
-                            children: const [
-                              Icon(Icons.watch_later,color: Colors.grey,),
-                              SizedBox(width: 10,),
-                              Text("Booking Service",style: TextStyle(color: Colors.black,fontWeight: FontWeight.w600,fontSize: 20),),
-                            ],
-                          ),
-                          Container(
-                            margin: const EdgeInsets.symmetric(horizontal: 35),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                const SizedBox(height: 8,),
-                                Text("Select Type : ${bookingData?.bookingPackage?.packageType} Service",style: TextStyle(color: Colors.grey,fontWeight: FontWeight.w600,fontSize: 15),),
-                                const SizedBox(height: 8,),
-                                Text("${bookingData?.bookedDate}",style: TextStyle(color: Colors.grey,fontWeight: FontWeight.w600,fontSize: 15),),
-                                const SizedBox(height: 8,),
-                                Text("${bookingData?.bookedTime}",style: TextStyle(color:CustomColor.primaryColor,fontWeight: FontWeight.w600,fontSize: 15),),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 40.0),
+                            child: Row(
+                              children: const [
+                                Icon(Icons.watch_later,color: Colors.grey,),
+                                SizedBox(width: 10,),
+                                Text("Booking Service",style: TextStyle(color: Colors.black,fontWeight: FontWeight.w600,fontSize: 20),),
                               ],
                             ),
                           ),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 40.0),
+                            child: Container(
+                              margin: const EdgeInsets.symmetric(horizontal: 35),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  const SizedBox(height: 8,),
+                                  Text("Select Type : ${bookingData?.bookingPackage?.packageType} Service",style: TextStyle(color: Colors.grey,fontWeight: FontWeight.w600,fontSize: 15),),
+                                  const SizedBox(height: 8,),
+                                  Text("Service Price : \u20B9 ${bookingData?.bookingPackage?.packagePrice}",style: TextStyle(color: Colors.grey,fontWeight: FontWeight.w600,fontSize: 15),),
+                                  const SizedBox(height: 8,),
+                                  Text("Package Feature: ",style: TextStyle(color: Colors.grey,fontWeight: FontWeight.w600,fontSize: 15),),
+                                  HtmlWidget(
+                                      (bookingData?.bookingPackage!.packageFeaturesName!.toString()).toString(),
+                                    textStyle: TextStyle(color: Colors.grey,fontWeight: FontWeight.w600,fontSize: 15),
+                                  ),
+                                  const SizedBox(height: 8,),
+                                  Text("Pick-Up Date :  ${bookingData?.bookedDate}",style: TextStyle(color: Colors.grey,fontWeight: FontWeight.w600,fontSize: 15),),
+                                  const SizedBox(height: 8,),
+                                  Text("Pick-Up Time : ${bookingData?.bookedTime}",style: TextStyle(color:CustomColor.primaryColor,fontWeight: FontWeight.w600,fontSize: 15),),
+                                ],
+                              ),
+                            ),
+                          ),
                           const SizedBox(height: 25,),
-                          Row(
-                            children: const [
-                              Icon(Icons.person,color: Colors.grey,),
-                              SizedBox(width: 10,),
-                              Text("Customer information",style: TextStyle(color: Colors.black,fontWeight: FontWeight.w600,fontSize: 20),),
-                            ],
+                          Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 40.0),
+                            child: Row(
+                              children: const [
+                                Icon(Icons.person,color: Colors.grey,),
+                                SizedBox(width: 10,),
+                                Text("Customer information",style: TextStyle(color: Colors.black,fontWeight: FontWeight.w600,fontSize: 20),),
+                              ],
+                            ),
                           ),
                           const SizedBox(height: 8,),
                           Container(
                             margin: EdgeInsets.symmetric(horizontal: 35),
+                            padding: EdgeInsets.symmetric(horizontal: 40),
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.start,
                               crossAxisAlignment: CrossAxisAlignment.start,
@@ -280,6 +341,7 @@ class _BookingDetailState extends State<BookingDetail> {
                           const SizedBox(height: 25,),
                           Container(
                             margin: const EdgeInsets.symmetric(horizontal: 35),
+                            padding: EdgeInsets.symmetric(horizontal: 40),
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.start,
                               crossAxisAlignment: CrossAxisAlignment.start,
@@ -291,24 +353,30 @@ class _BookingDetailState extends State<BookingDetail> {
                             ),
                           ),
                           const SizedBox(height: 25,),
-                          Row(
-                            children: const [
-                              Icon(Icons.location_on,color: Colors.grey,),
-                              SizedBox(width: 10,),
-                              Text("Address",style: TextStyle(color: Colors.black,fontWeight: FontWeight.w600,fontSize: 20),),
-                            ],
+                          Padding(
+                            padding: EdgeInsets.symmetric(horizontal: 40),
+                            child: Row(
+                              children: const [
+                                Icon(Icons.location_on,color: Colors.grey,),
+                                SizedBox(width: 10,),
+                                Text("Address",style: TextStyle(color: Colors.black,fontWeight: FontWeight.w600,fontSize: 20),),
+                              ],
+                            ),
                           ),
                           const SizedBox(height: 8,),
                           Container(
+                            padding: EdgeInsets.symmetric(horizontal: 40),
                             margin: EdgeInsets.symmetric(horizontal: 35),
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.start,
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 if(bookingData?.bookingAddress != null)...[
-                                  Text("City : ${bookingData?.bookingAddress?.city}",style: TextStyle(color: Colors.grey,fontWeight: FontWeight.w600,fontSize: 15),),
-                                  SizedBox(height: 8,),
-                                  Text("Area : ${bookingData?.bookingAddress?.state}",style: TextStyle(color: Colors.grey,fontWeight: FontWeight.w600,fontSize: 15),),
+                                  Text("${bookingData?.bookingAddress?.fullAddress}",style: TextStyle(color: Colors.grey,fontWeight: FontWeight.w600,fontSize: 15),),
+                                  // SizedBox(height: 8,),
+                                  // Text("City : ${bookingData?.bookingAddress?.city}",style: TextStyle(color: Colors.grey,fontWeight: FontWeight.w600,fontSize: 15),),
+                                  // SizedBox(height: 8,),
+                                  // Text("Area : ${bookingData?.bookingAddress?.state}",style: TextStyle(color: Colors.grey,fontWeight: FontWeight.w600,fontSize: 15),),
                                 ],
 
                               ],
@@ -318,6 +386,7 @@ class _BookingDetailState extends State<BookingDetail> {
                           Visibility(
                             visible: showAcceptRejectButton,
                             child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 GestureDetector(
                                   onTap: (){
@@ -368,7 +437,7 @@ class _BookingDetailState extends State<BookingDetail> {
                           Visibility(
                             visible: showServiceCenter,
                             child: Container(
-                              margin: EdgeInsets.only(right: 25),
+                              margin: EdgeInsets.symmetric(horizontal: 40),
                               decoration: BoxDecoration(
                                 borderRadius: const BorderRadius.all(Radius.circular(12)),
                                 border: Border.all(
@@ -378,6 +447,7 @@ class _BookingDetailState extends State<BookingDetail> {
                               height: 60.0,
                               padding: const EdgeInsets.symmetric(horizontal: 20.0),
                               child: DropdownSearch<dynamic>(
+                                mode: Mode.BOTTOM_SHEET,
                                 showSearchBox: serviceCenters!.length > 10 ? true : false,
                                 validator: (value) {
                                   if (value == null) {
@@ -396,29 +466,150 @@ class _BookingDetailState extends State<BookingDetail> {
                           const SizedBox(height: 20,),
                           Visibility(
                             visible: showServiceCenter,
-                            child: Column(
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                Align(
-                                  alignment: Alignment.center,
-                                  child: GestureDetector(
-                                    onTap: (){
-                                      assingServiceCenterForService();
-                                    },
-                                    child: Container(
-                                      color: const Color.fromRGBO(96, 177, 14, 0.15),
-                                      height: 40,
+                                GestureDetector(
+                                  onTap: (){
+                                    assingServiceCenterForService(bookingId);
+                                  },
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                        color: CustomColor.primaryColor,
+                                        border: Border.all(
+                                          color: CustomColor.primaryColor,
+                                        ),
+                                        borderRadius: BorderRadius.all(Radius.circular(15))
+                                    ),
+                                    height: 40,
+                                    width: 100,
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: Row(
+                                        mainAxisAlignment: MainAxisAlignment.center,
+                                        children: const [
 
-                                      child: const Padding(
-                                        padding: EdgeInsets.all(8.0),
-                                        child: Text("Assign Service Center",style: TextStyle(color: Color(0xFF60B10E)),),
+                                          Text("Submit",style: TextStyle(color: Color(0xFFFFFFFF)),)
+                                        ],
                                       ),
                                     ),
                                   ),
                                 ),
-                                const SizedBox(height: 20,),
+                                const SizedBox(width: 50,),
+                                GestureDetector(
+                                  onTap: (){
+                                    changeBookingStatus("picked",bookingId!);
+                                  },
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                        color: CustomColor.whiteColor,
+                                        border: Border.all(
+                                          color: CustomColor.primaryColor,
+                                        ),
+                                        borderRadius: BorderRadius.all(Radius.circular(15))
+                                    ),
+
+                                    height: 40,
+                                    width: 100,
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: Row(
+                                        mainAxisAlignment: MainAxisAlignment.center,
+                                        children: const [
+                                          Text("Pickup",style: TextStyle(color: CustomColor.primaryColor),)
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                )
                               ],
                             ),
                           ),
+                          Visibility(
+                            visible: dropedShowView,
+                            child: GestureDetector(
+                              onTap: (){
+                                changeBookingStatus("dropped_at_vendor",bookingId!);
+                              },
+                              child: Container(
+                                margin: EdgeInsets.symmetric(horizontal: 40),
+                                decoration: BoxDecoration(
+                                    color: CustomColor.whiteColor,
+                                    border: Border.all(
+                                      color: CustomColor.primaryColor,
+                                    ),
+                                    borderRadius: BorderRadius.all(Radius.circular(15))
+                                ),
+                                height: 40,
+                                child: Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: const [
+                                      Text("Drop",style: TextStyle(color: CustomColor.primaryColor),)
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                          Visibility(
+                            visible: pickFromVendorShowView,
+                            child: GestureDetector(
+                              onTap: (){
+                                changeBookingStatus("picked_at_vendor",bookingId!);
+                              },
+                              child: Container(
+                                margin: EdgeInsets.symmetric(horizontal: 40),
+                                decoration: BoxDecoration(
+                                    color: CustomColor.whiteColor,
+                                    border: Border.all(
+                                      color: CustomColor.primaryColor,
+                                    ),
+                                    borderRadius: BorderRadius.all(Radius.circular(15))
+                                ),
+                                height: 40,
+                                child: Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: const [
+                                      Text("Picked From Vendor",style: TextStyle(color: CustomColor.primaryColor),)
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                          Visibility(
+                            visible: dropToCustomer,
+                            child: GestureDetector(
+                              onTap: (){
+                                changeBookingStatus("completed",bookingId!);
+                              },
+                              child: Container(
+                                margin: EdgeInsets.symmetric(horizontal: 40),
+                                decoration: BoxDecoration(
+                                    color: CustomColor.whiteColor,
+                                    border: Border.all(
+                                      color: CustomColor.primaryColor,
+                                    ),
+                                    borderRadius: BorderRadius.all(Radius.circular(15))
+                                ),
+                                height: 40,
+                                child: Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: const [
+                                      Text("Drop To Customer",style: TextStyle(color: CustomColor.primaryColor),)
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                          const SizedBox(height: 20,),
                         ],
                       ),
                     ),),

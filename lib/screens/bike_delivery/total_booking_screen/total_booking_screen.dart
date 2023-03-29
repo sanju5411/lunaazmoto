@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
+import 'package:lunaaz_moto/configs/api_config.dart';
 import 'package:lunaaz_moto/constants/global_variables.dart';
 import 'package:lunaaz_moto/models/drivers/booking_list_main_model.dart';
 import 'package:lunaaz_moto/models/drivers/new_services.dart';
@@ -60,13 +61,13 @@ class _TotalBookingScreenState extends State<TotalBookingScreen> {
     if(!isApiCalled){
       String type = "";
       if(appBarTitle == "Total Booking"){
-        type = "total_booking";
+        type = "total_bookings";
       }else if(appBarTitle == "Today Booking"){
-        type = "today";
+        type = "today_new_bookings";
       }else if(appBarTitle == "Today Pick Up"){
-        type = "";
+        type = "picked";
       }else if(appBarTitle == "Today Delivery"){
-        type = "";
+        type = "drop_to_customer";
       }
       getDataFromBookingApi(type);
     }
@@ -110,6 +111,7 @@ class _TotalBookingScreenState extends State<TotalBookingScreen> {
         ),
       ): Container(
         width: screenSize.width,
+        height: screenSize.height,
         decoration: const BoxDecoration(
           borderRadius: BorderRadius.only(topLeft: Radius.circular(20),topRight: Radius.circular(20)),
           color: CustomColor.whiteColor,
@@ -207,8 +209,8 @@ class _TotalBookingScreenState extends State<TotalBookingScreen> {
                                 color: Colors.black,
                               ),
                             ),
-                            leading: const CircleAvatar(
-                              backgroundImage: NetworkImage("https://assets.pokemon.com/assets/cms2/img/pokedex/detail/043.png"), // No matter how big it is, it won't overflow
+                            leading:  CircleAvatar(
+                              backgroundImage: NetworkImage(ApiConfig.baseUrl+newService[index].bookingUser!.avatar.toString()), // No matter how big it is, it won't overflow
                             ),
                             title: Text("${newService[index].bookingUser?.name}",style: TextStyle(fontWeight: FontWeight.w600,fontSize: 15),),
                             subtitle: Text("${newService[index].bookedDate}, ${newService[index].bookedTime}",style: TextStyle(fontWeight: FontWeight.w500,fontSize: 12,color: Color(0xFF8C8FA5)),),
@@ -216,7 +218,7 @@ class _TotalBookingScreenState extends State<TotalBookingScreen> {
                               children: [
                                 Icon(Icons.remove_red_eye,color: Colors.cyan,),
                                 SizedBox(height: 10,),
-                                Text("New Booking",style: TextStyle(color: Colors.deepPurpleAccent),)
+                                Text("${(newService[index].bookingStatus == "pending") ? "New Booking" : newService[index].bookingStatus}",style: TextStyle(color: Colors.deepPurpleAccent),)
                               ],
                             ),
                           ),

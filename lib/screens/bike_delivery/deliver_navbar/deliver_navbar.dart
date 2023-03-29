@@ -1,5 +1,6 @@
 
 import 'package:flutter/material.dart';
+import 'package:lunaaz_moto/configs/api_config.dart';
 import 'package:lunaaz_moto/constants/global_variables.dart';
 import 'package:lunaaz_moto/models/auth/user/user.dart';
 import 'package:lunaaz_moto/screens/auth/login_screen.dart';
@@ -11,7 +12,7 @@ class DeliverNavBat extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    AuthUser? _authUser;
+    AuthUser? authUser;
 
     Size screenSize = MediaQuery.of(context).size;
 
@@ -21,21 +22,20 @@ class DeliverNavBat extends StatelessWidget {
 
         children: <Widget>[
           DrawerHeader(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                CircleAvatar(
-
-                  backgroundImage: AssetImage("assets/images/dpp.jpg"),
-                ),
-                SizedBox(height: 25,),
-                Text(  _authUser != null ? _authUser!.name!.toString(): 'LunaazMoto',style: TextStyle(fontSize: 30,color: CustomColor.whiteColor,fontWeight: FontWeight.w600),)
-
-              ],),
             decoration: BoxDecoration(
                 color: CustomColor.primaryColor,
                 borderRadius: BorderRadius.only(bottomRight: Radius.circular(20),bottomLeft: Radius.circular(20))
             ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                CircleAvatar(
+                  backgroundImage: NetworkImage(ApiConfig.baseUrl+"/storage/drivers/images/tNgwIGREu0t3NOHgIVmMAzevdR5qGQvmcws8BOeY.png"),
+                ),
+                SizedBox(height: 25,),
+                Text(  authUser != null ? authUser!.name!.toString(): 'LunaazMoto',style: TextStyle(fontSize: 30,color: CustomColor.whiteColor,fontWeight: FontWeight.w600),)
+
+              ],),
           ),
           ListTile(
             leading: Icon(Icons.verified_user),

@@ -193,7 +193,7 @@ class ApiService {
     String token = await SharedPreferencesService.getApiToken();
     headers.addAll({'Authorization': 'Bearer $token'});
 
-    print("token--->$token");
+    print("Dashboard token--->$token");
 
     try {
       var res = await get(
@@ -277,8 +277,7 @@ class ApiService {
           headers: headers,
           body : jsonInput
       );
-      print("BOOKING_LIST_ERROR>>> $uri");
-      print("BOOKING_LIST_ERROR>>> $jsonInput");
+
       var json = jsonDecode(res.body);
       return BookingListMainModel.fromJson(json);
     } catch (e) {
@@ -310,6 +309,8 @@ class ApiService {
     String token = await SharedPreferencesService.getApiToken();
     headers.addAll({'Authorization': 'Bearer $token'});
 
+    print("assign service center--->$uri");
+
     try {
       var res = await post(
         uri,
@@ -319,7 +320,7 @@ class ApiService {
       var json = jsonDecode(res.body);
       return ServiceCenterListMainModel.fromJson(json);
     } catch (e) {
-      print("BOOKING_LIST_ERROR>>> $e");
+      print("ASSIGN SERVICE CENTER ERROR>>> $e");
       return ServiceCenterListMainModel();
     }
   }

@@ -22,7 +22,7 @@ class BookingListMainModel {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = Map<String, dynamic>();
+    final Map<String, dynamic> data = new Map<String, dynamic>();
     data['status'] = status;
     data['status_code'] = statusCode;
     data['message'] = message;
