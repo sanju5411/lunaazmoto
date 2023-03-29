@@ -8,7 +8,7 @@ import 'package:lunaaz_moto/models/auth/login/login.dart';
 import 'package:lunaaz_moto/models/auth/login/login_check.dart';
 import 'package:lunaaz_moto/models/auth/user/user.dart';
 import 'package:lunaaz_moto/models/customer/booking_model/booking_model.dart';
-import 'package:lunaaz_moto/models/customer/dashboard_model.dart';
+import 'package:lunaaz_moto/models/customer/dashboard/dashboard.dart';
 import 'package:lunaaz_moto/models/customer/service_booking_list/service_booking_list_model.dart';
 import 'package:lunaaz_moto/models/customer/service_model/package_model/package_main_model.dart';
 import 'package:lunaaz_moto/models/customer/service_model/package_model/package_model.dart';

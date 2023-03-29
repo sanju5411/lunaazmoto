@@ -33,12 +33,12 @@ class _BookingFormState extends State<BookingForm> {
   AuthUser? _userMob;
   int? _radioSelected;
   String? _radioVal;
-  List<Addresses>? _addressList;
+  List<Address>? _addressList;
   int? addressId = 0;
   String? address = "";
  Position? _currentPosition;
 
-  bool isLoading = true;
+  bool isLoading = false;
 
   final TextEditingController _vehicNameController =       TextEditingController();
   final TextEditingController _phoneController =      TextEditingController();
@@ -75,7 +75,7 @@ class _BookingFormState extends State<BookingForm> {
     print("object>>>>>${jsonEncode(_userAddress)}");
     if(_userAddress.status != null){
       print("hhhh123546>>>");
-      _addressList = _userAddress.addresses;
+      _addressList = _userAddress.  addresses;
 
       setState(() {
         isLoading = false;
@@ -238,8 +238,10 @@ class _BookingFormState extends State<BookingForm> {
   Widget build(BuildContext context) {
 
 
-    final packageId = ModalRoute.of(context)?.settings.arguments as int;
-
+    Map<String, dynamic> argsPackage = ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>;
+    var packageId = argsPackage['packageId'];
+    var vehicleType = argsPackage['vehicleType'];
+    print("pId>>>>${packageId}>>>>${vehicleType}");
     Size screenSize = MediaQuery.of(context).size;
 
     return Scaffold(
@@ -279,16 +281,22 @@ class _BookingFormState extends State<BookingForm> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         const SizedBox(height: 15,),
-                        const Text("Bike Service or Car Wash",style: TextStyle(
+                        vehicleType != 'four_wheeler' ?
+                         Text("Bike Service",style: TextStyle(
                           fontSize: 30,
                           fontWeight: FontWeight.w800
+                        ),):
+                         Text("Car Wash",style: TextStyle(
+                            fontSize: 30,
+                            fontWeight: FontWeight.w800
                         ),),
+
                         const SizedBox(height: 20,),
                         const SizedBox(height: 10,),
                         const Text("Vehicle Name",style: TextStyle(fontSize: 20,fontWeight: FontWeight.w600),),
                         const SizedBox(height: 10,),
                         Container(
-                      decoration: BoxDecoration(
+                        decoration: BoxDecoration(
                         boxShadow: const [
                           BoxShadow(
                             color: Color(0xffdcdcdc),
@@ -305,10 +313,11 @@ class _BookingFormState extends State<BookingForm> {
                           filled: true,
                           suffixIcon:
 
-                          const Icon(
-                            Icons.car_repair,
+                          vehicleType == 'four_wheeler' ?
+                          Icon(
+                            Icons.car_crash_sharp,
                             color: Color(0xffc40000),
-                          ),
+                          ):Icon(Icons.directions_bike,color: Color(0xffc40000)),
                           hintText: 'Enter Vehicle Name',
                           enabledBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(15.0),
@@ -490,10 +499,18 @@ class _BookingFormState extends State<BookingForm> {
                             Spacer(),
                            InkWell(
                              onTap: (){
-                               Navigator.pushNamed(context, AddAddressScreen.routeName);
+                               Navigator.pushNamed(context, AddAddressScreen.routeName).then((value) {
+                                 Address userAddress = value as Address;
+                                 setState(() {
+                                   addressId = userAddress.id;
+                                   _addressController.text = userAddress.fullAddress ?? "";
+
+
+                                 });
+                               });
                              },
                              child: Row(children: [
-                               Icon(Icons.my_location,color: Color(0xffc40000),),
+                               Icon(Icons.add,color: Color(0xffc40000),),
                                SizedBox(width: 6,),
                                Text("Add",style: TextStyle(color: Color(0xffc40000),fontSize: 23,fontWeight: FontWeight.w700),)
                              ],),
@@ -568,7 +585,6 @@ class _BookingFormState extends State<BookingForm> {
                               ),
                               Text('Cash On Delivery'),
                               Spacer(),
-                              Text('Online Cash'),
                               Radio(
                                 toggleable: false,
                                 value: 1,
@@ -581,6 +597,8 @@ class _BookingFormState extends State<BookingForm> {
                                   // });
                                 },
                               ),
+                              Text('Online Cash'),
+
 
                             ],
                           ),
@@ -597,18 +615,17 @@ class _BookingFormState extends State<BookingForm> {
                             var address  = _addressController.text.toString();
 
                             Map<String, String> jsonInput = {
-                                "user_address_id": "1",
+                                "user_address_id": addressId.toString(),
                                 "package_id": packageId.toString(),
                                 "booked_date": serviceDate,
                                 "booked_time": serviceTime,
-                                "vehicle_type":"two_wheeler",
+                                "vehicle_type":vehicleType,
                                 "vehicle_name": vehicleName,
                                 "vehicle_number": vehicleNum,
                                 "instructions":"instructions",
                                 "payment_method":_radioSelected.toString(),
                                 "payment_details":"",
                                 "payment_status":"due",
-                                "user_address": addressId.toString(),
                             };
 
                             bool saveData = true;

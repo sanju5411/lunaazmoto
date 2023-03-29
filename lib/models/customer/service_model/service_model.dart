@@ -174,7 +174,7 @@ class BookingUser {
 
 class PackageBenefits {
   String? name;
-  String? limit;
+  int? limit;
 
   PackageBenefits({this.name, this.limit});
 

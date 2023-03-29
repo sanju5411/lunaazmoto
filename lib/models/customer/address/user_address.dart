@@ -1,33 +1,5 @@
-class AuthAddress {
-  AuthAddress({
-    this.status,
-    this.message,
-    this.addresses,
-    this.userAddress,
-  });
-
-  String? status;
-  String? message;
-  List<Address>? addresses;
-  Address? userAddress;
-
-  factory AuthAddress.fromJson(Map<String, dynamic> json) => AuthAddress(
-    status: json["status"],
-    message: json["message"],
-    addresses: json["addresses"] == null  ? null : List<Address>.from(json["addresses"].map((x) => Address.fromJson(x))),
-    userAddress: json['user_address'] == null ? null : Address.fromJson(json["user_address"]),
-  );
-
-  Map<String, dynamic> toJson() => {
-    "status": status,
-    "message": message,
-    "addresses": addresses == null ? null : List<dynamic>.from(addresses!.map((x) => x.toJson())),
-    "user_address": userAddress == null ? null : userAddress!.toJson(),
-  };
-}
-
-class Address {
-  Address({
+class UserAddress {
+  UserAddress({
     this.id,
     this.title,
     this.name,
@@ -63,11 +35,11 @@ class Address {
   String? country;
   dynamic details;
   String? status;
-  dynamic latitude;
-  dynamic longitude;
+  String? latitude;
+  String? longitude;
   String? fullAddress;
 
-  factory Address.fromJson(Map<String, dynamic> json) => Address(
+  factory UserAddress.fromJson(Map<String, dynamic> json) => UserAddress(
     id: json["id"],
     title: json["title"],
     name: json["name"],

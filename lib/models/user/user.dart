@@ -1,5 +1,6 @@
-class HappyCustomer {
-  HappyCustomer({
+
+class User {
+  User({
     this.id,
     this.name,
     this.countryCode,
@@ -19,7 +20,7 @@ class HappyCustomer {
   String? userType;
   List<String>? fcmTopics;
 
-  factory HappyCustomer.fromJson(Map<String, dynamic> json) => HappyCustomer(
+  factory User.fromJson(Map<String, dynamic> json) => User(
     id: json["id"],
     name: json["name"],
     countryCode: json["country_code"],
@@ -27,9 +28,7 @@ class HappyCustomer {
     email: json["email"],
     avatar: json["avatar"],
     userType: json["user_type"],
-    fcmTopics: json["fcm_topics"] == null
-        ? null
-        : List<String>.from(json["fcm_topics"].map((x) => x)),
+    fcmTopics:json["fcm_topics"] == null ? null : List<String>.from(json["fcm_topics"].map((x) => x)),
   );
 
   Map<String, dynamic> toJson() => {
@@ -40,8 +39,6 @@ class HappyCustomer {
     "email": email,
     "avatar": avatar,
     "user_type": userType,
-    "fcm_topics": fcmTopics == null
-        ? null
-        : List<String>.from(fcmTopics!.map((x) => x)),
+    "fcm_topics": fcmTopics == null ? null : List<String>.from(fcmTopics!.map((x) => x)),
   };
 }

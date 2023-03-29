@@ -62,14 +62,14 @@ class _TotalBookingScreenState extends State<TotalBookingScreen> {
       String type = "";
       if(appBarTitle == "Total Booking"){
         type = "total_bookings";
-      }else if(appBarTitle == "Today Booking"){
-        type = "today_new_bookings";
+      }else if(appBarTitle == "Today My Booking"){
+        type = "today_my_bookings";
       }else if(appBarTitle == "Today Pick Up"){
         type = "picked";
       }else if(appBarTitle == "Today Delivery"){
         type = "drop_to_customer";
       }
-      getDataFromBookingApi(type);
+      if(type != "") getDataFromBookingApi(type);
     }
 
     Size screenSize = MediaQuery.of(context).size;

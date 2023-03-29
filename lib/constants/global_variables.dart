@@ -16,6 +16,7 @@ class CustomColor {
   static const successColor = Color.fromRGBO(91, 178, 39, 1.0);
 
   static const whiteColor = Color.fromRGBO(255, 255, 255, 1.0);
+  static const editColor = Color.fromRGBO(66, 123, 231, 1.0);
   static const errorColor = Color.fromRGBO(222, 24, 24, 1.0);
 
   static const primaryTextColor = Color.fromRGBO(31, 31, 31, 1.0);

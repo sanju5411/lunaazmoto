@@ -2,6 +2,8 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:geocoding/geocoding.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:lunaaz_moto/common/widgets/custom_button.dart';
 import 'package:lunaaz_moto/constants/global_variables.dart';
 import 'package:lunaaz_moto/models/customer/user_address_model/user_address_model.dart';
@@ -30,8 +32,10 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
   final TextEditingController _pincodeController        =     TextEditingController();
   final TextEditingController _stateController        =     TextEditingController();
   final TextEditingController _countryController        =     TextEditingController();
-
+  TextEditingController _pLocation = TextEditingController();
   bool isLoading = false;
+  Position? _currentPosition;
+  String? _currentAddress;
 
   @override
   void initState() {
@@ -43,8 +47,70 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
 
   }
 
-  void _setBookingFormData(Map<String, String> jsonInput) async {
+  Future<bool> _handleLocationPermission() async {
+    bool serviceEnabled;
+    LocationPermission permission;
 
+    serviceEnabled = await Geolocator.isLocationServiceEnabled();
+    if (!serviceEnabled) {
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+          content: Text(
+              'Location services are disabled. Please enable the services')));
+      return false;
+    }
+    permission = await Geolocator.checkPermission();
+    if (permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
+      if (permission == LocationPermission.denied) {
+        ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Location permissions are denied')));
+        return false;
+      }
+    }
+    if (permission == LocationPermission.deniedForever) {
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+          content: Text(
+              'Location permissions are permanently denied, we cannot request permissions.')));
+      return false;
+    }
+    return true;
+  }
+
+  Future<void> _getAddressFromLatLng(Position position) async {
+    await placemarkFromCoordinates(
+        _currentPosition!.latitude, _currentPosition!.longitude)
+        .then((List<Placemark> placemarks) {
+      Placemark place = placemarks[0];
+      print("place>>${jsonEncode(place)}");
+      setState(() {
+        //_addressLine1Controller.text = place.name.toString();
+        _addressLine2Controller.text = place.street.toString();
+        _localityController.text = place.subLocality.toString();
+        //_landmarkController.text = place.locality.toString();
+        _pincodeController.text = place.postalCode.toString();
+        _cityController.text = place.locality.toString();
+        _countryController.text = place.country.toString();
+        _stateController.text = place.administrativeArea.toString();
+      });
+    }).catchError((e) {
+      debugPrint(e);
+    });
+  }
+
+  Future<void> _getCurrentPosition() async {
+    final hasPermission = await _handleLocationPermission();
+
+    if (!hasPermission) return;
+    await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high)
+        .then((Position position) {
+      setState(() => _currentPosition = position);
+      _getAddressFromLatLng(_currentPosition!);
+    }).catchError((e) {
+      debugPrint(e);
+    });
+  }
+
+  void _setBookingFormData(Map<String, String> jsonInput) async {
 
 
     setState(() {
@@ -59,9 +125,7 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
     if(_authAddress.status  == "success"){
       isLoading = false;
       setState(() {
-        Navigator.of(context)
-            .pushReplacementNamed(BookingForm.routeName);
-        // Navigator.pushNamed(context, MyServicesScreen.routeName);
+        Navigator.pop(context, _authAddress.userAddress);
       });
     }
 
@@ -88,7 +152,9 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
             SizedBox(height: 20,),
             CustomButton(
 
-                onTap: (){},
+                onTap: (){
+                  _getCurrentPosition();
+                },
               text: 'Current Location',
 
             ),
@@ -103,7 +169,7 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
                   child: Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 10.0),
                     child: CustomButton(
-                     // variant: (_titleController.text == "Home") ? Variant.primary: Variant.booknowbtn,
+                 variant: (_titleController.text == "Home") ? Variant.primary: Variant.outline,
                       onTap: () {
                         setState(() {
                           _titleController.text = "Home";
@@ -118,6 +184,7 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
                   child: Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 10.0),
                     child: CustomButton(
+                     variant: (_titleController.text == "Office") ? Variant.primary: Variant.outline,
                       onTap: () {
                         setState(() {
                           _titleController.text = "Office";
@@ -133,6 +200,7 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
                     child: Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 10.0),
                       child: CustomButton(
+                       variant: (_titleController.text == "Other") ? Variant.primary: Variant.outline,
                         onTap: () {
                           setState(() {
                             _titleController.text = "Other";
@@ -156,10 +224,13 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
             const SizedBox(height: 20),
 
             TextFormField(
+              maxLength: 10,
+              keyboardType: TextInputType.phone,
               controller: _mobileController,
               decoration: CustomInputDecoration.textInputDecoration.copyWith(
                 labelText: 'Mobile Number',
                 hintText: 'Enter Your Mobile Number',
+                counterText: ""
               ),
 
             ),

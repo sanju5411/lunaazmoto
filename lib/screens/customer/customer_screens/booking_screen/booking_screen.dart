@@ -6,7 +6,7 @@ import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:lunaaz_moto/common/widgets/custom_plan_card.dart';
 import 'package:lunaaz_moto/constants/global_variables.dart';
-import 'package:lunaaz_moto/models/customer/dashboard_model.dart';
+import 'package:lunaaz_moto/models/customer/packages/package.dart';
 import 'package:lunaaz_moto/models/customer/service_model/package_model/package_model.dart';
 import 'package:lunaaz_moto/models/customer/service_model/service_model.dart';
 import 'package:lunaaz_moto/screens/customer/customer_screens/book_form/booking_form.dart';
@@ -24,7 +24,7 @@ class BookingScreen extends StatefulWidget {
 
 class _BookingScreenState extends State<BookingScreen> {
   PackagesMainModel? _bookingPackage;
-  List<BookingPackage>? _packages;
+  List<Package>? _packages;
   // List<PackageBenefits>? packageBenefits;
   bool loading = true;
   String? _currentAddress;
@@ -47,11 +47,11 @@ class _BookingScreenState extends State<BookingScreen> {
     Map<String, String> jsonInput = {
       'package_type': appBarTitle,
     };
-    PackagesMainModel packagesModel =
+    PackagesMainModel packagesMainModel =
         await ApiService.packages(jsonInput: jsonEncode(jsonInput));
-    print("packages?>>>>${jsonEncode(packagesModel)}>>>>>>");
+    print("packages?>>>>${jsonEncode(packagesMainModel)}>>>>>>");
 
-    _bookingPackage = packagesModel;
+    _bookingPackage = packagesMainModel;
     if (_bookingPackage?.packages != null) {
       _packages = _bookingPackage?.packages!;
       setState(() {
@@ -212,8 +212,7 @@ class _BookingScreenState extends State<BookingScreen> {
                                           onTap: () {
                                             Navigator.pushNamed(
                                                 context, BookingForm.routeName,
-                                                arguments: _packages![index]
-                                                    .packageId);
+                                                arguments: {"packageId":_packages![index].packageId,"vehicleType":appBarTitle});
                                           },
                                           child: Padding(
                                             padding: const EdgeInsets.all(8.0),
@@ -380,8 +379,8 @@ class _BookingScreenState extends State<BookingScreen> {
                                               onTap:(){
                                                 Navigator.pushNamed(
                                                     context, BookingForm.routeName,
-                                                    arguments: _packages![index]
-                                                        .packageId);
+                                                    arguments: {"packageId":_packages![index].packageId,"vehicleType":appBarTitle});
+
                                               },
                                               child: Padding(
                                                 padding: const EdgeInsets.symmetric(horizontal: 20,vertical: 12),

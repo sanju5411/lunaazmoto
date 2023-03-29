@@ -1,9 +1,10 @@
+import 'package:lunaaz_moto/models/customer/packages/package.dart';
 import 'package:lunaaz_moto/models/customer/service_model/package_model/package_model.dart';
 
 class PackagesMainModel{
   String? status;
   String? message;
-  List<BookingPackage>? packages;
+  List<Package>? packages;
 
   PackagesMainModel({
 
@@ -17,9 +18,9 @@ class PackagesMainModel{
     status = json['status'];
     message = json['message'];
     if (json['packages'] != null) {
-      packages = <BookingPackage>[];
+      packages = <Package>[];
       json['packages'].forEach((v) {
-        packages!.add(BookingPackage.fromJson(v));
+        packages!.add(Package.fromJson(v));
       });
     }
   }

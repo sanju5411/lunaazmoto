@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import 'package:lunaaz_moto/common/widgets/custom_booking_card.dart';
 import 'package:lunaaz_moto/constants/global_variables.dart';
-import 'package:lunaaz_moto/models/customer/dashboard_model.dart';
+import 'package:lunaaz_moto/models/customer/service/service.dart';
 import 'package:lunaaz_moto/models/customer/service_booking_list/service_booking_list_model.dart';
 import 'package:lunaaz_moto/models/customer/service_model/service_model.dart';
 import 'package:lunaaz_moto/screens/customer/customer_screens/book_form/booking_form.dart';
@@ -28,9 +28,9 @@ class _MyServicesScreenState extends State<MyServicesScreen> {
   bool loading = true;
 
 
-  List<BookingList> bookServiceList = [];
-  List<OnGoingBookings> onGoingList = [];
-  List<Bookings> lastBookings = [];
+  List<Service> bookServiceList = [];
+  List<Service> onGoingList = [];
+  List<Service> lastBookings = [];
 
     @override
     void initState() {
@@ -41,12 +41,12 @@ class _MyServicesScreenState extends State<MyServicesScreen> {
     void _setBookingFormData() async {
 
       BookingList bookingList = await ApiService.getMyServices();
-      print("booking form data>>>>>${jsonEncode(bookingList)}>>>>");
+
 
 
       if(bookingList.status  == "success"){
-        onGoingList = bookingList!.onGoingBookings!;
-        lastBookings = bookingList!.bookings!;
+        onGoingList = bookingList.onGoingBookings!;
+        lastBookings = bookingList.bookings!;
         setState(() {
           loading = false;
         });

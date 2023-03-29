@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:lunaaz_moto/constants/global_variables.dart';
+import 'package:lunaaz_moto/models/customer/service/service.dart';
+import 'package:lunaaz_moto/models/customer/service_booking_list/service_booking_list_model.dart';
 import 'package:lunaaz_moto/models/customer/service_model/service_model.dart';
 
 class CustomerBookingDetail extends StatefulWidget {
@@ -14,7 +16,7 @@ class CustomerBookingDetail extends StatefulWidget {
 class _CustomerBookingDetailState extends State<CustomerBookingDetail> {
   @override
   Widget build(BuildContext context) {
-    final bookingData = ModalRoute.of(context)?.settings.arguments as ServiceModel;
+    final bookingData = ModalRoute.of(context)?.settings.arguments as Service;
     print("<<<<<<<<<<${bookingData}>>>>>>>>>>>>>");
     var bookingId = bookingData.bookingId;
 
@@ -143,7 +145,7 @@ class _CustomerBookingDetailState extends State<CustomerBookingDetail> {
                               mainAxisAlignment: MainAxisAlignment.start,
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                  Text("City : ${bookingData.bookingAddress?.fullAddress}",style: TextStyle(color: Colors.grey,fontWeight: FontWeight.w600,fontSize: 18),),
+                                  Text("Address : ${bookingData.bookingAddress?.fullAddress}",style: TextStyle(color: Colors.grey,fontWeight: FontWeight.w600,fontSize: 18),),
                                   SizedBox(height: 8,),
 
                               ],
