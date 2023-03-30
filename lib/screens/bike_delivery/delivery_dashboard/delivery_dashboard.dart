@@ -343,7 +343,7 @@ class _DeliveryDashboardState extends State<DeliveryDashboard> {
                  child:  GestureDetector(
                    onTap: (){
                      if(int.parse(todayNewBooking.toString()) > 0){
-                       Navigator.pushNamed(context, TotalBookingScreen.routeName,arguments: "Today my Booking");
+                       Navigator.pushNamed(context, TotalBookingScreen.routeName,arguments: "Today New Booking");
                      }else{
                        Fluttertoast.showToast(msg: "No Data Found");
                      }
@@ -363,7 +363,7 @@ class _DeliveryDashboardState extends State<DeliveryDashboard> {
                          children:  [
                            Text(
                              textAlign: TextAlign.center,
-                             "Total My Booking",style: TextStyle(fontSize: 18,fontWeight: FontWeight.w600,color: Colors.black),),
+                             "Today New Booking",style: TextStyle(fontSize: 18,fontWeight: FontWeight.w600,color: Colors.black),),
                            const SizedBox(height: 13,),
                            Text("$todayNewBooking",textAlign: TextAlign.center,style: const TextStyle(fontSize: 23,fontWeight: FontWeight.w900,color: Colors.orange),),
 
