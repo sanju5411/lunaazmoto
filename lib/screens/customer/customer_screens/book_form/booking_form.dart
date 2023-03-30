@@ -509,20 +509,14 @@ class _BookingFormState extends State<BookingForm> {
                                  });
                                });
                              },
-                             child: Row(children: [
-                               Icon(Icons.add,color: Color(0xffc40000),),
-                               SizedBox(width: 6,),
-                               Text("Add",style: TextStyle(color: Color(0xffc40000),fontSize: 23,fontWeight: FontWeight.w700),)
-                             ],),
+                             child:   Icon(Icons.add,color: Color(0xffc40000),),
                            ),
                           ],
                         ),
                         const SizedBox(height: 18,),
                         InkWell(
                           onTap: () {
-                            setState(() {
-                              _showAddresses = true;
-                            });
+                            _addressNullNavigate();
                           },
                           child: Container(
                             decoration: BoxDecoration(
@@ -690,6 +684,7 @@ class _BookingFormState extends State<BookingForm> {
             ),
           ),
           _showAddresses
+
               ? Container(
             width: screenSize.width,
             height: screenSize.height,
@@ -699,7 +694,9 @@ class _BookingFormState extends State<BookingForm> {
               child: Container(
 
                 decoration: BoxDecoration(color: CustomColor.whiteColor,borderRadius: BorderRadius.circular(14)),
-                child: ListView.builder(
+                child:
+
+                ListView.builder(
                     shrinkWrap: true,
                     //scrollDirection: Axis.vertical,
                     physics: ScrollPhysics(),
@@ -729,7 +726,7 @@ class _BookingFormState extends State<BookingForm> {
                                   child: Padding(
                                     padding: const EdgeInsets.all(8.0),
                                     child:
-                                        _addressList != null?
+
                                     Text(
                                       "${_addressList![index].addressLine1},"
                                           "${_addressList![index].addressLine2},"
@@ -739,7 +736,7 @@ class _BookingFormState extends State<BookingForm> {
                                           "${_addressList![index].pincode},"
                                           "\n${_addressList![index].state},"
                                           "${_addressList![index].country}."
-                                      ,style: TextStyle(),): Text("No Address")
+                                      ,style: TextStyle(),),
                                   )
                               ),
                               SizedBox(width: 6,),
@@ -748,7 +745,8 @@ class _BookingFormState extends State<BookingForm> {
                                   child: Padding(
                                 padding: const EdgeInsets.all(10.0),
                                 child: Text("Select",style: TextStyle(fontSize: 14,color: CustomColor.whiteColor),),
-                              )),
+                              ),
+                              ),
                             ],
                           ),
                         ),
@@ -756,12 +754,36 @@ class _BookingFormState extends State<BookingForm> {
                     }),
               ),
             ),
-          )
-              : const SizedBox(),
+          ) :
+          const SizedBox(),
+
+
+
         ],
       ),
     );
   }
+
+  void _addressNullNavigate() {
+
+    if(_addressList != null){
+      setState(() {
+        _showAddresses = true;
+      });
+    }
+    else{
+      Navigator.pushNamed(context, AddAddressScreen.routeName).then((value) {
+        Address userAddress = value as Address;
+        setState(() {
+          addressId = userAddress.id;
+          _addressController.text = userAddress.fullAddress ?? "";
+
+        });
+      });
+    }
+
+  }
+
 }
 
 // userType = _userTypes[index];

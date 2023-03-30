@@ -140,7 +140,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
     _getDashboardData();
 
     super.initState();
-    //  WidgetsBinding.instance.addObserver(this);
+    // WidgetsBinding.instance.addObserver(this);
   }
 
   @override
@@ -188,7 +188,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   child: bannerSliders.isNotEmpty
                       ? Padding(
                         padding: const EdgeInsets.symmetric(vertical: 10),
-                        child: CarouselSlider(
+                          child: CarouselSlider(
                     options: CarouselOptions(
                         enlargeCenterPage: true,
                         autoPlay: true,
@@ -724,16 +724,25 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                                     const SizedBox(height: 10,),
                                                     Text(lastServices[index].bookingVehName != null ?
                                                     lastServices[index].bookingVehName!.toString():"",
-                                                      style: const TextStyle(fontSize: 18,fontWeight: FontWeight.w600),),
+                                                      style: const TextStyle(fontSize: 20,fontWeight: FontWeight.w600),),
                                                     const SizedBox(height: 3,),
                                                     Row(children: [
                                                       const Text("Booking ID -"),
                                                       const SizedBox(width: 7,),
                                                       Text(
 
-                                                        lastServices[index].bookingId.toString(),
+                                                        lastServices[index].bookingNumber.toString(),
 
                                                       ),
+                                                      // Spacer(),
+                                                      // Container(
+                                                      //   decoration: BoxDecoration(color: Color(
+                                                      //       0xffff5454)),
+                                                      //   child: Padding(
+                                                      //     padding: const EdgeInsets.all(8.0),
+                                                      //     child: Text("View",style: TextStyle(color: Colors.white),),
+                                                      //   ),
+                                                      // )
                                                     ],
                                                     ),
                                                   ],
@@ -747,19 +756,14 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                             const SizedBox(height: 26,),
                                             Row(
                                               children: [
-                                                Column(
-                                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                                  children:  [
-                                                    const Text("General Service",style: TextStyle(fontSize: 18,fontWeight: FontWeight.w600,color: CustomColor.primaryColor),),
-                                                    const SizedBox(height: 3,),
-                                                    Row(children: [
-                                                      const Text("Vehicle No. -"),
-                                                      const SizedBox(width: 7,),
-                                                      Text((lastServices[index].bookingVehNum.toString()),),
-                                                    ],)
-                                                  ],
-                                                ),
+                                                Row(children: [
+                                                  const Text("Vehicle No :-",style: TextStyle(fontSize: 20),),
+                                                  const SizedBox(width: 7,),
+                                                  Text((lastServices[index].bookingVehNum.toString()),),
+                                                ],),
                                                 const Spacer(),
+                                                Text("Payment :-",style: TextStyle(fontSize: 19),),
+                                                SizedBox(width: 5,),
                                                 Text((lastServices[index].bookingPaymentStatus.toString()),style: const TextStyle(color: Colors.blueAccent,fontWeight: FontWeight.w700,fontSize: 17),),
                                               ],
                                             )

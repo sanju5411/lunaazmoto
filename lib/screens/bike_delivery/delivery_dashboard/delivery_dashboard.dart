@@ -30,6 +30,7 @@ class _DeliveryDashboardState extends State<DeliveryDashboard> {
   int? todayNewBooking =0;
   int? todayPickUp =0;
   int? todayDelivered =0;
+  int? todayBookingCount =0;
   List<NewServices> nextBooking = [];
   String userImage = "";
   @override
@@ -48,6 +49,7 @@ class _DeliveryDashboardState extends State<DeliveryDashboard> {
       totalBooking = driverMainModel.totalBookings;
       todayDelivered = driverMainModel.todayDeliveredBookings;
       todayPickUp = driverMainModel.todayPickedBookings;
+      todayBookingCount = driverMainModel.todayMyBookings;
       nextBooking = driverMainModel.newServices!;
       userImage = ApiConfig.baseUrl+authUser.avatar.toString();
     });

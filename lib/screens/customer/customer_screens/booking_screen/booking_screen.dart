@@ -7,6 +7,7 @@ import 'package:geolocator/geolocator.dart';
 import 'package:lunaaz_moto/common/widgets/custom_plan_card.dart';
 import 'package:lunaaz_moto/constants/global_variables.dart';
 import 'package:lunaaz_moto/models/customer/packages/package.dart';
+import 'package:lunaaz_moto/models/customer/service_model/package_model/package_color_model.dart';
 import 'package:lunaaz_moto/models/customer/service_model/package_model/package_model.dart';
 import 'package:lunaaz_moto/models/customer/service_model/service_model.dart';
 import 'package:lunaaz_moto/screens/customer/customer_screens/book_form/booking_form.dart';
@@ -25,6 +26,8 @@ class BookingScreen extends StatefulWidget {
 class _BookingScreenState extends State<BookingScreen> {
   PackagesMainModel? _bookingPackage;
   List<Package>? _packages;
+  List<PackageColor>? _packageColor;
+
   // List<PackageBenefits>? packageBenefits;
   bool loading = true;
   String? _currentAddress;
@@ -54,67 +57,12 @@ class _BookingScreenState extends State<BookingScreen> {
     _bookingPackage = packagesMainModel;
     if (_bookingPackage?.packages != null) {
       _packages = _bookingPackage?.packages!;
+      //_packageColor = _bookingPackage?.packageColor!;
       setState(() {
         loading = false;
         isPackage = false;
       });
     }
-  }
-
-  Future<bool> _handleLocationPermission() async {
-    bool serviceEnabled;
-    LocationPermission permission;
-
-    serviceEnabled = await Geolocator.isLocationServiceEnabled();
-    if (!serviceEnabled) {
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-          content: Text(
-              'Location services are disabled. Please enable the services')));
-      return false;
-    }
-    permission = await Geolocator.checkPermission();
-    if (permission == LocationPermission.denied) {
-      permission = await Geolocator.requestPermission();
-      if (permission == LocationPermission.denied) {
-        ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Location permissions are denied')));
-        return false;
-      }
-    }
-    if (permission == LocationPermission.deniedForever) {
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-          content: Text(
-              'Location permissions are permanently denied, we cannot request permissions.')));
-      return false;
-    }
-    return true;
-  }
-
-  Future<void> _getAddressFromLatLng(Position position) async {
-    await placemarkFromCoordinates(
-            _currentPosition!.latitude, _currentPosition!.longitude)
-        .then((List<Placemark> placemarks) {
-      Placemark place = placemarks[0];
-      setState(() {
-        _pLocation.text = _currentAddress =
-            '${place.street}, ${place.subLocality}, ${place.subAdministrativeArea}, ${place.postalCode}';
-      });
-    }).catchError((e) {
-      debugPrint(e);
-    });
-  }
-
-  Future<void> _getCurrentPosition() async {
-    final hasPermission = await _handleLocationPermission();
-
-    if (!hasPermission) return;
-    await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high)
-        .then((Position position) {
-      setState(() => _currentPosition = position);
-      _getAddressFromLatLng(_currentPosition!);
-    }).catchError((e) {
-      debugPrint(e);
-    });
   }
 
   @override
@@ -130,6 +78,11 @@ class _BookingScreenState extends State<BookingScreen> {
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
+        title: const Text(
+          "Select your Package",
+          style: TextStyle(
+              fontWeight: FontWeight.w600, fontSize: 27,color: CustomColor.whiteColor),
+        ),
         leading: InkWell(
           onTap: () {
             Navigator.pop(context);
@@ -140,270 +93,230 @@ class _BookingScreenState extends State<BookingScreen> {
           ),
         ),
       ),
-      body: Padding(
-        padding: const EdgeInsets.only(top: 5),
+      body: Container(
+        width: screenSize.width,
+        //height: screenSize.height,
+        decoration: const BoxDecoration(
+            color: CustomColor.whiteColor,
+            borderRadius: BorderRadius.only(
+              topRight: Radius.circular(20),
+              topLeft: Radius.circular(20),
+            )),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisSize: MainAxisSize.max,
           children: [
-            Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 10),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    const Text(
-                      "Select your Package",
-                      style: TextStyle(
-                          fontWeight: FontWeight.w600, fontSize: 27,color: CustomColor.whiteColor),
-                    ),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    // const Text(
-                    //   "Service Booking",
-                    //   style: TextStyle(
-                    //       fontSize: 35,
-                    //       color: CustomColor.whiteColor,
-                    //       fontWeight: FontWeight.w700),
-                    // ),
-                  ],
-                )),
             const SizedBox(
-              height: 30,
+              height: 10,
             ),
-            Expanded(
-              child: Container(
-                width: screenSize.width,
-                //height: screenSize.height,
-                decoration: const BoxDecoration(
-                    color: CustomColor.whiteColor,
-                    borderRadius: BorderRadius.only(
-                      topRight: Radius.circular(20),
-                      topLeft: Radius.circular(20),
-                    )),
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const SizedBox(
-                        height: 10,
-                      ),
 
-                      const SizedBox(
-                        height: 20,
-                      ),
-                      !loading
-                          ? SizedBox(
-
-                             width: screenSize.width,
-                              height: screenSize.height * 0.45,
-                              child: ListView.builder(
-                                  itemCount: _packages?.length,
-                                  //physics: NeverScrollableScrollPhysics(),
-                                  scrollDirection: Axis.horizontal,
-                                  itemBuilder:
-                                      (BuildContext context, int index) {
-                                    return Stack(
-                                      children: [
-                                        InkWell(
-                                          onTap: () {
-                                            Navigator.pushNamed(
-                                                context, BookingForm.routeName,
-                                                arguments: {"packageId":_packages![index].packageId,"vehicleType":appBarTitle});
-                                          },
-                                          child: Padding(
-                                            padding: const EdgeInsets.all(8.0),
-                                            child: Container(
-                                              width: 280,
-                                              decoration: BoxDecoration(
-                                                borderRadius:
-                                                    BorderRadius.circular(20),
-                                                gradient: const LinearGradient(
-                                                  begin: Alignment.topRight,
-                                                  end: Alignment.bottomLeft,
-                                                  colors: [
-                                                    Color(0xffFB5A7C),
-                                                    Color(0xffFE6585),
-                                                    Color(0xffFE184A),
-                                                  ],
-                                                ),
-                                              ),
-                                              child: Column(
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
-                                                children: [
-                                                  const SizedBox(
-                                                    height: 10,
-                                                  ),
-                                                  Padding(
-                                                    padding:
-                                                        const EdgeInsets.all(
-                                                            8.0),
-                                                    child: const Text(
-                                                      "LunaazMoto",
-                                                      style: TextStyle(
-                                                          fontSize: 15,
-                                                          color: CustomColor
-                                                              .whiteColor),
-                                                    ),
-                                                  ),
-                                                  const SizedBox(
-                                                    height: 5,
-                                                  ),
-                                                  Padding(
-                                                    padding:
-                                                        const EdgeInsets.all(
-                                                            8.0),
-                                                    child: Text(
-                                                      (_packages![index]
-                                                                  .packageName ==
-                                                              null)
-                                                          ? ""
-                                                          : _packages![index]
-                                                              .packageName!,
-                                                      style: TextStyle(
-                                                          fontSize: 40,
-                                                          fontWeight:
-                                                              FontWeight.w800,
-                                                          color: CustomColor
-                                                              .whiteColor),
-                                                    ),
-                                                  ),
-                                                  SizedBox(
-                                                    height: 20,
-                                                  ),
-                                                  Container(
-                                                    height: 10,
-                                                    width: screenSize.width,
-                                                    decoration: BoxDecoration(
-                                                      gradient:
-                                                          const LinearGradient(
-                                                        begin: Alignment
-                                                            .bottomRight,
-                                                        end: Alignment
-                                                            .bottomLeft,
-                                                        colors: [
-                                                          Color(0xffFB5A7C),
-                                                          Color(0xffFE6585),
-                                                          Color(0xffFE184A),
-                                                        ],
-                                                      ),
-                                                    ),
-                                                  ),
-                                                  SizedBox(
-                                                    height: 20,
-                                                  ),
-                                                  Padding(
-                                                    padding:
-                                                        const EdgeInsets.all(
-                                                            8.0),
-                                                    child: Column(
-                                                      children: [
-                                                        Row(
-                                                          children: [
-                                                            // Text("₹ 1000" ,style: TextStyle(
-                                                            //     color: CustomColor.whiteColor,
-                                                            //     fontSize: 20,
-                                                            //     decoration: TextDecoration.lineThrough
-                                                            // ),),
-                                                            SizedBox(
-                                                              width: 17,
-                                                            ),
-                                                            Text(
-                                                              "₹ ${_packages![index].packagePrice ?? "0"}",
-                                                              style: TextStyle(
-                                                                  color: CustomColor
-                                                                      .whiteColor,
-                                                                  fontSize: 28,
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .w700),
-                                                            ),
-                                                          ],
-                                                        ),
-                                                        SizedBox(
-                                                          height: 30,
-                                                        ),
-                                                        Padding(
-                                                          padding:
-                                                              const EdgeInsets
-                                                                  .all(8.0),
-                                                          child: Align(
-                                                            alignment: Alignment
-                                                                .topLeft,
-                                                            child: HtmlWidget(
-                                                              _packages![index]
-                                                                  .packageFeaturesName!
-                                                                  .toString(),
-                                                              textStyle: TextStyle(
-                                                                  color: Colors
-                                                                      .white),
-                                                            ),
-                                                          ),
-                                                        ),
-                                                        SizedBox(
-                                                          height: 10,
-                                                        ),
-                                                      ],
-                                                    ),
-                                                  )
-                                                ],
+            const SizedBox(
+              height: 20,
+            ),
+            !loading
+                ? SizedBox(
+              height: screenSize.height * 0.5,
+                  child: ListView.builder(
+                      itemCount: _packages?.length,
+                      scrollDirection: Axis.horizontal,
+                      itemBuilder:
+                          (BuildContext context, int index) {
+                        return Stack(
+                          children: [
+                            InkWell(
+                              onTap: () {
+                                Navigator.pushNamed(
+                                    context, BookingForm.routeName,
+                                    arguments: {"packageId":_packages![index].packageId,"vehicleType":appBarTitle});
+                              },
+                              child: Padding(
+                                padding: const EdgeInsets.all(20.0),
+                                child: Container(
+                                  width: 280,
+                                  decoration: BoxDecoration(
+                                    borderRadius:
+                                        BorderRadius.only(topRight: Radius.circular(27),bottomLeft: Radius.circular(27)),
+                                    gradient:  LinearGradient(
+                                      begin: Alignment.topRight,
+                                      end: Alignment.bottomLeft,
+                                      colors: [
+                                        Color(0xffff426b),
+                                        Color(0xffff92aa),
+                                        Color(0xffff426b),
+                                      ],
+                                    ),
+                                  ),
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      const SizedBox(
+                                        height: 10,
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.symmetric(horizontal: 15),
+                                        child: Row(
+                                          children: [
+                                            Padding(
+                                              padding:
+                                                  const EdgeInsets.all(
+                                                      8.0),
+                                              child: Text(
+                                                (_packages![index]
+                                                            .packageName ==
+                                                        null)
+                                                    ? ""
+                                                    : _packages![index]
+                                                        .packageName!,
+                                                style: TextStyle(
+                                                    fontSize: 40,
+                                                    fontWeight:
+                                                        FontWeight.w800,
+                                                    color: CustomColor
+                                                        .whiteColor),
                                               ),
                                             ),
+                                            Spacer(),
+                                            Text(
+                                              "₹ ${_packages![index].packagePrice ?? "0"}",
+                                              style: TextStyle(
+                                                  color: CustomColor
+                                                      .whiteColor,
+                                                  fontSize: 28,
+                                                  fontWeight:
+                                                  FontWeight
+                                                      .w700),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+
+                                      Padding(
+                                        padding: const EdgeInsets.only(left: 23,top: 3,right: 10),
+                                        child:  Row(
+                                          children: [
+                                            Text(
+                                              "${_packages![index].packageDuration ?? "0"} / Month",
+                                              style: TextStyle(
+                                                  color: CustomColor
+                                                      .whiteColor,
+                                                  fontSize: 28,
+                                                  fontWeight:
+                                                  FontWeight
+                                                      .w700),
+                                            ),
+                                            Spacer(),
+                                            Text( "${_packages![index].packageType ?? "vehicle"}",style: TextStyle(color: Colors.greenAccent,fontSize: 19,fontWeight: FontWeight.w700),)
+                                          ],
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        height: 14,
+                                      ),
+                                      Container(
+                                        height: 4,
+                                        width: screenSize.width,
+                                        decoration: BoxDecoration(
+                                          gradient:
+                                              const LinearGradient(
+                                            begin: Alignment
+                                                .bottomRight,
+                                            end: Alignment
+                                                .bottomLeft,
+                                            colors: [
+                                              Color(0xfff8345e),
+                                              Color(0xfff1a2b2),
+                                              Color(0xfff8345e),
+                                            ],
                                           ),
                                         ),
+                                      ),
+                                      SizedBox(
+                                        height: 20,
+                                      ),
+                                      Padding(
+                                        padding:
+                                            const EdgeInsets.all(
+                                                8.0),
+                                        child: Column(
+                                          children: [
 
-                                        Positioned(
-                                          bottom:0,
-                                          left:70,
-                                          right:70,
-                                          child: Container(
-                                            decoration: BoxDecoration(
-
-                                              borderRadius:
-                                              BorderRadius.circular(12),
-                                              gradient: const LinearGradient(
-                                                begin: Alignment.topRight,
-                                                end: Alignment.bottomLeft,
-                                                colors: [
-                                                  Color(0xffff859f),
-                                                  Color(0xffff859f),
-                                                  Color(0xffff859f),
-                                                ],
+                                            Padding(
+                                              padding:
+                                                  const EdgeInsets
+                                                      .all(8.0),
+                                              child: Align(
+                                                alignment: Alignment
+                                                    .topLeft,
+                                                child: SizedBox(
+                                                  height: screenSize.height * 0.15,
+                                                  child: SingleChildScrollView(
+                                                    child: HtmlWidget(
+                                                      _packages![index]
+                                                          .packageFeaturesName!
+                                                          .toString(),
+                                                      textStyle: TextStyle(
+                                                        fontSize: 22,
+                                                          color: Colors
+                                                              .white),
+                                                    ),
+                                                  ),
+                                                ),
                                               ),
                                             ),
-                                            child: InkWell(
-                                              onTap:(){
-                                                Navigator.pushNamed(
-                                                    context, BookingForm.routeName,
-                                                    arguments: {"packageId":_packages![index].packageId,"vehicleType":appBarTitle});
-
-                                              },
-                                              child: Padding(
-                                                padding: const EdgeInsets.symmetric(horizontal: 20,vertical: 12),
-                                                child: Center(child: Text("Select",style: TextStyle(color: CustomColor.whiteColor,fontSize: 20),)),
-                                              ),
+                                            SizedBox(
+                                              height: 10,
                                             ),
-                                          )
-                                          ,),
-                                      ],
-                                    );
-                                  }),
-                            )
-                          : Center(
-                              child: CircularProgressIndicator(
-                                color: Colors.black,
+                                          ],
+                                        ),
+                                      )
+                                    ],
+                                  ),
+                                ),
                               ),
                             ),
-                      // : SizedBox()
-                    ],
+
+                            Positioned(
+                              bottom:0,
+                              left:70,
+                              right:70,
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  border: Border.all(color: Color(0xffe30000),width: 2),
+                                  borderRadius:
+                                  BorderRadius.only(topRight: Radius.circular(27),bottomLeft: Radius.circular(27)),
+                                  gradient: const LinearGradient(
+                                    begin: Alignment.topRight,
+                                    end: Alignment.bottomLeft,
+                                    colors: [
+                                      Color(0xffff859f),
+                                      Color(0xffff859f),
+                                      Color(0xffff859f),
+                                    ],
+                                  ),
+                                ),
+                                child: InkWell(
+                                  onTap:(){
+                                    Navigator.pushNamed(
+                                        context, BookingForm.routeName,
+                                        arguments: {"packageId":_packages![index].packageId,"vehicleType":appBarTitle});
+
+                                  },
+                                  child: Padding(
+                                    padding: const EdgeInsets.symmetric(horizontal: 20,vertical: 12),
+                                    child: Center(child: Text("Select",style: TextStyle(color: CustomColor.whiteColor,fontSize: 20),)),
+                                  ),
+                                ),
+                              )
+                              ,),
+                          ],
+                        );
+                      }),
+                )
+                : Center(
+                    child: CircularProgressIndicator(
+                      color: Colors.black,
+                    ),
                   ),
-                ),
-              ),
-            ),
+            // : SizedBox()
           ],
         ),
       ),
