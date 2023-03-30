@@ -47,6 +47,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
   List<Service> lastServices = [];
   String? imageData = "";
   List<ActivePackage> _activePackages = [];
+  int? packageId;
 
 
   Future<void> _onRefresh() async {
@@ -123,6 +124,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
        todayBookingCount = _dashboard!.todayBookings ?? 0;
 
        totalBookingCount = _dashboard!.totalBookings ?? 0;
+       totalBookingCount = _dashboard!.totalBookings ?? 0;
+
         setState(() {
           loading = false;
         });
@@ -470,7 +473,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                           ),
                           variant: Variant.primary,
                           onTap: () {
-                            showDialog(context: context, builder: (context) => const CustomWheelerPopUp(),);
+                            showDialog(context: context, builder: (context) =>  CustomWheelerPopUp(packageList:_dashboard!.activePackages),);
                           },
 
                         ),
@@ -714,46 +717,34 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                       child: Padding(
                                         padding: const EdgeInsets.all(10.0),
                                         child: Column(
+                                          crossAxisAlignment: CrossAxisAlignment.start,
                                           children: [
-
-                                            Row(
-                                              children: [
-                                                Column(
-                                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                                  children:  [
-                                                    const SizedBox(height: 10,),
-                                                    Text(lastServices[index].bookingVehName != null ?
-                                                    lastServices[index].bookingVehName!.toString():"",
-                                                      style: const TextStyle(fontSize: 20,fontWeight: FontWeight.w600),),
-                                                    const SizedBox(height: 3,),
-                                                    Row(children: [
-                                                      const Text("Booking ID -"),
-                                                      const SizedBox(width: 7,),
-                                                      Text(
-
-                                                        lastServices[index].bookingNumber.toString(),
-
-                                                      ),
-                                                      // Spacer(),
-                                                      // Container(
-                                                      //   decoration: BoxDecoration(color: Color(
-                                                      //       0xffff5454)),
-                                                      //   child: Padding(
-                                                      //     padding: const EdgeInsets.all(8.0),
-                                                      //     child: Text("View",style: TextStyle(color: Colors.white),),
-                                                      //   ),
-                                                      // )
-                                                    ],
-                                                    ),
-                                                  ],
+                                            Column(
+                                              crossAxisAlignment: CrossAxisAlignment.start,
+                                              children:  [
+                                                const SizedBox(height: 10,),
+                                                Text(lastServices[index].bookingVehName != null ?
+                                                lastServices[index].bookingVehName!.toString():"",
+                                                  style: const TextStyle(fontSize: 20,fontWeight: FontWeight.w600),),
+                                                const SizedBox(height: 3,),
+                                                Row(children: [
+                                                  const Text("Booking Reference Number -",style: TextStyle(fontSize: 20),),
+                                                  const SizedBox(width: 7,),
+                                                  Text(lastServices[index].bookingNumber.toString(),),
+                                                ],
                                                 ),
-
-                                                const Spacer(),
-                                                Text(lastServices[index].bookingDate.toString()),
-
+                                                SizedBox(height: 5,),
+                                                Row(children: [
+                                                  const Text("Date -",style: TextStyle(fontSize: 20),),
+                                                  const SizedBox(width: 7,),
+                                                  Text(lastServices[index].bookingDate.toString()),
+                                                ],
+                                                ),
                                               ],
                                             ),
-                                            const SizedBox(height: 26,),
+                                            const SizedBox(height: 15,),
+                                            Text("Booking Status :- ${(lastServices[index].bookingStatus.toString())}",style: TextStyle(fontSize: 20),),
+                                            const SizedBox(height: 15,),
                                             Row(
                                               children: [
                                                 Row(children: [

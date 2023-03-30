@@ -65,15 +65,15 @@ class _TotalBookingScreenState extends State<TotalBookingScreen> {
       String type = "";
       if(appBarTitle == "Total Booking"){
         type = "total_bookings";
-      }else if(appBarTitle == "Today New Booking"){
-        type = "today_new_bookings";
+      }else if(appBarTitle == "Today My Booking"){
+        type = "today_my_bookings";
       }else if(appBarTitle == "Today Pick Up"){
         type = "picked";
       }else if(appBarTitle == "Today Delivery"){
         type = "drop_to_customer";
       }
       else if(appBarTitle == "Today Booking"){
-        type = "today_my_bookings";
+        type = "today_new_bookings";
       }
 
       if(type != "") getDataFromBookingApi(type);
@@ -219,7 +219,7 @@ class _TotalBookingScreenState extends State<TotalBookingScreen> {
                             leading:  CircleAvatar(
                               backgroundImage: NetworkImage(ApiConfig.baseUrl+newService[index].bookingUser!.avatar.toString()), // No matter how big it is, it won't overflow
                             ),
-                            title: Text("${newService[index].bookingUser?.name}",style: TextStyle(fontWeight: FontWeight.w600,fontSize: 15),),
+                            title: Text("${newService[index].bookingId}",style: TextStyle(fontWeight: FontWeight.w600,fontSize: 15),),
                             subtitle: Text("${newService[index].bookedDate}, ${newService[index].bookedTime}",style: TextStyle(fontWeight: FontWeight.w500,fontSize: 12,color: Color(0xFF8C8FA5)),),
                             trailing: Column(
                               children: [

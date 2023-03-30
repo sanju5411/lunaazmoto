@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:lunaaz_moto/constants/global_variables.dart';
+import 'package:lunaaz_moto/models/customer/packages/active_package.dart';
+import 'package:lunaaz_moto/screens/customer/customer_screens/book_form/booking_form.dart';
 import 'package:lunaaz_moto/screens/customer/customer_screens/booking_screen/booking_screen.dart';
 
 class CustomWheelerPopUp extends StatefulWidget {
   static const String routeName = '/wheeler_popup';
-
-  const CustomWheelerPopUp({Key? key}) : super(key: key);
+  List<ActivePackage>? packageList;
+   CustomWheelerPopUp({Key? key,  this.packageList}) : super(key: key);
 
   @override
   State<CustomWheelerPopUp> createState() => _CustomWheelerPopUpState();
@@ -34,8 +36,21 @@ class _CustomWheelerPopUpState extends State<CustomWheelerPopUp> {
            ),
           InkWell(
             onTap: (){
-              Navigator.pop(context);
-              Navigator.pushNamed(context, BookingScreen.routeName,arguments: "two_wheeler",);
+              if(widget.packageList!.isEmpty){
+                Navigator.pop(context);
+                Navigator.pushNamed(context, BookingScreen.routeName,arguments: "two_wheeler",);
+              }
+              else{
+                var packageId = 0;
+                for(var i = 0;i<widget.packageList!.length;i++){
+                  if(widget.packageList![i].activeVehicleType == "two_wheeler"){
+                    packageId = widget.packageList![i].activePackId!;
+                    Navigator.pop(context);
+                    Navigator.pushNamed(context, BookingForm.routeName, arguments: {"packageId":packageId,"vehicleType":"two_wheeler"});
+                  }
+                }
+              }
+
             },
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -64,8 +79,25 @@ class _CustomWheelerPopUpState extends State<CustomWheelerPopUp> {
            ),
              InkWell(
                onTap: (){
-                 Navigator.pop(context);
-                 Navigator.pushNamed(context, BookingScreen.routeName,arguments: "four_wheeler",);
+                 print("srfr>>>>${widget.packageList!.length}");
+                 if(widget.packageList!.isEmpty){
+                   Navigator.pop(context);
+                   Navigator.pushNamed(context, BookingScreen.routeName,arguments: "four_wheeler",);
+                 }
+                 else{
+                   var packageId = 0;
+                   for(var i = 0;i<widget.packageList!.length;i++){
+                     if(widget.packageList![i].activeVehicleType == "four_wheeler"){
+                       packageId = widget.packageList![i].activePackId!;
+                       Navigator.pop(context);
+                       Navigator.pushNamed(context, BookingForm.routeName, arguments: {"packageId":packageId,"vehicleType":"four_wheeler"});
+                     }
+                     else{
+                       Navigator.pop(context);
+                       Navigator.pushNamed(context, BookingScreen.routeName,arguments: "four_wheeler",);
+                     }
+                   }
+                 }
                },
                child: Padding(
                  padding: const EdgeInsets.symmetric(horizontal: 20),

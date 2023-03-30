@@ -141,62 +141,46 @@ class _MyServicesScreenState extends State<MyServicesScreen> {
                                 borderRadius: BorderRadius.circular(20)
                             ),
                             child: Padding(
-                              padding: const EdgeInsets.all(8.0),
+                              padding: const EdgeInsets.only(left: 20,bottom: 10,top: 10),
                               child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Row(
                                     children: [
-                                      Column(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                        children:  [
-                                        Padding(
-                                          padding: const EdgeInsets.all(8.0),
-                                          child: Text(onGoingList[index].bookingVehName != null?onGoingList[index].bookingVehName!.toString():"",style: TextStyle(fontSize: 20,fontWeight: FontWeight.w600),),
-                                        ),
-                                          const SizedBox(height: 3,),
-                                          Row(children: [
-                                            Padding(
-                                              padding: const EdgeInsets.all(8.0),
-                                              child: const Text("Booking ID -",style: TextStyle(fontSize: 20),),
-                                            ),
-                                            const SizedBox(width: 7,),
-                                            Text(onGoingList[index].bookingId.toString(),style: TextStyle(fontSize: 20),)
-                                          ],)
-                                        ],
-                                      ),
-                                      Spacer(),
-                                      Column(
-                                        children: [
-                                          InkWell(
-                                              onTap: (){
-                                                Navigator.pushNamed(context, MyServiceDetail.routeName,arguments: onGoingList[index],);
-                                              },
-                                              child: Icon(Icons.remove_red_eye,color: CustomColor.primaryColor,)),
-                                          SizedBox(height: 8,),
-                                          Text(onGoingList[index].bookingDate.toString()),
-                                        ],
-                                      ),
+                                      Text("Vehicle Name :-",style: TextStyle(fontSize: 20),),
+                                      SizedBox(width: 3,),
+                                      Text(onGoingList[index].bookingVehName != null?onGoingList[index].bookingVehName!.toString():"",style: TextStyle(fontSize: 20,fontWeight: FontWeight.w600),),
                                     ],
                                   ),
-                                  SizedBox(height: 35,),
-                                  Row(
-                                    children: [
-                                      Column(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                        children:  [
-                                          Text("General Service",style: TextStyle(fontSize: 18,fontWeight: FontWeight.w600,color: CustomColor.primaryColor),),
-                                          SizedBox(height: 3,),
-                                          Row(children: [
-                                            Text("Vehicle No. -",style: TextStyle(fontSize: 20),),
-                                            SizedBox(width: 7,),
-                                            Text((onGoingList[index].bookingVehNum.toString()),),
-                                          ],)
-                                        ],
-                                      ),
-                                      Spacer(),
-                                      Text((onGoingList[index].bookingPaymentStatus.toString()),style: TextStyle(color: Colors.blueAccent,fontWeight: FontWeight.w600,fontSize: 20),),
-                                    ],
-                                  )
+                                  const SizedBox(height: 8,),
+                                    Row(
+                                      children: [
+                                        Text("Date :-  ",style: TextStyle(fontSize: 20),),
+                                        Text(onGoingList[index].bookingDate.toString()),
+                                      ],
+                                    ),
+                                    const SizedBox(height: 8,),
+                                    Row(children: [
+                                      Text("Booking Reference Number -",style: TextStyle(fontSize: 17),),
+                                      const SizedBox(width: 7,),
+                                      Text(onGoingList[index].bookingNumber.toString(),style: const TextStyle(fontSize: 17),)
+                                    ],),
+                                    const SizedBox(height: 8,),
+                                    Text("Booking Status :- ${(onGoingList[index].bookingStatus.toString())}",style: TextStyle(fontSize: 20),),
+                                  SizedBox(height: 8,),
+                                  Text("Payment :- ${(onGoingList[index].bookingPaymentStatus.toString())}",style: TextStyle(fontSize: 20),),
+                                  SizedBox(height: 8,),
+                                  Row(children: [
+                                    Text("Vehicle No. -",style: TextStyle(fontSize: 20),),
+                                    SizedBox(width: 7,),
+                                    Text((onGoingList[index].bookingVehNum.toString()),),
+                                    Spacer(),
+                                    Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: Text("View Detail",style: TextStyle(fontSize: 18,color: Colors.cyan,fontWeight: FontWeight.w800),),
+                                    )
+                                  ],)
+
                                 ],
                               ),
                             ),

@@ -98,6 +98,7 @@ class _BookingDetailState extends State<BookingDetail> {
       setState(() {
         isgettingProfile = false;
         bookingData = detailsMainModel.bookingDetail!;
+        print("hhhhgggghhhg>>>>${bookingData?.bookingStatus}");
         if(bookingData?.bookingStatus == "accepted"){
           showAcceptRejectButton = false;
           if(bookingData?.bookingCenter != null){
@@ -114,6 +115,7 @@ class _BookingDetailState extends State<BookingDetail> {
         }else if(bookingData?.bookingStatus == "dropped_at_vendor"){
           setState(() {
             showAcceptRejectButton = false;
+
             dropedShowView = false;
             showServiceCenter = false;
             pickFromVendorShowView = false;
@@ -146,12 +148,13 @@ class _BookingDetailState extends State<BookingDetail> {
   Widget build(BuildContext context) {
     final _bookingData = ModalRoute.of(context)?.settings.arguments as NewServices;
     var bookingId = _bookingData.bookingId;
+    print("bkkID>>>>>${_bookingId}");
 
     if(isgettingProfile){
       getBookingDetailsFromApi(bookingId!);
     }
 
-    print("BookingDetailState===>${jsonEncode(bookingData)}");
+    print("BookingDetailState===>${jsonEncode(_bookingData)}");
     Size screenSize = MediaQuery.of(context).size;
 
 
