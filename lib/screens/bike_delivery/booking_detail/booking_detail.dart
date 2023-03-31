@@ -223,7 +223,7 @@ pickedFromCustomer = false;
                         backgroundImage: NetworkImage(ApiConfig.baseUrl+bookingData!.bookingUser!.avatar.toString()), // No matter how big it is, it won't overflow
                       ),
                       title: Text("${bookingData?.bookingUser?.name}",style: const TextStyle(fontWeight: FontWeight.w600,fontSize: 15),),
-                      subtitle: Text("${bookingData?.bookedDate}, ${bookingData?.bookedTime}\n${bookingData!.bookingAddress!.fullAddress}\n${bookingData?.bookingUser?.email}",
+                      subtitle: Text("${bookingData?.bookedDate}, ${bookingData?.bookedTime}\n${bookingData!.bookingAddress?.fullAddress}\n${bookingData?.bookingUser?.email}",
                         style: const TextStyle(fontWeight: FontWeight.w500,fontSize: 12,color: Color(0xFF8C8FA5)),),
                       trailing:  Container(
                           padding: EdgeInsets.symmetric(horizontal: 8,vertical: 5),
@@ -518,38 +518,43 @@ pickedFromCustomer = false;
                                   ),
                                 ),
                                 const SizedBox(width: 50,),
-                                
+
                               ],
                             ),
                           ),
-                          Visibility(
-                            visible: pickedFromCustomer,
-                            child: GestureDetector(
-                                  onTap: (){
-                                    changeBookingStatus("picked",bookingId!);
-                                  },
-                                  child: Container(
-                                    decoration: BoxDecoration(
-                                        color: CustomColor.whiteColor,
-                                        border: Border.all(
-                                          color: CustomColor.primaryColor,
-                                        ),
-                                        borderRadius: BorderRadius.all(Radius.circular(15))
-                                    ),
+                          SizedBox(height: 10,),
+                          Align(
+                            alignment: Alignment.bottomCenter,
+                            child: Visibility(
+                              visible: pickedFromCustomer,
+                              child: GestureDetector(
+                                    onTap: (){
+                                      changeBookingStatus("picked",bookingId!);
+                                    },
+                                    child: Container(
 
-                                    height: 40,
-                                    width: 100,
-                                    child: Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: Row(
-                                        mainAxisAlignment: MainAxisAlignment.center,
-                                        children: const [
-                                          Text("Pickup",style: TextStyle(color: CustomColor.primaryColor),)
-                                        ],
+                                      decoration: BoxDecoration(
+                                          color: CustomColor.whiteColor,
+                                          border: Border.all(
+                                            color: CustomColor.primaryColor,
+                                          ),
+                                          borderRadius: BorderRadius.all(Radius.circular(15))
+                                      ),
+
+                                      height: 40,
+                                      width: 100,
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Row(
+                                          mainAxisAlignment: MainAxisAlignment.center,
+                                          children: const [
+                                            Text("Pickup",style: TextStyle(color: CustomColor.primaryColor),)
+                                          ],
+                                        ),
                                       ),
                                     ),
                                   ),
-                                ),
+                            ),
                           ),
                           Visibility(
                             visible: dropedShowView,

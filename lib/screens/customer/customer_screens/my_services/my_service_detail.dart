@@ -132,9 +132,11 @@ class _MyServiceDetailState extends State<MyServiceDetail> {
 
                           Row(
                             children: const [
+
                               Icon(Icons.location_on,color: Colors.grey,),
                               SizedBox(width: 10,),
                               Text("Pick Up Address",style: TextStyle(color: Colors.black,fontWeight: FontWeight.w600,fontSize: 25),),
+
                             ],
                           ),
                           const SizedBox(height: 8,),

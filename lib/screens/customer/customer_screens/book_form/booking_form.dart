@@ -683,8 +683,8 @@ class _BookingFormState extends State<BookingForm> {
               ],
             ),
           ),
-          _showAddresses
 
+          _showAddresses
               ? Container(
             width: screenSize.width,
             height: screenSize.height,
