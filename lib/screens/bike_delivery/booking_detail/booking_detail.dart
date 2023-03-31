@@ -26,13 +26,14 @@ class _BookingDetailState extends State<BookingDetail> {
   int? serviceCenterId = 0;
   List<ServiceCenters>? serviceCenters;
   int? _bookingId = 0;
-  bool isLoading = true;
+  bool isLoading = false;
   bool isgettingProfile = true;
   NewServices? bookingData;
   bool dropedShowView = false;
   bool pickFromVendorShowView = false;
   bool dropToCustomer = false;
   bool pickedFromCustomer = false;
+  bool isServiceCenterLoad = true;
 
 
   changeBookingStatus(String status, int bookingId) async{
@@ -47,6 +48,7 @@ class _BookingDetailState extends State<BookingDetail> {
         showAcceptRejectButton = false;
         _bookingId = bookingId;
       });
+      getBookingDetailsFromApi(bookingId);
       Fluttertoast.showToast(msg: "${bookingList.message}");
     }else if(bookingList.status == null){
 
@@ -65,11 +67,11 @@ class _BookingDetailState extends State<BookingDetail> {
     if(serviceCenterListMainModel.status != null){
       serviceCenters = serviceCenterListMainModel.serviceCenters;
       setState(() {
-        isLoading = false;
+        isServiceCenterLoad = false;
       });
     }else{
       setState(() {
-        isLoading = false;
+        isServiceCenterLoad = false;
       });
     }
   }
@@ -90,43 +92,69 @@ class _BookingDetailState extends State<BookingDetail> {
   }
 
   getBookingDetailsFromApi(int bookingId) async{
-    print(bookingId);
     setState(() {
-      isgettingProfile = true;
+      isLoading = true;
     });
+
     BookingDetailsMainModel detailsMainModel = await ApiService.getBookingDetails(bookingId: bookingId.toString());
     if(detailsMainModel.status != null){
       setState(() {
         isgettingProfile = false;
         bookingData = detailsMainModel.bookingDetail!;
         print("hhhhgggghhhg>>>>${bookingData?.bookingStatus}");
-        if(bookingData?.bookingStatus == "accepted"){
-          showAcceptRejectButton = false;
-          showServiceCenter = false;
-            dropedShowView = false;
-            pickedFromCustomer = true;
-            pickFromVendorShowView = false;
-            dropToCustomer = false;
-        }else if(bookingData?.bookingStatus == "picked"){
-          setState(() {
-            showAcceptRejectButton = false;
-            dropedShowView = true;
-            showServiceCenter = false;
-            pickFromVendorShowView = false;
-            dropToCustomer = false;
-            pickedFromCustomer = false;
-          });
+        if(bookingData?.bookingStatus == "accepted") {
+          if (bookingData!.bookingCenter == null) {
+            setState(() {
+              showAcceptRejectButton = false;
+              showServiceCenter = true;
+              dropedShowView = false;
+              pickedFromCustomer = true;
+              pickFromVendorShowView = false;
+              dropToCustomer = false;
+            });
+          } else {
+            setState(() {
+              showAcceptRejectButton = false;
+              showServiceCenter = false;
+              dropedShowView = false;
+              pickedFromCustomer = true;
+              pickFromVendorShowView = false;
+              dropToCustomer = false;
+            });
+          }
+        }
+        else if(bookingData?.bookingStatus == "picked"){
+          if (bookingData!.bookingCenter == null) {
+            setState(() {
+              showAcceptRejectButton = false;
+              showServiceCenter = true;
+              dropedShowView = false;
+              pickedFromCustomer = false;
+              pickFromVendorShowView = false;
+              dropToCustomer = false;
+            });
+          } else {
+            setState(() {
+              showAcceptRejectButton = false;
+              showServiceCenter = false;
+              dropedShowView = true;
+              pickedFromCustomer = false;
+              pickFromVendorShowView = false;
+              dropToCustomer = false;
+            });
+          }
         }
         else if(bookingData?.bookingStatus == "dropped_at_vendor"){
           setState(() {
             showAcceptRejectButton = false;
-pickedFromCustomer = false;
+            pickedFromCustomer = false;
             dropedShowView = false;
             showServiceCenter = false;
             pickFromVendorShowView = false;
             dropToCustomer = false;
           });
-        }else if(bookingData?.bookingStatus == "service_completed"){
+        }
+        else if(bookingData?.bookingStatus == "service_completed"){
           setState(() {
             showAcceptRejectButton = false;
             dropedShowView = false;
@@ -135,7 +163,8 @@ pickedFromCustomer = false;
             dropToCustomer = false;
             pickedFromCustomer = false;
           });
-        }else if(bookingData?.bookingStatus == "picked_at_vendor"){
+        }
+        else if(bookingData?.bookingStatus == "picked_at_vendor"){
           setState(() {
             showAcceptRejectButton = false;
             dropedShowView = false;
@@ -145,6 +174,11 @@ pickedFromCustomer = false;
             pickedFromCustomer = false;
           });
         }
+
+
+        setState(() {
+          isLoading = false;
+        });
 
       });
     }
@@ -180,9 +214,12 @@ pickedFromCustomer = false;
         centerTitle: true,
       ),
       body: SingleChildScrollView(
-        child: isLoading ? Container(
+        child: isServiceCenterLoad ? Container(
           height: screenSize.height,
-          child: Center(child: CircularProgressIndicator()),
+          child: const Center(child: CircularProgressIndicator(color: CustomColor.primaryColor,)),
+        ) : isLoading ? Container(
+          height: screenSize.height,
+          child: const Center(child: CircularProgressIndicator(color: CustomColor.primaryColor,)),
         ): Column(
           children: [
             const SizedBox(height: 15,),
@@ -312,7 +349,7 @@ pickedFromCustomer = false;
                                   const SizedBox(height: 8,),
                                   Text("Package Feature: ",style: TextStyle(color: Colors.grey,fontWeight: FontWeight.w600,fontSize: 15),),
                                   HtmlWidget(
-                                      (bookingData?.bookingPackage!.packageFeaturesName!.toString()).toString(),
+                                    (bookingData?.bookingPackage!.packageFeaturesName!.toString()).toString(),
                                     textStyle: TextStyle(color: Colors.grey,fontWeight: FontWeight.w600,fontSize: 15),
                                   ),
                                   const SizedBox(height: 8,),
@@ -474,80 +511,76 @@ pickedFromCustomer = false;
                             ),
                           ),
                           const SizedBox(height: 20,),
-                          Visibility(
-                            visible: showServiceCenter,
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                GestureDetector(
-                                  onTap: (){
-                                  if(serviceCenterId != 0){
-                                    assingServiceCenterForService(bookingId);
-                                  }else{
-                                  Fluttertoast.showToast(msg: "Please select service center");
-                                  }
-                                  },
-                                  child: Container(
-                                    decoration: BoxDecoration(
-                                        color: CustomColor.primaryColor,
-                                        border: Border.all(
-                                          color: CustomColor.primaryColor,
-                                        ),
-                                        borderRadius: BorderRadius.all(Radius.circular(15))
-                                    ),
-                                    height: 40,
-                                    width: 100,
-                                    child: Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: Row(
-                                        mainAxisAlignment: MainAxisAlignment.center,
-                                        children: const [
 
-                                          Text("Submit",style: TextStyle(color: Color(0xFFFFFFFF)),)
-                                        ],
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                                const SizedBox(width: 50,),
-
-                              ],
-                            ),
-                          ),
-                          SizedBox(height: 10,),
                           Align(
                             alignment: Alignment.bottomCenter,
                             child: Visibility(
                               visible: pickedFromCustomer,
                               child: GestureDetector(
-                                    onTap: (){
-                                      changeBookingStatus("picked",bookingId!);
-                                    },
-                                    child: Container(
+                                onTap: (){
+                                  changeBookingStatus("picked",bookingId!);
+                                },
+                                child: Container(
 
-                                      decoration: BoxDecoration(
-                                          color: CustomColor.whiteColor,
-                                          border: Border.all(
-                                            color: CustomColor.primaryColor,
-                                          ),
-                                          borderRadius: BorderRadius.all(Radius.circular(15))
+                                  decoration: BoxDecoration(
+                                      color: CustomColor.whiteColor,
+                                      border: Border.all(
+                                        color: CustomColor.primaryColor,
                                       ),
+                                      borderRadius: BorderRadius.all(Radius.circular(15))
+                                  ),
 
-                                      height: 40,
-                                      width: 100,
-                                      child: Padding(
-                                        padding: const EdgeInsets.all(8.0),
-                                        child: Row(
-                                          mainAxisAlignment: MainAxisAlignment.center,
-                                          children: const [
-                                            Text("Pickup",style: TextStyle(color: CustomColor.primaryColor),)
-                                          ],
-                                        ),
-                                      ),
+                                  height: 40,
+                                  margin: const EdgeInsets.symmetric(horizontal: 40),
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Row(
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      children: const [
+                                        Text("Pick From Customer",style: TextStyle(color: CustomColor.primaryColor),)
+                                      ],
                                     ),
                                   ),
+                                ),
+                              ),
                             ),
                           ),
+                          SizedBox(height: 10,),
+                          Visibility(
+                            visible: showServiceCenter,
+                            child: GestureDetector(
+                              onTap: (){
+                                if(serviceCenterId != 0){
+                                  assingServiceCenterForService(bookingId);
+                                }else{
+                                  Fluttertoast.showToast(msg: "Please select service center");
+                                }
+                              },
+                              child: Container(
+                                decoration: BoxDecoration(
+                                    color: CustomColor.primaryColor,
+                                    border: Border.all(
+                                      color: CustomColor.primaryColor,
+                                    ),
+                                    borderRadius: BorderRadius.all(Radius.circular(15))
+                                ),
+                                height: 40,
+                                width: screenSize.width,
+                                margin: EdgeInsets.symmetric(horizontal: 40),
+                                child: Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: const [
+
+                                      Text("Submit",style: TextStyle(color: Color(0xFFFFFFFF)),)
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                          SizedBox(height: 10,),
                           Visibility(
                             visible: dropedShowView,
                             child: GestureDetector(
