@@ -676,17 +676,15 @@ class _DashboardScreenState extends State<DashboardScreen> {
                         ),
                         child: SizedBox(
                           width: screenSize.width,
-                          height: 460,
+                          height: screenSize.height * 0.7,
                           child: ListView.builder(
                               itemCount: lastServices.length,
                               physics: const  NeverScrollableScrollPhysics(),
-
                               itemBuilder: (BuildContext context, int index) {
                                 return InkWell(
                                   onTap: (){
-
                                     Navigator.pushNamed(context, CustomerBookingDetail.routeName,arguments: lastServices[index],);
-                                  },
+                                    },
                                   child: Padding(
                                     padding: const EdgeInsets.symmetric(horizontal: 20,vertical: 16),
                                     child: Container(
@@ -722,13 +720,28 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                             Column(
                                               crossAxisAlignment: CrossAxisAlignment.start,
                                               children:  [
-                                                const SizedBox(height: 10,),
-                                                Text(lastServices[index].bookingVehName != null ?
-                                                lastServices[index].bookingVehName!.toString():"",
-                                                  style: const TextStyle(fontSize: 20,fontWeight: FontWeight.w600),),
+                                                const SizedBox(height: 4,),
+                                                Row(
+                                                  children: [
+                                                    Text(lastServices[index].bookingVehName != null ?
+                                                    lastServices[index].bookingVehName!.toString():"",
+                                                      style: const TextStyle(fontSize: 20,fontWeight: FontWeight.w600),),
+                                                    Spacer(),
+                                                    Container(
+                                                      decoration: BoxDecoration(
+                                                          borderRadius: BorderRadius.circular(17),
+                                                          color: Color(
+                                                              0xffffc0c0)),
+                                                      child: Padding(
+                                                        padding: const EdgeInsets.all(7.0),
+                                                        child: Text("${(lastServices[index].bookingStatus.toString())}",style: TextStyle(fontSize: 15,color: CustomColor.whiteColor),),
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
                                                 const SizedBox(height: 3,),
                                                 Row(children: [
-                                                  const Text("Booking Reference Number -",style: TextStyle(fontSize: 20),),
+                                                  const Text("Reference Number -",style: TextStyle(fontSize: 20),),
                                                   const SizedBox(width: 7,),
                                                   Text(lastServices[index].bookingNumber.toString(),),
                                                 ],
@@ -743,8 +756,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                               ],
                                             ),
                                             const SizedBox(height: 15,),
-                                            Text("Booking Status :- ${(lastServices[index].bookingStatus.toString())}",style: TextStyle(fontSize: 20),),
-                                            const SizedBox(height: 15,),
+
                                             Row(
                                               children: [
                                                 Row(children: [

@@ -58,7 +58,23 @@ class _CustomerBookingDetailState extends State<CustomerBookingDetail> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text("${bookingData.bookingUser?.name}",style: const TextStyle(fontSize: 22,color: CustomColor.whiteColor,fontWeight: FontWeight.w700),),
+                        Row(
+                          children: [
+                            Text("${bookingData.bookingUser?.name}",style: const TextStyle(fontSize: 22,color: CustomColor.whiteColor,fontWeight: FontWeight.w700),),
+                          Spacer(),
+                            Container(
+                              decoration: BoxDecoration(
+                                color: CustomColor.whiteColor,
+                                borderRadius: BorderRadius.circular(14)
+                              ),
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Text("${bookingData.bookingStatus}",style: const TextStyle(fontSize: 22,color: CustomColor.primaryColor,fontWeight: FontWeight.w700),),
+                              ),
+                            ),
+
+                          ],
+                        ),
                         SizedBox(height: 5,),
 
                         Text("${bookingData.bookedDate}  @ ${bookingData.bookedTime}",style: const TextStyle(fontSize: 17,color: CustomColor.whiteColor,fontWeight: FontWeight.w600),),
