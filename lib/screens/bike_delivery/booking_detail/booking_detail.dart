@@ -574,7 +574,7 @@ pickedFromCustomer = false;
                                   child: Row(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: const [
-                                      Text("Drop",style: TextStyle(color: CustomColor.primaryColor),)
+                                      Text("Drop At Vendor",style: TextStyle(color: CustomColor.primaryColor),)
                                     ],
                                   ),
                                 ),
