@@ -102,19 +102,11 @@ class _BookingDetailState extends State<BookingDetail> {
         print("hhhhgggghhhg>>>>${bookingData?.bookingStatus}");
         if(bookingData?.bookingStatus == "accepted"){
           showAcceptRejectButton = false;
-          if(bookingData?.bookingCenter != null){
-            showServiceCenter = false;
+          showServiceCenter = false;
             dropedShowView = false;
             pickedFromCustomer = true;
             pickFromVendorShowView = false;
             dropToCustomer = false;
-          }else{
-            showServiceCenter = true;
-            dropedShowView = false;
-            pickedFromCustomer = false;
-            pickFromVendorShowView = false;
-            dropToCustomer = false;
-          }
         }else if(bookingData?.bookingStatus == "picked"){
           setState(() {
             showAcceptRejectButton = false;
@@ -577,7 +569,7 @@ pickedFromCustomer = false;
                                   child: Row(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: const [
-                                      Text("Drop",style: TextStyle(color: CustomColor.primaryColor),)
+                                      Text("Drop At Vendor",style: TextStyle(color: CustomColor.primaryColor),)
                                     ],
                                   ),
                                 ),
