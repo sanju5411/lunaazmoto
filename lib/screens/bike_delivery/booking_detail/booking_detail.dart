@@ -489,7 +489,11 @@ pickedFromCustomer = false;
                               children: [
                                 GestureDetector(
                                   onTap: (){
+                                  if(bookingId != 0){
                                     assingServiceCenterForService(bookingId);
+                                  }else{
+                                  Fluttertoast.showToast(msg: "Please select service center");
+                                  }
                                   },
                                   child: Container(
                                     decoration: BoxDecoration(
