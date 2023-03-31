@@ -104,11 +104,13 @@ class _BookingDetailState extends State<BookingDetail> {
           showAcceptRejectButton = false;
           if(bookingData?.bookingCenter != null){
             showServiceCenter = false;
+            showAcceptRejectButton = false;
             dropedShowView = false;
             pickedFromCustomer = true;
             pickFromVendorShowView = false;
             dropToCustomer = false;
           }else{
+          showAcceptRejectButton = false;
             showServiceCenter = true;
             dropedShowView = false;
             pickedFromCustomer = false;
