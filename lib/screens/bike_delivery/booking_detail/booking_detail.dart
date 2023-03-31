@@ -32,6 +32,7 @@ class _BookingDetailState extends State<BookingDetail> {
   bool dropedShowView = false;
   bool pickFromVendorShowView = false;
   bool dropToCustomer = false;
+  bool pickedFromCustomer = false;
 
 
   changeBookingStatus(String status, int bookingId) async{
@@ -103,12 +104,14 @@ class _BookingDetailState extends State<BookingDetail> {
           showAcceptRejectButton = false;
           if(bookingData?.bookingCenter != null){
             showServiceCenter = false;
-            dropedShowView = true;
+            dropedShowView = false;
+            pickedFromCustomer = true;
             pickFromVendorShowView = false;
             dropToCustomer = false;
           }else{
             showServiceCenter = true;
             dropedShowView = false;
+            pickedFromCustomer = false;
             pickFromVendorShowView = false;
             dropToCustomer = false;
           }
@@ -119,12 +122,13 @@ class _BookingDetailState extends State<BookingDetail> {
             showServiceCenter = false;
             pickFromVendorShowView = false;
             dropToCustomer = false;
+            pickedFromCustomer = false;
           });
         }
         else if(bookingData?.bookingStatus == "dropped_at_vendor"){
           setState(() {
             showAcceptRejectButton = false;
-
+pickedFromCustomer = false;
             dropedShowView = false;
             showServiceCenter = false;
             pickFromVendorShowView = false;
@@ -137,6 +141,7 @@ class _BookingDetailState extends State<BookingDetail> {
             showServiceCenter = false;
             pickFromVendorShowView = true;
             dropToCustomer = false;
+            pickedFromCustomer = false;
           });
         }else if(bookingData?.bookingStatus == "picked_at_vendor"){
           setState(() {
@@ -145,6 +150,7 @@ class _BookingDetailState extends State<BookingDetail> {
             showServiceCenter = false;
             pickFromVendorShowView = false;
             dropToCustomer = true;
+            pickedFromCustomer = false;
           });
         }
 
@@ -508,7 +514,13 @@ class _BookingDetailState extends State<BookingDetail> {
                                   ),
                                 ),
                                 const SizedBox(width: 50,),
-                                GestureDetector(
+                                
+                              ],
+                            ),
+                          ),
+                          Visibility(
+                            visible: pickedFromCustomer,
+                            child: GestureDetector(
                                   onTap: (){
                                     changeBookingStatus("picked",bookingId!);
                                   },
@@ -533,9 +545,7 @@ class _BookingDetailState extends State<BookingDetail> {
                                       ),
                                     ),
                                   ),
-                                )
-                              ],
-                            ),
+                                ),
                           ),
                           Visibility(
                             visible: dropedShowView,
