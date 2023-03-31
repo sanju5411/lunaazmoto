@@ -112,7 +112,16 @@ class _BookingDetailState extends State<BookingDetail> {
             pickFromVendorShowView = false;
             dropToCustomer = false;
           }
-        }else if(bookingData?.bookingStatus == "dropped_at_vendor"){
+        }else if(bookingData?.bookingStatus == "picked"){
+          setState(() {
+            showAcceptRejectButton = false;
+            dropedShowView = true;
+            showServiceCenter = false;
+            pickFromVendorShowView = false;
+            dropToCustomer = false;
+          });
+        }
+        else if(bookingData?.bookingStatus == "dropped_at_vendor"){
           setState(() {
             showAcceptRejectButton = false;
 
