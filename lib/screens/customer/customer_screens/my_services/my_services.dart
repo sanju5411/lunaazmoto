@@ -150,8 +150,28 @@ class _MyServicesScreenState extends State<MyServicesScreen> {
                                       Text("Vehicle Name :-",style: TextStyle(fontSize: 20),),
                                       SizedBox(width: 3,),
                                       Text(onGoingList[index].bookingVehName != null?onGoingList[index].bookingVehName!.toString():"",style: TextStyle(fontSize: 20,fontWeight: FontWeight.w600),),
+                                    Spacer(),
+                                      Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Container(
+                                          decoration: BoxDecoration(
+                                              borderRadius: BorderRadius.circular(17),
+                                              color: Color(
+                                                  0xfffcd3d3)),
+                                          child: Padding(
+                                            padding: const EdgeInsets.all(8.0),
+                                            child: Text(" ${(onGoingList[index].status.toString())}",style: TextStyle(color: CustomColor.primaryColor,fontWeight: FontWeight.w600,fontSize: 17),),
+                                          ),
+                                        ),
+                                      ),
                                     ],
                                   ),
+                                  const SizedBox(height: 8,),
+                                  Row(children: [
+                                    Text("Booking No. -",style: TextStyle(fontSize: 17),),
+                                    const SizedBox(width: 7,),
+                                    Text(onGoingList[index].bookingNumber.toString(),style: const TextStyle(fontSize: 17),)
+                                  ],),
                                   const SizedBox(height: 8,),
                                     Row(
                                       children: [
@@ -160,20 +180,15 @@ class _MyServicesScreenState extends State<MyServicesScreen> {
                                       ],
                                     ),
                                     const SizedBox(height: 8,),
-                                    Row(children: [
-                                      Text("Booking Reference Number -",style: TextStyle(fontSize: 17),),
-                                      const SizedBox(width: 7,),
-                                      Text(onGoingList[index].bookingNumber.toString(),style: const TextStyle(fontSize: 17),)
-                                    ],),
-                                    const SizedBox(height: 8,),
-                                    Text("Booking Status :- ${(onGoingList[index].bookingStatus.toString())}",style: TextStyle(fontSize: 20),),
+
+
                                   SizedBox(height: 8,),
                                   Text("Payment :- ${(onGoingList[index].bookingPaymentStatus.toString())}",style: TextStyle(fontSize: 20),),
                                   SizedBox(height: 8,),
                                   Row(children: [
                                     Text("Vehicle No. -",style: TextStyle(fontSize: 20),),
                                     SizedBox(width: 7,),
-                                    Text((onGoingList[index].bookingVehNum.toString()),),
+                                    Text((onGoingList[index].bookingVehNum.toString()),style: TextStyle(fontSize: 18,fontWeight: FontWeight.w700),),
                                     Spacer(),
                                     Padding(
                                       padding: const EdgeInsets.all(8.0),
@@ -193,7 +208,7 @@ class _MyServicesScreenState extends State<MyServicesScreen> {
                 ),
 
                 Padding(
-                  padding: const EdgeInsets.all(14.0),
+                  padding: const EdgeInsets.all(10.0),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -209,81 +224,91 @@ class _MyServicesScreenState extends State<MyServicesScreen> {
                       itemBuilder: (BuildContext context, int index) {
                         print("Last Servies--->${lastBookings[index]}");
                         return Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 6,vertical: 16),
-                          child: Container(
-                            // height: screenSize.height * 0.18,
-                            width: screenSize.width,
-                            decoration:  BoxDecoration(
-                                color: CustomColor.whiteColor,
-                                boxShadow: const
-                                [
-                                  BoxShadow(
-                                    color: Color(0xffd7d7d7),
-                                    offset: Offset(
-                                      1.0,
-                                      1.0,
-                                    ),
-                                    blurRadius: 19.0,
-                                    spreadRadius: 1.0,
-                                  ), //BoxShadow
-                                  BoxShadow(
-                                    color: Colors.white,
-                                    offset: Offset(0.0, 0.0),
-                                    blurRadius: 0.0,
-                                    spreadRadius: 0.0,
-                                  ), //BoxShadow
-                                ],
-                                borderRadius: BorderRadius.circular(20)
-                            ),
-                            child: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Column(
-                                children: [
-                                  Row(
-                                    children: [
-                                      Column(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                        children:  [
-                                          const SizedBox(height: 10,),
-                                          Padding(
-                                            padding: const EdgeInsets.all(8.0),
-                                            child: Text( lastBookings[index].bookingVehName != null? lastBookings[index].bookingVehName!.toString():"",style: TextStyle(fontSize: 20,fontWeight: FontWeight.w600),),
-                                          ),
-                                          const SizedBox(height: 3,),
-                                          Row(children: [
-                                            Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: InkWell(
+                            onTap: (){
+                              Navigator.pushNamed(context, MyServiceDetail.routeName,arguments: lastBookings[index],);
+                            },
+                            child: Container(
+
+                              width: screenSize.width,
+                              decoration:  BoxDecoration(
+                                  color: CustomColor.whiteColor,
+                                  boxShadow: const
+                                  [
+                                    BoxShadow(
+                                      color: Color(0xffd7d7d7),
+                                      offset: Offset(
+                                        1.0,
+                                        1.0,
+                                      ),
+                                      blurRadius: 19.0,
+                                      spreadRadius: 1.0,
+                                    ), //BoxShadow
+                                    BoxShadow(
+                                      color: Colors.white,
+                                      offset: Offset(0.0, 0.0),
+                                      blurRadius: 0.0,
+                                      spreadRadius: 0.0,
+                                    ), //BoxShadow
+                                  ],
+                                  borderRadius: BorderRadius.circular(20)
+                              ),
+                              child: Padding(
+                                padding: const EdgeInsets.only(left: 20,bottom: 10,top: 10),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Row(
+                                      children: [
+                                        SizedBox(width: 7,),
+                                        Text((lastBookings[index].bookingVehNum.toString()),style: TextStyle(fontSize: 18,fontWeight: FontWeight.w700),),
+                                        Spacer(),
+                                        Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: Container(
+                                            decoration: BoxDecoration(
+                                                borderRadius: BorderRadius.circular(17),
+                                                color: Color(
+                                                    0xfffcd3d3)),
+                                            child: Padding(
                                               padding: const EdgeInsets.all(8.0),
-                                              child: const Text("Booking ID -"),
+                                              child: Text(" ${(lastBookings[index].status.toString())}",style: TextStyle(color: CustomColor.primaryColor,fontWeight: FontWeight.w600,fontSize: 17),),
                                             ),
-                                            const SizedBox(width: 7,),
-                                            Text(lastBookings[index].bookingId != null ? lastBookings[index].bookingId.toString():"")
-                                          ],)
-                                        ],
-                                      ),
-                                      Spacer(),
-                                      Text(lastBookings![index].bookingDate == null ? "": lastBookings![index].bookingDate.toString()),
-                                    ],
-                                  ),
-                                  SizedBox(height: 26,),
-                                  Row(
-                                    children: [
-                                      Column(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                        children:  [
-                                          Text("General Service",style: TextStyle(fontSize: 18,fontWeight: FontWeight.w600,color: CustomColor.primaryColor),),
-                                          SizedBox(height: 3,),
-                                          Row(children: [
-                                            Text("Vehicle No. -"),
-                                            SizedBox(width: 7,),
-                                            Text((lastBookings[index].bookingVehNum.toString()),),
-                                          ],)
-                                        ],
-                                      ),
-                                      Spacer(),
-                                      Text((lastBookings[index].bookingPaymentStatus.toString()),style: TextStyle(color: Colors.blueAccent,fontWeight: FontWeight.w600),),
-                                    ],
-                                  )
-                                ],
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    const SizedBox(height: 8,),
+                                    Row(
+                                      children: [
+                                        Text("Date :-  ",style: TextStyle(fontSize: 20),),
+                                        Text(lastBookings[index].bookingDate.toString()),
+                                      ],
+                                    ),
+                                    const SizedBox(height: 8,),
+                                    Row(children: [
+                                      Text("Booking No. -",style: TextStyle(fontSize: 17),),
+                                      const SizedBox(width: 7,),
+                                      Text(lastBookings[index].bookingNumber.toString(),style: const TextStyle(fontSize: 17),)
+                                    ],),
+                                    const SizedBox(height: 8,),
+                                    Row(children: [
+                                      Text("Vehicle Name. -",style: TextStyle(fontSize: 17),),
+                                      const SizedBox(width: 7,),
+                                      Text(lastBookings[index].bookingVehName.toString(),style: const TextStyle(fontSize: 17),)
+                                    ],),
+                                    const SizedBox(height: 8,),
+                                      Text("Payment :- ${(lastBookings[index].bookingPaymentStatus.toString())}",style: TextStyle(fontSize: 20),),
+                                    SizedBox(height: 8,),
+
+                                    Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: Text("View Detail",style: TextStyle(fontSize: 18,color: Colors.cyan,fontWeight: FontWeight.w800),),
+                                    )
+
+                                  ],
+                                ),
                               ),
                             ),
                           ),

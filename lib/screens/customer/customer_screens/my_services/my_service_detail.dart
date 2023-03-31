@@ -144,7 +144,7 @@ class _MyServiceDetailState extends State<MyServiceDetail> {
                               mainAxisAlignment: MainAxisAlignment.start,
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text("City : ${bookingData.bookingAddress?.fullAddress}",style: TextStyle(color: Colors.grey,fontWeight: FontWeight.w600,fontSize: 18),),
+                                Text(" ${bookingData.bookingAddress?.fullAddress}",style: TextStyle(color: Colors.grey,fontWeight: FontWeight.w600,fontSize: 18),),
                                 SizedBox(height: 8,),
 
                               ],
@@ -158,6 +158,25 @@ class _MyServiceDetailState extends State<MyServiceDetail> {
                 ],
               ),
             ),
+            SizedBox(height: 30,),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text("Booking Status :-",style: TextStyle(fontSize: 20,color: Colors.black,fontWeight: FontWeight.w700),),
+                SizedBox(width: 6,),
+                Container(
+                  decoration: BoxDecoration(
+                      color: Color(0xffb5ffb1),
+                      borderRadius: BorderRadius.circular(14)
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text("${bookingData.bookingStatus}",style: const TextStyle(fontSize: 22,color: Colors.black,fontWeight: FontWeight.w700),),
+                  ),
+                ),
+              ],
+            ),
+
 
           ],
         ),

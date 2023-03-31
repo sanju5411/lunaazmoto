@@ -531,6 +531,16 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                           const SizedBox(height: 6,),
                                           Row(children:  [
                                             Text(
+                                              "Start Date",style: TextStyle(color: CustomColor.whiteColor,fontSize: 20),
+                                            ),
+                                            Spacer(),
+                                            Text(
+                                              _activePackages[index].activeStartDate.toString(),style: TextStyle(color: CustomColor.whiteColor,fontSize: 15),
+                                            ),
+                                          ],),
+                                          const SizedBox(height: 6,),
+                                          Row(children:  [
+                                            Text(
                                               "Expire Date",style: TextStyle(color: CustomColor.whiteColor,fontSize: 20),
                                             ),
                                             Spacer(),
@@ -734,7 +744,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                                               0xffffc0c0)),
                                                       child: Padding(
                                                         padding: const EdgeInsets.all(7.0),
-                                                        child: Text("${(lastServices[index].bookingStatus.toString())}",style: TextStyle(fontSize: 15,color: CustomColor.whiteColor),),
+                                                        child: Text("${(lastServices[index].status.toString())}",style: TextStyle(fontSize: 17,color: CustomColor.primaryColor,fontWeight: FontWeight.w700),),
                                                       ),
                                                     ),
                                                   ],

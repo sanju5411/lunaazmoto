@@ -35,6 +35,7 @@ class Service {
     this.bookingRating,
     this.bookingUrl,
     this.bookingStatus,
+    this.status,
   });
 
   int? bookingId;
@@ -67,6 +68,7 @@ class Service {
   String? bookingRating;
   String? bookingUrl;
   String? bookingStatus;
+  String? status;
 
   factory Service.fromJson(Map<String, dynamic> json) => Service(
     bookingId: json["booking_id"],
@@ -99,6 +101,7 @@ class Service {
     bookingRating: json["booking_rating"],
     bookingUrl: json["booking_url"],
     bookingStatus: json["booking_status"],
+    status: json["status"],
   );
 
   Map<String, dynamic> toJson() => {
@@ -132,5 +135,6 @@ class Service {
     "booking_rating": bookingRating,
     "booking_url": bookingUrl,
     "booking_status": bookingStatus,
+    "status": status,
   };
 }
