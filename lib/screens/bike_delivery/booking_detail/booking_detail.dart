@@ -102,21 +102,11 @@ class _BookingDetailState extends State<BookingDetail> {
         print("hhhhgggghhhg>>>>${bookingData?.bookingStatus}");
         if(bookingData?.bookingStatus == "accepted"){
           showAcceptRejectButton = false;
-          if(bookingData?.bookingCenter != null){
-            showServiceCenter = false;
-            showAcceptRejectButton = false;
+          showServiceCenter = false;
             dropedShowView = false;
             pickedFromCustomer = true;
             pickFromVendorShowView = false;
             dropToCustomer = false;
-          }else{
-          showAcceptRejectButton = false;
-            showServiceCenter = true;
-            dropedShowView = false;
-            pickedFromCustomer = false;
-            pickFromVendorShowView = false;
-            dropToCustomer = false;
-          }
         }else if(bookingData?.bookingStatus == "picked"){
           setState(() {
             showAcceptRejectButton = false;
