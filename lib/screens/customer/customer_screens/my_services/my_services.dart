@@ -150,7 +150,7 @@ class _MyServicesScreenState extends State<MyServicesScreen> {
                                       Text("Vehicle Name :-",style: TextStyle(fontSize: 20),),
                                       SizedBox(width: 3,),
                                       Text(onGoingList[index].bookingVehName != null?onGoingList[index].bookingVehName!.toString():"",style: TextStyle(fontSize: 20,fontWeight: FontWeight.w600),),
-                                    Spacer(),
+                                      Spacer(),
                                       Padding(
                                         padding: const EdgeInsets.all(8.0),
                                         child: Container(
@@ -167,7 +167,10 @@ class _MyServicesScreenState extends State<MyServicesScreen> {
                                     ],
                                   ),
                                   const SizedBox(height: 8,),
-                                  Row(children: [
+                                  Divider(height: 1,color: Colors.black54,),
+                                  const SizedBox(height: 8,),
+                                  Row(
+                                    children: [
                                     Text("Booking No. -",style: TextStyle(fontSize: 17),),
                                     const SizedBox(width: 7,),
                                     Text(onGoingList[index].bookingNumber.toString(),style: const TextStyle(fontSize: 17),)
@@ -189,12 +192,18 @@ class _MyServicesScreenState extends State<MyServicesScreen> {
                                     Text("Vehicle No. -",style: TextStyle(fontSize: 20),),
                                     SizedBox(width: 7,),
                                     Text((onGoingList[index].bookingVehNum.toString()),style: TextStyle(fontSize: 18,fontWeight: FontWeight.w700),),
-                                    Spacer(),
-                                    Padding(
+
+
+                                  ],),
+                                  SizedBox(height: 8,),
+                                  Divider(height: 1,color: Colors.black54,),
+                                  Align(
+                                    alignment: Alignment.bottomCenter,
+                                    child: Padding(
                                       padding: const EdgeInsets.all(8.0),
                                       child: Text("View Detail",style: TextStyle(fontSize: 18,color: Colors.cyan,fontWeight: FontWeight.w800),),
-                                    )
-                                  ],)
+                                    ),
+                                  )
 
                                 ],
                               ),
@@ -279,6 +288,8 @@ class _MyServicesScreenState extends State<MyServicesScreen> {
                                         ),
                                       ],
                                     ),
+
+                                    Divider(height: 1,color: Colors.grey,),
                                     const SizedBox(height: 8,),
                                     Row(
                                       children: [
@@ -301,10 +312,13 @@ class _MyServicesScreenState extends State<MyServicesScreen> {
                                     const SizedBox(height: 8,),
                                       Text("Payment :- ${(lastBookings[index].bookingPaymentStatus.toString())}",style: TextStyle(fontSize: 20),),
                                     SizedBox(height: 8,),
-
-                                    Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: Text("View Detail",style: TextStyle(fontSize: 18,color: Colors.cyan,fontWeight: FontWeight.w800),),
+                                    Divider(height: 1,color: Colors.grey,),
+                                    Align(
+                                      alignment: Alignment.bottomCenter,
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Text("View Detail",style: TextStyle(fontSize: 18,color: Colors.cyan,fontWeight: FontWeight.w800),),
+                                      ),
                                     )
 
                                   ],

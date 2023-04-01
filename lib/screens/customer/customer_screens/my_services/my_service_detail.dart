@@ -97,10 +97,16 @@ class _MyServiceDetailState extends State<MyServiceDetail> {
                                 const SizedBox(height: 8,),
                                 Text("Vehicle Number- ${bookingData.bookingVehNum}",style: TextStyle(color: Colors.black,fontWeight: FontWeight.w600,fontSize: 18),),
                                 const SizedBox(height: 8,),
-                                Text("${bookingData.bookedDate}",style: TextStyle(color: Colors.black,fontWeight: FontWeight.w600,fontSize: 19),),
+                                Row(
+                                  children: [
+                                    Text("${bookingData.bookedDate} /",style: TextStyle(color: Colors.black,fontWeight: FontWeight.w600,fontSize: 19),),
+                                   SizedBox(width: 7,),
+                                    Text("${bookingData.bookedTime}",style: TextStyle(color:Colors.black,fontWeight: FontWeight.w600,fontSize: 19),),
+
+                                  ],
+                                ),
                                 const SizedBox(height: 8,),
-                                Text("${bookingData.bookedTime}",style: TextStyle(color:Colors.black,fontWeight: FontWeight.w600,fontSize: 19),),
-                              ],
+                                   ],
                             ),
                           ),
                           const SizedBox(height: 25,),

@@ -521,7 +521,7 @@ class _BookingFormState extends State<BookingForm> {
                           child: Container(
                             decoration: BoxDecoration(
                               boxShadow: [
-                                const BoxShadow(
+                                 BoxShadow(
                                   color: Color(0xffdcdcdc),
                                   blurRadius: 20,
                                 ),
@@ -683,8 +683,8 @@ class _BookingFormState extends State<BookingForm> {
               ],
             ),
           ),
-
           _showAddresses
+
               ? Container(
             width: screenSize.width,
             height: screenSize.height,
