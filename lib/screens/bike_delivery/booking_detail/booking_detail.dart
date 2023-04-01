@@ -174,6 +174,16 @@ class _BookingDetailState extends State<BookingDetail> {
             pickedFromCustomer = false;
           });
         }
+        else if(bookingData?.bookingStatus == "completed"){
+          setState(() {
+            showAcceptRejectButton = false;
+            dropedShowView = false;
+            showServiceCenter = false;
+            pickFromVendorShowView = false;
+            dropToCustomer = false;
+            pickedFromCustomer = false;
+          });
+        }
 
 
         setState(() {
