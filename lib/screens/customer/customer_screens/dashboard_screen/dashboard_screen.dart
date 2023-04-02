@@ -235,7 +235,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                         itemBuilder:
                             (BuildContext context,
                             index) {
-                          print("Customer Name :- ${_happyCustomers[index].name}");
+                         // print("Customer Name :- ${_happyCustomers[index].name}");
                           return Padding(
                             padding:
                             const EdgeInsets

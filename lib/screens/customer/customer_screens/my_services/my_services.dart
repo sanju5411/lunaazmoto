@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import 'package:lunaaz_moto/common/widgets/custom_booking_card.dart';
@@ -61,7 +60,7 @@ class _MyServicesScreenState extends State<MyServicesScreen> {
   @override
   Widget build(BuildContext context) {
     Size screenSize = MediaQuery.of(context).size;
-    print(onGoingList.length);
+   // print(onGoingList.length);
 
     return Scaffold(
       backgroundColor: CustomColor.primaryColor,
@@ -136,7 +135,7 @@ class _MyServicesScreenState extends State<MyServicesScreen> {
                                     offset: Offset(0.0, 0.0),
                                     blurRadius: 0.0,
                                     spreadRadius: 0.0,
-                                  ), //BoxShadow
+                                  ),
                                 ],
                                 borderRadius: BorderRadius.circular(20)
                             ),
@@ -178,7 +177,7 @@ class _MyServicesScreenState extends State<MyServicesScreen> {
                                   const SizedBox(height: 8,),
                                     Row(
                                       children: [
-                                        Text("Date :-  ",style: TextStyle(fontSize: 20),),
+                                        const Text("Date :-  ",style: TextStyle(fontSize: 20),),
                                         Text(onGoingList[index].bookingDate.toString()),
                                       ],
                                     ),
@@ -231,7 +230,7 @@ class _MyServicesScreenState extends State<MyServicesScreen> {
                       physics: NeverScrollableScrollPhysics(),
                       shrinkWrap: true,
                       itemBuilder: (BuildContext context, int index) {
-                        print("Last Servies--->${lastBookings[index]}");
+                        //print("Last Servies--->${lastBookings[index]}");
                         return Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: InkWell(
