@@ -221,7 +221,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   CrossAxisAlignment.start,
                   children: [
                     SizedBox(
-                      height: 100,
+                      height: 120,
                       width: screenSize.width,
                       child: ListView.builder(
                         padding: const EdgeInsets
@@ -242,7 +242,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                 .all(5.0),
                             child: SizedBox(
                               width: 100,
-                              height: 110,
+                             // height: 110,
                               child: Column(
                                 children: [
                                   Container(
@@ -618,16 +618,27 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                             child: Divider(color: CustomColor.whiteColor,),
                                           ),
                                           const SizedBox(height: 6,),
-                                          Row(children: const [
+                                          Row(children:  [
+                                            Text(
+                                              "Start Date",style: TextStyle(color: CustomColor.whiteColor,fontSize: 20),
+                                            ),
+                                            Spacer(),
+                                            Text(
+                                              _activePackages[index].activeStartDate.toString(),style: TextStyle(color: CustomColor.whiteColor,fontSize: 15),
+                                            ),
+                                          ],),
+                                          const SizedBox(height: 6,),
+                                          Row(children:  [
                                             Text(
                                               "Expire Date",style: TextStyle(color: CustomColor.whiteColor,fontSize: 20),
                                             ),
                                             Spacer(),
                                             Text(
-                                              "12/4/2023",style: TextStyle(color: CustomColor.whiteColor,fontSize: 15),
+                                              _activePackages[index].activeEndDate.toString(),style: TextStyle(color: CustomColor.whiteColor,fontSize: 15),
                                             ),
                                           ],),
                                           const SizedBox(height: 6,),
+
                                           // Row(
                                           //   children: [
                                           //     const Text(
