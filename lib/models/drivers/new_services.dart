@@ -28,6 +28,7 @@ class NewServices {
   String? bookingReview;
   String? bookingRating;
   String? bookingStatus;
+  String? status;
 
   NewServices(
       {this.bookingId,
@@ -53,7 +54,8 @@ class NewServices {
         this.bookingPaymentStatus,
         this.bookingReview,
         this.bookingRating,
-        this.bookingStatus});
+        this.bookingStatus,
+      this.status});
 
   NewServices.fromJson(Map<String, dynamic> json) {
     bookingId = json['booking_id'];
@@ -89,6 +91,7 @@ class NewServices {
     bookingReview = json['booking_review'];
     bookingRating = json['booking_rating'];
     bookingStatus = json['booking_status'];
+    status = json['status'];
   }
 
   Map<String, dynamic> toJson() {
@@ -123,6 +126,7 @@ class NewServices {
     data['booking_review'] = bookingReview;
     data['booking_rating'] = bookingRating;
     data['booking_status'] = bookingStatus;
+    data['status'] = status;
     return data;
   }
 }

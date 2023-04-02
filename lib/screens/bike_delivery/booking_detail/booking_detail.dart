@@ -11,6 +11,7 @@ import 'package:lunaaz_moto/models/service_center/booking_details_main_model.dar
 import 'package:lunaaz_moto/models/service_center/service_center_list_main_model.dart';
 import 'package:lunaaz_moto/models/service_center/service_centers.dart';
 import 'package:lunaaz_moto/services/api_service.dart';
+import 'package:url_launcher/url_launcher.dart';
 class BookingDetail extends StatefulWidget {
   static const String routeName = '/booking_detail';
   const BookingDetail({Key? key}) : super(key: key);
@@ -34,6 +35,7 @@ class _BookingDetailState extends State<BookingDetail> {
   bool dropToCustomer = false;
   bool pickedFromCustomer = false;
   bool isServiceCenterLoad = true;
+  bool bookingStauts = false;
 
 
   changeBookingStatus(String status, int bookingId) async{
@@ -120,6 +122,7 @@ class _BookingDetailState extends State<BookingDetail> {
               pickedFromCustomer = true;
               pickFromVendorShowView = false;
               dropToCustomer = false;
+              bookingStauts = false;
             });
           }
         }
@@ -132,6 +135,7 @@ class _BookingDetailState extends State<BookingDetail> {
               pickedFromCustomer = false;
               pickFromVendorShowView = false;
               dropToCustomer = false;
+              bookingStauts = false;
             });
           } else {
             setState(() {
@@ -141,6 +145,7 @@ class _BookingDetailState extends State<BookingDetail> {
               pickedFromCustomer = false;
               pickFromVendorShowView = false;
               dropToCustomer = false;
+              bookingStauts = false;
             });
           }
         }
@@ -152,6 +157,7 @@ class _BookingDetailState extends State<BookingDetail> {
             showServiceCenter = false;
             pickFromVendorShowView = false;
             dropToCustomer = false;
+            bookingStauts = false;
           });
         }
         else if(bookingData?.bookingStatus == "service_completed"){
@@ -162,6 +168,7 @@ class _BookingDetailState extends State<BookingDetail> {
             pickFromVendorShowView = true;
             dropToCustomer = false;
             pickedFromCustomer = false;
+            bookingStauts = false;
           });
         }
         else if(bookingData?.bookingStatus == "picked_at_vendor"){
@@ -172,6 +179,18 @@ class _BookingDetailState extends State<BookingDetail> {
             pickFromVendorShowView = false;
             dropToCustomer = true;
             pickedFromCustomer = false;
+            bookingStauts = false;
+          });
+        }
+        else if(bookingData?.bookingPaymentStatus == "paid"){
+          setState(() {
+            showAcceptRejectButton = false;
+            dropedShowView = false;
+            showServiceCenter = false;
+            pickFromVendorShowView = false;
+            dropToCustomer = false;
+            pickedFromCustomer = false;
+            bookingStauts = true;
           });
         }
         else if(bookingData?.bookingStatus == "completed"){
@@ -182,18 +201,16 @@ class _BookingDetailState extends State<BookingDetail> {
             pickFromVendorShowView = false;
             dropToCustomer = false;
             pickedFromCustomer = false;
+            bookingStauts = false;
           });
         }
-
 
         setState(() {
           isLoading = false;
         });
-
       });
     }
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -270,7 +287,7 @@ class _BookingDetailState extends State<BookingDetail> {
                               borderRadius: BorderRadius.all(Radius.circular(10)),
                               color: Color(0xFFE8F0FF)
                           ),
-                          child: const Text("New Booking",style: TextStyle(color: Color(0xFF1D3A70)),))
+                          child: Text("${_bookingData.status}",style: TextStyle(color: Color(0xFF1D3A70)),))
                   ),
                 ),
               ),
@@ -289,17 +306,27 @@ class _BookingDetailState extends State<BookingDetail> {
                     padding: const EdgeInsets.symmetric(horizontal: 20,vertical: 17),
                     child: Row(
                       children: [
-                        Container(
-                          height: 65,
-                          width: 65,
-                          margin: const EdgeInsets.symmetric(horizontal: 20),
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(15),
-                              color: const Color(0x54ffffff)
-                          ),
-                          child: const Padding(
-                            padding: EdgeInsets.all(8.0),
-                            child: Icon(Icons.call,color: CustomColor.whiteColor,),
+                        GestureDetector(
+                          onTap: ()async{
+                            Uri phoneno = Uri.parse('tel:${bookingData!.bookingUser!.mobile}');
+                            if (await launchUrl(phoneno)) {
+                            //dialer opened
+                            }else{
+                            //dailer is not opened
+                            }
+                          },
+                          child: Container(
+                            height: 65,
+                            width: 65,
+                            margin: const EdgeInsets.symmetric(horizontal: 20),
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(15),
+                                color: const Color(0x54ffffff)
+                            ),
+                            child: const Padding(
+                              padding: EdgeInsets.all(8.0),
+                              child: Icon(Icons.call,color: CustomColor.whiteColor,),
+                            ),
                           ),
                         ),
                         const SizedBox(width: 20,),
@@ -613,6 +640,34 @@ class _BookingDetailState extends State<BookingDetail> {
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: const [
                                       Text("Drop At Vendor",style: TextStyle(color: CustomColor.primaryColor),)
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                          Visibility(
+                            visible: bookingStauts,
+                            child: GestureDetector(
+                              onTap: (){
+                                changeBookingStatus("payment_update",bookingId!);
+                              },
+                              child: Container(
+                                margin: const EdgeInsets.symmetric(horizontal: 40),
+                                decoration: BoxDecoration(
+                                    color: CustomColor.whiteColor,
+                                    border: Border.all(
+                                      color: CustomColor.primaryColor,
+                                    ),
+                                    borderRadius: BorderRadius.all(Radius.circular(15))
+                                ),
+                                height: 40,
+                                child: Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: const [
+                                      Text("Payment Received",style: TextStyle(color: CustomColor.primaryColor),)
                                     ],
                                   ),
                                 ),
