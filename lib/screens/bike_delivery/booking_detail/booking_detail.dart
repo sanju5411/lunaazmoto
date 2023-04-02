@@ -11,6 +11,7 @@ import 'package:lunaaz_moto/models/service_center/booking_details_main_model.dar
 import 'package:lunaaz_moto/models/service_center/service_center_list_main_model.dart';
 import 'package:lunaaz_moto/models/service_center/service_centers.dart';
 import 'package:lunaaz_moto/services/api_service.dart';
+import 'package:url_launcher/url_launcher.dart';
 class BookingDetail extends StatefulWidget {
   static const String routeName = '/booking_detail';
   const BookingDetail({Key? key}) : super(key: key);
@@ -305,17 +306,27 @@ class _BookingDetailState extends State<BookingDetail> {
                     padding: const EdgeInsets.symmetric(horizontal: 20,vertical: 17),
                     child: Row(
                       children: [
-                        Container(
-                          height: 65,
-                          width: 65,
-                          margin: const EdgeInsets.symmetric(horizontal: 20),
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(15),
-                              color: const Color(0x54ffffff)
-                          ),
-                          child: const Padding(
-                            padding: EdgeInsets.all(8.0),
-                            child: Icon(Icons.call,color: CustomColor.whiteColor,),
+                        GestureDetector(
+                          onTap: ()async{
+                            Uri phoneno = Uri.parse('tel:${bookingData!.bookingUser!.mobile}');
+                            if (await launchUrl(phoneno)) {
+                            //dialer opened
+                            }else{
+                            //dailer is not opened
+                            }
+                          },
+                          child: Container(
+                            height: 65,
+                            width: 65,
+                            margin: const EdgeInsets.symmetric(horizontal: 20),
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(15),
+                                color: const Color(0x54ffffff)
+                            ),
+                            child: const Padding(
+                              padding: EdgeInsets.all(8.0),
+                              child: Icon(Icons.call,color: CustomColor.whiteColor,),
+                            ),
                           ),
                         ),
                         const SizedBox(width: 20,),
