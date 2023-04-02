@@ -34,6 +34,7 @@ class _BookingDetailState extends State<BookingDetail> {
   bool dropToCustomer = false;
   bool pickedFromCustomer = false;
   bool isServiceCenterLoad = true;
+  bool bookingStauts = false;
 
 
   changeBookingStatus(String status, int bookingId) async{
@@ -120,6 +121,7 @@ class _BookingDetailState extends State<BookingDetail> {
               pickedFromCustomer = true;
               pickFromVendorShowView = false;
               dropToCustomer = false;
+              bookingStauts = false;
             });
           }
         }
@@ -132,6 +134,7 @@ class _BookingDetailState extends State<BookingDetail> {
               pickedFromCustomer = false;
               pickFromVendorShowView = false;
               dropToCustomer = false;
+              bookingStauts = false;
             });
           } else {
             setState(() {
@@ -141,6 +144,7 @@ class _BookingDetailState extends State<BookingDetail> {
               pickedFromCustomer = false;
               pickFromVendorShowView = false;
               dropToCustomer = false;
+              bookingStauts = false;
             });
           }
         }
@@ -152,6 +156,7 @@ class _BookingDetailState extends State<BookingDetail> {
             showServiceCenter = false;
             pickFromVendorShowView = false;
             dropToCustomer = false;
+            bookingStauts = false;
           });
         }
         else if(bookingData?.bookingStatus == "service_completed"){
@@ -162,6 +167,7 @@ class _BookingDetailState extends State<BookingDetail> {
             pickFromVendorShowView = true;
             dropToCustomer = false;
             pickedFromCustomer = false;
+            bookingStauts = false;
           });
         }
         else if(bookingData?.bookingStatus == "picked_at_vendor"){
@@ -172,6 +178,18 @@ class _BookingDetailState extends State<BookingDetail> {
             pickFromVendorShowView = false;
             dropToCustomer = true;
             pickedFromCustomer = false;
+            bookingStauts = false;
+          });
+        }
+        else if(bookingData?.bookingPaymentStatus == "paid"){
+          setState(() {
+            showAcceptRejectButton = false;
+            dropedShowView = false;
+            showServiceCenter = false;
+            pickFromVendorShowView = false;
+            dropToCustomer = false;
+            pickedFromCustomer = false;
+            bookingStauts = true;
           });
         }
         else if(bookingData?.bookingStatus == "completed"){
@@ -182,19 +200,17 @@ class _BookingDetailState extends State<BookingDetail> {
             pickFromVendorShowView = false;
             dropToCustomer = false;
             pickedFromCustomer = false;
+            bookingStauts = false;
           });
         }
-
 
         setState(() {
           isLoading = false;
         });
-
       });
     }
   }
-
-
+  
   @override
   Widget build(BuildContext context) {
     final _bookingData = ModalRoute.of(context)?.settings.arguments as NewServices;
@@ -613,6 +629,34 @@ class _BookingDetailState extends State<BookingDetail> {
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: const [
                                       Text("Drop At Vendor",style: TextStyle(color: CustomColor.primaryColor),)
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                          Visibility(
+                            visible: bookingStauts,
+                            child: GestureDetector(
+                              onTap: (){
+                                changeBookingStatus("payment_update",bookingId!);
+                              },
+                              child: Container(
+                                margin: const EdgeInsets.symmetric(horizontal: 40),
+                                decoration: BoxDecoration(
+                                    color: CustomColor.whiteColor,
+                                    border: Border.all(
+                                      color: CustomColor.primaryColor,
+                                    ),
+                                    borderRadius: BorderRadius.all(Radius.circular(15))
+                                ),
+                                height: 40,
+                                child: Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: const [
+                                      Text("Payment Received",style: TextStyle(color: CustomColor.primaryColor),)
                                     ],
                                   ),
                                 ),
