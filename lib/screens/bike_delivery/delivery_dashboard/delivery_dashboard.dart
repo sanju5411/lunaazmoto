@@ -50,7 +50,7 @@ class _DeliveryDashboardState extends State<DeliveryDashboard> {
       todayDelivered = driverMainModel.todayDeliveredBookings;
       todayPickUp = driverMainModel.todayPickedBookings;
       todayBookingCount = driverMainModel.todayMyBookings;
-      //nextBooking = driverMainModel.newServices!;
+      nextBooking = driverMainModel.newServices!;
       userImage = ApiConfig.baseUrl+authUser.avatar.toString();
     });
 
