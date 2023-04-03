@@ -92,7 +92,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           height: 35,
                         ),
                         const Text(
-                          "Customer Log In",
+                          "Log In",
                           style: TextStyle(
                               fontSize: 24,
                               color: CustomColor.primaryColor,
@@ -148,7 +148,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           padding: const EdgeInsets.only(left: 32),
                           child: SizedBox(
                             width: screenSize.width,
-                            height: 30,
+                            height: 20,
                             child: Text(
                               _mobileTextError,
                               style: CustomStyle.errorTextStyle,
@@ -156,7 +156,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           ),
                         ),
                         const SizedBox(
-                          height: 15,
+                          height: 5,
                         ),
                         Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 40),
@@ -172,25 +172,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         const SizedBox(
                           height: 20,
                         ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: const [
-                            Text(
-                              "Don’t  have an account?",
-                              style: TextStyle(fontSize: 17),
-                            ),
-                            SizedBox(
-                              width: 3,
-                            ),
-                            Text(
-                              "Register",
-                              style: TextStyle(
-                                  color: CustomColor.primaryColor,
-                                  fontWeight: FontWeight.w800,
-                                  fontSize: 17),
-                            )
-                          ],
-                        ),
+
                       ],
                     ),
                   ),

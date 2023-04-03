@@ -1,4 +1,5 @@
 import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import 'package:lunaaz_moto/common/widgets/custom_booking_card.dart';
@@ -60,7 +61,7 @@ class _MyServicesScreenState extends State<MyServicesScreen> {
   @override
   Widget build(BuildContext context) {
     Size screenSize = MediaQuery.of(context).size;
-   // print(onGoingList.length);
+    print(onGoingList.length);
 
     return Scaffold(
       backgroundColor: CustomColor.primaryColor,
@@ -102,6 +103,7 @@ class _MyServicesScreenState extends State<MyServicesScreen> {
                         ),),
                       ),
                       SizedBox(height: 5,),
+                      onGoingList.isNotEmpty?
                       ListView.builder(
                       itemCount: onGoingList.length,
                       physics: const NeverScrollableScrollPhysics(),
@@ -135,7 +137,7 @@ class _MyServicesScreenState extends State<MyServicesScreen> {
                                     offset: Offset(0.0, 0.0),
                                     blurRadius: 0.0,
                                     spreadRadius: 0.0,
-                                  ),
+                                  ), //BoxShadow
                                 ],
                                 borderRadius: BorderRadius.circular(20)
                             ),
@@ -177,7 +179,7 @@ class _MyServicesScreenState extends State<MyServicesScreen> {
                                   const SizedBox(height: 8,),
                                     Row(
                                       children: [
-                                        const Text("Date :-  ",style: TextStyle(fontSize: 20),),
+                                        Text("Date :-  ",style: TextStyle(fontSize: 20),),
                                         Text(onGoingList[index].bookingDate.toString()),
                                       ],
                                     ),
@@ -210,7 +212,11 @@ class _MyServicesScreenState extends State<MyServicesScreen> {
                           ),
                         ),
                       );
-              }),
+              }):Container(
+                        height: 20,
+                        width: screenSize.width,
+                        color: CustomColor.whiteColor,
+                        child: Center(child:  Text("No OnGoing Services",style: TextStyle(fontSize: 23),),),)
                     ],
                   ),
                 ),
@@ -327,7 +333,7 @@ class _MyServicesScreenState extends State<MyServicesScreen> {
                           ),
                         );
                       }):Container(
-                        height: 800,
+                        height: screenSize.height,
                         width: screenSize.width,
                         color: CustomColor.whiteColor,
                         child: Center(child:  Text("No Last Services",style: TextStyle(fontSize: 23),),),)
