@@ -50,7 +50,7 @@ class _DeliveryDashboardState extends State<DeliveryDashboard> {
       todayDelivered = driverMainModel.todayDeliveredBookings;
       todayPickUp = driverMainModel.todayPickedBookings;
       todayBookingCount = driverMainModel.todayMyBookings;
-      nextBooking = driverMainModel.newServices!;
+      //nextBooking = driverMainModel.newServices!;
       userImage = ApiConfig.baseUrl+authUser.avatar.toString();
     });
 
@@ -87,7 +87,7 @@ class _DeliveryDashboardState extends State<DeliveryDashboard> {
                 ),
                 
 
-                ),
+
               ],
             ),
             centerTitle: true,
@@ -110,7 +110,6 @@ class _DeliveryDashboardState extends State<DeliveryDashboard> {
                Column(
                  crossAxisAlignment: CrossAxisAlignment.start,
                  children: [
-
                    SizedBox(height: 30,),
                    Padding(
                      padding: const EdgeInsets.symmetric(horizontal: 25,vertical: 7),
@@ -249,57 +248,67 @@ class _DeliveryDashboardState extends State<DeliveryDashboard> {
                                  children: [
                                    Text("New Booking",style: TextStyle(fontWeight: FontWeight.bold,fontSize: 20),),
                                    GestureDetector(
-                                     onTap: (){
-                                       if(int.parse(totalBooking.toString()) > 0){
-                                         Navigator.pushNamed(context, TotalBookingScreen.routeName,arguments: "Total Booking");
-                                       }else{
-                                         Fluttertoast.showToast(msg: "No Data Found");
-                                       }
-                                     },
+                                       onTap: (){
+                                         if(int.parse(totalBooking.toString()) > 0){
+                                           Navigator.pushNamed(context, TotalBookingScreen.routeName,arguments: "Total Booking");
+                                         }else{
+                                           Fluttertoast.showToast(msg: "No Data Found");
+                                         }
+                                       },
                                        child: Text("See all",style: TextStyle(fontWeight: FontWeight.w600,fontSize: 15,color: Color(0xFF820000)),)),
                                  ],
                                )
                            ),
                            const SizedBox(height: 20,),
-                           ListView.builder(
-                               physics: const NeverScrollableScrollPhysics(),
-                               shrinkWrap: true,
-                               itemCount: nextBooking.length,
-                               itemBuilder: (BuildContext context, int index) {
-                                 return  GestureDetector(
-                                   onTap: (){
-                                     Navigator.pushNamed(context, BookingDetail.routeName,arguments: nextBooking[index]);
-                                   },
-                                   child: Padding(
-                                     padding: const EdgeInsets.symmetric(horizontal: 20),
-                                     child: Container(
-                                       margin: const EdgeInsets.all(8),
-                                       decoration: BoxDecoration(
-                                           color: Colors.white, // Your desired background color
-                                           borderRadius: BorderRadius.circular(10),
-                                           boxShadow: const [
-                                             BoxShadow(color: Color.fromRGBO(255, 164, 124,0.2), blurRadius: 10),
-                                           ]
-                                       ),
-                                       child: ListTile(
-                                         contentPadding:
-                                         const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
-                                         shape: RoundedRectangleBorder(
-                                           borderRadius: BorderRadius.circular(15),
-                                           side: const BorderSide(
-                                             color: Colors.black,
+                           if(nextBooking.isNotEmpty)...[
+                             ListView.builder(
+                                 physics: const NeverScrollableScrollPhysics(),
+                                 shrinkWrap: true,
+                                 itemCount: nextBooking.length,
+                                 itemBuilder: (BuildContext context, int index) {
+                                   return  GestureDetector(
+                                     onTap: (){
+                                       Navigator.pushNamed(context, BookingDetail.routeName,arguments: nextBooking[index]);
+                                     },
+                                     child: Padding(
+                                       padding: const EdgeInsets.symmetric(horizontal: 20),
+                                       child: Container(
+                                         margin: const EdgeInsets.all(8),
+                                         decoration: BoxDecoration(
+                                             color: Colors.white, // Your desired background color
+                                             borderRadius: BorderRadius.circular(10),
+                                             boxShadow: const [
+                                               BoxShadow(color: Color.fromRGBO(255, 164, 124,0.2), blurRadius: 10),
+                                             ]
+                                         ),
+                                         child: ListTile(
+                                           contentPadding:
+                                           const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+                                           shape: RoundedRectangleBorder(
+                                             borderRadius: BorderRadius.circular(15),
+                                             side: const BorderSide(
+                                               color: Colors.black,
+                                             ),
                                            ),
+                                           leading: CircleAvatar(
+                                             backgroundImage: NetworkImage(ApiConfig.baseUrl+nextBooking[index].bookingUser!.avatar.toString()), // No matter how big it is, it won't overflow
+                                           ),
+                                           title: Text("${nextBooking[index].bookingAddress?.name}",style: TextStyle(fontWeight: FontWeight.w600,fontSize: 15),),
+                                           subtitle: Text("${nextBooking[index].bookedDate}, ${nextBooking[index].bookedTime}",style: TextStyle(fontWeight: FontWeight.w500,fontSize: 12,color: Color(0xFF8C8FA5)),),
                                          ),
-                                         leading: CircleAvatar(
-                                           backgroundImage: NetworkImage(ApiConfig.baseUrl+nextBooking[index].bookingUser!.avatar.toString()), // No matter how big it is, it won't overflow
-                                         ),
-                                         title: Text("${nextBooking[index].bookingAddress?.name}",style: TextStyle(fontWeight: FontWeight.w600,fontSize: 15),),
-                                         subtitle: Text("${nextBooking[index].bookedDate}, ${nextBooking[index].bookedTime}",style: TextStyle(fontWeight: FontWeight.w500,fontSize: 12,color: Color(0xFF8C8FA5)),),
                                        ),
                                      ),
-                                   ),
-                                 );
-                               }),
+                                   );
+                                 }),
+                           ]else...[
+                              Container(
+                                color: Colors.white,
+                                height: screenSize.height/2.5,
+                                child: Center(
+                                  child: Text("No Data Found",style: TextStyle(color:Colors.red,fontSize: 16,fontWeight: FontWeight.bold),),
+                                ),
+                              )
+                           ]
                          ],
                        )
                    ),
