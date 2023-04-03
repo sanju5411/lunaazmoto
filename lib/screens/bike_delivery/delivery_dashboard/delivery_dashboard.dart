@@ -85,8 +85,7 @@ class _DeliveryDashboardState extends State<DeliveryDashboard> {
                 Text("Lunazmoto",style: TextStyle(color: CustomColor.whiteColor),
 
                 ),
-                SizedBox(height: 6,),
-                Text("Dhaka",style: TextStyle(color: CustomColor.whiteColor),
+                
 
                 ),
               ],
