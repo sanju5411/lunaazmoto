@@ -219,7 +219,7 @@ class _TotalBookingScreenState extends State<TotalBookingScreen> {
                             leading:  CircleAvatar(
                               backgroundImage: NetworkImage(ApiConfig.baseUrl+newService[index].bookingUser!.avatar.toString()), // No matter how big it is, it won't overflow
                             ),
-                            title: Text("${newService[index].bookingUser!.name}",style: TextStyle(fontWeight: FontWeight.w600,fontSize: 15),),
+                            title: Text("${newService[index].bookingAddress!.name}",style: TextStyle(fontWeight: FontWeight.w600,fontSize: 15),),
                             subtitle: Text("${newService[index].bookedDate}, ${newService[index].bookedTime}",style: TextStyle(fontWeight: FontWeight.w500,fontSize: 12,color: Color(0xFF8C8FA5)),),
                             trailing: Column(
                               children: [

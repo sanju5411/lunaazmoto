@@ -160,6 +160,17 @@ class _BookingDetailState extends State<BookingDetail> {
             bookingStauts = false;
           });
         }
+        else if(bookingData?.bookingStatus == "proccessed"){
+          setState(() {
+            showAcceptRejectButton = false;
+            pickedFromCustomer = false;
+            dropedShowView = false;
+            showServiceCenter = false;
+            pickFromVendorShowView = false;
+            dropToCustomer = false;
+            bookingStauts = false;
+          });
+        }
         else if(bookingData?.bookingStatus == "service_completed"){
           setState(() {
             showAcceptRejectButton = false;
@@ -172,26 +183,28 @@ class _BookingDetailState extends State<BookingDetail> {
           });
         }
         else if(bookingData?.bookingStatus == "picked_at_vendor"){
-          setState(() {
-            showAcceptRejectButton = false;
-            dropedShowView = false;
-            showServiceCenter = false;
-            pickFromVendorShowView = false;
-            dropToCustomer = true;
-            pickedFromCustomer = false;
-            bookingStauts = false;
-          });
-        }
-        else if(bookingData?.bookingPaymentStatus == "paid"){
-          setState(() {
-            showAcceptRejectButton = false;
-            dropedShowView = false;
-            showServiceCenter = false;
-            pickFromVendorShowView = false;
-            dropToCustomer = false;
-            pickedFromCustomer = false;
-            bookingStauts = true;
-          });
+          if(bookingData?.bookingPaymentStatus == "paid"){
+            setState(() {
+              showAcceptRejectButton = false;
+              dropedShowView = false;
+              showServiceCenter = false;
+              pickFromVendorShowView = false;
+              dropToCustomer = true;
+              pickedFromCustomer = false;
+              bookingStauts = false;
+            });
+          }else{
+            setState(() {
+              showAcceptRejectButton = false;
+              dropedShowView = false;
+              showServiceCenter = false;
+              pickFromVendorShowView = false;
+              dropToCustomer = false;
+              pickedFromCustomer = false;
+              bookingStauts = true;
+            });
+          }
+
         }
         else if(bookingData?.bookingStatus == "completed"){
           setState(() {
@@ -278,7 +291,7 @@ class _BookingDetailState extends State<BookingDetail> {
                       leading: CircleAvatar(
                         backgroundImage: NetworkImage(ApiConfig.baseUrl+bookingData!.bookingUser!.avatar.toString()), // No matter how big it is, it won't overflow
                       ),
-                      title: Text("${bookingData?.bookingUser?.name}",style: const TextStyle(fontWeight: FontWeight.w600,fontSize: 15),),
+                      title: Text("${bookingData?.bookingAddress?.name}",style: const TextStyle(fontWeight: FontWeight.w600,fontSize: 15),),
                       subtitle: Text("${bookingData?.bookedDate}, ${bookingData?.bookedTime}\n${bookingData!.bookingAddress?.fullAddress}\n${bookingData?.bookingUser?.email}",
                         style: const TextStyle(fontWeight: FontWeight.w500,fontSize: 12,color: Color(0xFF8C8FA5)),),
                       trailing:  Container(
@@ -310,9 +323,9 @@ class _BookingDetailState extends State<BookingDetail> {
                           onTap: ()async{
                             Uri phoneno = Uri.parse('tel:${bookingData!.bookingUser!.mobile}');
                             if (await launchUrl(phoneno)) {
-                            //dialer opened
+
                             }else{
-                            //dailer is not opened
+
                             }
                           },
                           child: Container(
@@ -333,7 +346,7 @@ class _BookingDetailState extends State<BookingDetail> {
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text("${bookingData?.bookingUser?.name}",style: const TextStyle(fontSize: 20,color: CustomColor.whiteColor,fontWeight: FontWeight.w700),),
+                            Text("${bookingData?.bookingAddress?.name}",style: const TextStyle(fontSize: 20,color: CustomColor.whiteColor,fontWeight: FontWeight.w700),),
                             SizedBox(height: 5,),
                             if(bookingData?.bookingAddress != null)...[
                               Text("${bookingData?.bookingAddress?.city},${bookingData?.bookingAddress?.state}",style: const TextStyle(fontSize: 13,color: CustomColor.whiteColor,fontWeight: FontWeight.w500),),
@@ -416,7 +429,7 @@ class _BookingDetailState extends State<BookingDetail> {
                               mainAxisAlignment: MainAxisAlignment.start,
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children:  [
-                                Text("Name : ${bookingData?.bookingUser?.name}",style: TextStyle(color:Colors.grey,fontWeight: FontWeight.w600,fontSize: 15),),
+                                Text("Name : ${bookingData?.bookingAddress?.name}",style: TextStyle(color:Colors.grey,fontWeight: FontWeight.w600,fontSize: 15),),
                                 const SizedBox(height: 8,),
                                 Text("Phone  :  ${bookingData?.bookingUser?.countryCode}-${bookingData?.bookingUser?.mobile}",style: TextStyle(color: Colors.grey,fontWeight: FontWeight.w600,fontSize: 15),),
                               ],

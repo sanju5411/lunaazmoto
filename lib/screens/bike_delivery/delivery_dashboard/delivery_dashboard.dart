@@ -190,7 +190,7 @@ class _DeliveryDashboardState extends State<DeliveryDashboard> {
                                  GestureDetector(
                                    onTap: (){
                                      if(int.parse(todayPickUp.toString()) > 0){
-                                       //Navigator.pushNamed(context, TotalBookingScreen.routeName,arguments: "Today Pick Up");
+                                       Navigator.pushNamed(context, TotalBookingScreen.routeName,arguments: "Today Pick Up");
                                      }else{
                                        Fluttertoast.showToast(msg: "No Data Found");
                                      }
@@ -216,7 +216,7 @@ class _DeliveryDashboardState extends State<DeliveryDashboard> {
                                  GestureDetector(
                                    onTap: (){
                                      if(int.parse(todayDelivered.toString()) > 0){
-                                       //Navigator.pushNamed(context, TotalBookingScreen.routeName,arguments: "Today Delivery");
+                                       Navigator.pushNamed(context, TotalBookingScreen.routeName,arguments: "Today Delivery");
                                      }else{
                                        Fluttertoast.showToast(msg: "No Data Found");
                                      }
@@ -294,7 +294,7 @@ class _DeliveryDashboardState extends State<DeliveryDashboard> {
                                          leading: CircleAvatar(
                                            backgroundImage: NetworkImage(ApiConfig.baseUrl+nextBooking[index].bookingUser!.avatar.toString()), // No matter how big it is, it won't overflow
                                          ),
-                                         title: Text("${nextBooking[index].bookingUser?.name}",style: TextStyle(fontWeight: FontWeight.w600,fontSize: 15),),
+                                         title: Text("${nextBooking[index].bookingAddress?.name}",style: TextStyle(fontWeight: FontWeight.w600,fontSize: 15),),
                                          subtitle: Text("${nextBooking[index].bookedDate}, ${nextBooking[index].bookedTime}",style: TextStyle(fontWeight: FontWeight.w500,fontSize: 12,color: Color(0xFF8C8FA5)),),
                                        ),
                                      ),
