@@ -182,7 +182,7 @@ class _BookingDetailState extends State<BookingDetail> {
             bookingStauts = false;
           });
         }
-        else if(bookingData?.bookingPaymentStatus == "paid"){
+        else if(bookingData?.bookingStatus == "drop_to_customer"){
           setState(() {
             showAcceptRejectButton = false;
             dropedShowView = false;
