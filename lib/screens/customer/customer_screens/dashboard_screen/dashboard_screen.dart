@@ -235,7 +235,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                         itemBuilder:
                             (BuildContext context,
                             index) {
-                          print("Customer Name :- ${_happyCustomers[index].name}");
+                         // print("Customer Name :- ${_happyCustomers[index].name}");
                           return Padding(
                             padding:
                             const EdgeInsets
@@ -473,7 +473,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                           ),
                           variant: Variant.primary,
                           onTap: () {
-                            showDialog(context: context, builder: (context) =>  CustomWheelerPopUp(packageList:_dashboard!.activePackages),);
+                            showDialog(context: context, builder: (context) =>  CustomWheelerPopUp(packageList:_activePackages),);
                           },
 
                         ),
@@ -695,110 +695,119 @@ class _DashboardScreenState extends State<DashboardScreen> {
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(20),color: CustomColor.whiteColor,
                         ),
-                        child: SizedBox(
-                          width: screenSize.width,
-                          height: screenSize.height * 0.7,
-                          child: ListView.builder(
-                              itemCount: lastServices.length,
-                              physics: const  NeverScrollableScrollPhysics(),
-                              itemBuilder: (BuildContext context, int index) {
-                                return InkWell(
-                                  onTap: (){
-                                    Navigator.pushNamed(context, CustomerBookingDetail.routeName,arguments: lastServices[index],);
-                                    },
-                                  child: Padding(
-                                    padding: const EdgeInsets.symmetric(horizontal: 20,vertical: 16),
-                                    child: Container(
-                                      //height: screenSize.height * 0.18,
-                                      width: screenSize.width,
-                                      decoration:  BoxDecoration(
-                                          color: CustomColor.whiteColor,
-                                          boxShadow: const
-                                          [
-                                            BoxShadow(
-                                              color: Color(0xffe1e1e1),
-                                              offset: Offset(
-                                                1.0,
-                                                1.0,
-                                              ),
-                                              blurRadius: 19.0,
-                                              spreadRadius: 1.0,
-                                            ), //BoxShadow
-                                            BoxShadow(
-                                              color: Colors.white,
-                                              offset: Offset(0.0, 0.0),
-                                              blurRadius: 0.0,
-                                              spreadRadius: 0.0,
-                                            ), //BoxShadow
-                                          ],
-                                          borderRadius: BorderRadius.circular(20)
-                                      ),
-                                      child: Padding(
-                                        padding: const EdgeInsets.all(10.0),
-                                        child: Column(
-                                          crossAxisAlignment: CrossAxisAlignment.start,
-                                          children: [
-                                            Column(
-                                              crossAxisAlignment: CrossAxisAlignment.start,
-                                              children:  [
-                                                const SizedBox(height: 4,),
-                                                Row(
-                                                  children: [
-                                                    Text(lastServices[index].bookingVehName != null ?
-                                                    lastServices[index].bookingVehName!.toString():"",
-                                                      style: const TextStyle(fontSize: 20,fontWeight: FontWeight.w600),),
-                                                    Spacer(),
-                                                    Container(
-                                                      decoration: BoxDecoration(
-                                                          borderRadius: BorderRadius.circular(17),
-                                                          color: Color(
-                                                              0xffffc0c0)),
-                                                      child: Padding(
-                                                        padding: const EdgeInsets.all(7.0),
-                                                        child: Text("${(lastServices[index].status.toString())}",style: TextStyle(fontSize: 17,color: CustomColor.primaryColor,fontWeight: FontWeight.w700),),
-                                                      ),
-                                                    ),
-                                                  ],
-                                                ),
-                                                const SizedBox(height: 3,),
-                                                Row(children: [
-                                                  const Text("Reference Number -",style: TextStyle(fontSize: 20),),
-                                                  const SizedBox(width: 7,),
-                                                  Text(lastServices[index].bookingNumber.toString(),),
-                                                ],
-                                                ),
-                                                SizedBox(height: 5,),
-                                                Row(children: [
-                                                  const Text("Date -",style: TextStyle(fontSize: 20),),
-                                                  const SizedBox(width: 7,),
-                                                  Text(lastServices[index].bookingDate.toString()),
-                                                ],
-                                                ),
-                                              ],
+                        child: ListView.builder(
+                          shrinkWrap: true,
+                            itemCount: lastServices.length,
+                            physics: const  NeverScrollableScrollPhysics(),
+                            itemBuilder: (BuildContext context, int index) {
+                              return InkWell(
+                                onTap: (){
+                                  Navigator.pushNamed(context, CustomerBookingDetail.routeName,arguments: lastServices[index],);
+                                  },
+                                child: Padding(
+                                  padding: const EdgeInsets.symmetric(horizontal: 20,vertical: 16),
+                                  child: Container(
+                                    //height: screenSize.height * 0.18,
+                                    width: screenSize.width,
+                                    decoration:  BoxDecoration(
+                                        color: CustomColor.whiteColor,
+                                        boxShadow: const
+                                        [
+                                          BoxShadow(
+                                            color: Color(0xffe1e1e1),
+                                            offset: Offset(
+                                              1.0,
+                                              1.0,
                                             ),
-                                            const SizedBox(height: 15,),
-
-                                            Row(
-                                              children: [
-                                                Row(children: [
-                                                  const Text("Vehicle No :-",style: TextStyle(fontSize: 20),),
-                                                  const SizedBox(width: 7,),
-                                                  Text((lastServices[index].bookingVehNum.toString()),),
-                                                ],),
-                                                const Spacer(),
-                                                Text("Payment :-",style: TextStyle(fontSize: 19),),
-                                                SizedBox(width: 5,),
-                                                Text((lastServices[index].bookingPaymentStatus.toString()),style: const TextStyle(color: Colors.blueAccent,fontWeight: FontWeight.w700,fontSize: 17),),
+                                            blurRadius: 19.0,
+                                            spreadRadius: 1.0,
+                                          ), //BoxShadow
+                                          BoxShadow(
+                                            color: Colors.white,
+                                            offset: Offset(0.0, 0.0),
+                                            blurRadius: 0.0,
+                                            spreadRadius: 0.0,
+                                          ), //BoxShadow
+                                        ],
+                                        borderRadius: BorderRadius.circular(20)
+                                    ),
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(10.0),
+                                      child: Column(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: [
+                                          Column(
+                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                            children:  [
+                                              const SizedBox(height: 4,),
+                                              Row(
+                                                children: [
+                                                  Text(lastServices[index].bookingVehName != null ?
+                                                  lastServices[index].bookingVehName!.toString():"",
+                                                    style: const TextStyle(fontSize: 20,fontWeight: FontWeight.w600),),
+                                                  Spacer(),
+                                                  Container(
+                                                    decoration: BoxDecoration(
+                                                        borderRadius: BorderRadius.circular(17),
+                                                        color: Color(
+                                                            0xffffc0c0)),
+                                                    child: Padding(
+                                                      padding: const EdgeInsets.all(7.0),
+                                                      child: Text("${(lastServices[index].status.toString())}",style: TextStyle(fontSize: 17,color: CustomColor.primaryColor,fontWeight: FontWeight.w700),),
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                              const SizedBox(height: 3,),
+                                              Divider(color: Colors.black,),
+                                              const SizedBox(height: 3,),
+                                              Row(children: [
+                                                const Text("Reference Number -",style: TextStyle(fontSize: 20),),
+                                                const SizedBox(width: 7,),
+                                                Text(lastServices[index].bookingNumber.toString(),),
                                               ],
-                                            )
-                                          ],
-                                        ),
+                                              ),
+                                              SizedBox(height: 10,),
+                                              Row(children: [
+                                                const Text("Date -",style: TextStyle(fontSize: 20),),
+                                                const SizedBox(width: 7,),
+                                                Text(lastServices[index].bookingDate.toString()),
+                                              ],
+                                              ),
+                                            ],
+                                          ),
+                                          const SizedBox(height: 10,),
+
+                                          Row(children: [
+                                            const Text("Vehicle No :-",style: TextStyle(fontSize: 20),),
+                                            const SizedBox(width: 7,),
+                                            Text((lastServices[index].bookingVehNum.toString()),),
+                                          ],),
+                                          const SizedBox(height: 10,),
+                                          Row(children: [
+                                            Text("Payment :-",style: TextStyle(fontSize: 19),),
+                                            SizedBox(width: 5,),
+                                            Text((lastServices[index].bookingPaymentStatus.toString()),style: const TextStyle(color: Colors.blueAccent,fontWeight: FontWeight.w700,fontSize: 17),),
+
+
+                                          ],),
+                                          const SizedBox(height: 4,),
+                                          Divider(),
+                                          const SizedBox(height: 4,),
+                                          Align(
+                                            alignment: Alignment.bottomCenter,
+                                            child: Padding(
+                                              padding: const EdgeInsets.all(2.0),
+                                              child: Text("View Detail",style: TextStyle(fontSize: 18,color: Colors.cyan,fontWeight: FontWeight.w800),),
+                                            ),
+                                          ),
+                                       ],
                                       ),
                                     ),
                                   ),
-                                );
-                              }),
-                        ),
+                                ),
+                              );
+                            }),
                       ) : Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 20,vertical: 6),
                         child: Container(

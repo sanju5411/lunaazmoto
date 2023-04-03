@@ -103,6 +103,7 @@ class _MyServicesScreenState extends State<MyServicesScreen> {
                         ),),
                       ),
                       SizedBox(height: 5,),
+                      onGoingList.isNotEmpty?
                       ListView.builder(
                       itemCount: onGoingList.length,
                       physics: const NeverScrollableScrollPhysics(),
@@ -211,7 +212,11 @@ class _MyServicesScreenState extends State<MyServicesScreen> {
                           ),
                         ),
                       );
-              }),
+              }):Container(
+                        height: 20,
+                        width: screenSize.width,
+                        color: CustomColor.whiteColor,
+                        child: Center(child:  Text("No OnGoing Services",style: TextStyle(fontSize: 23),),),)
                     ],
                   ),
                 ),
@@ -231,7 +236,7 @@ class _MyServicesScreenState extends State<MyServicesScreen> {
                       physics: NeverScrollableScrollPhysics(),
                       shrinkWrap: true,
                       itemBuilder: (BuildContext context, int index) {
-                        print("Last Servies--->${lastBookings[index]}");
+                        //print("Last Servies--->${lastBookings[index]}");
                         return Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: InkWell(
@@ -328,7 +333,7 @@ class _MyServicesScreenState extends State<MyServicesScreen> {
                           ),
                         );
                       }):Container(
-                        height: 800,
+                        height: screenSize.height,
                         width: screenSize.width,
                         color: CustomColor.whiteColor,
                         child: Center(child:  Text("No Last Services",style: TextStyle(fontSize: 23),),),)

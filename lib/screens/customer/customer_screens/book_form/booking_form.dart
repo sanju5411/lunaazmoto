@@ -71,19 +71,22 @@ class _BookingFormState extends State<BookingForm> {
   }
 
   getServiceCenterListFromApi() async{
+   setState(() {
+     isLoading = true;
+   });
     AuthAddress _userAddress = await ApiService.getAddressListD();
-    print("object>>>>>${jsonEncode(_userAddress)}");
+    //print("object>>>>>${jsonEncode(_userAddress)}");
     if(_userAddress.status != null){
-      print("hhhh123546>>>");
-      _addressList = _userAddress.  addresses;
+     // print("hhhh123546>>>");
+      setState(() {
+        isLoading = false;
+        _addressList = _userAddress.  addresses;
+      });
 
-      setState(() {
-        isLoading = false;
-      });
+
+
     }else{
-      setState(() {
-        isLoading = false;
-      });
+
     }
   }
 
@@ -102,19 +105,20 @@ class _BookingFormState extends State<BookingForm> {
     });
   }
 
+  bool isLoader = true;
+
   void _setBookingFormData(Map<String, String> jsonInput) async {
 
 
 
-    isLoading = true;
 
     BookingModel bookingModel = await ApiService.setBookingForm(jsonInput: jsonEncode(jsonInput));
 
-    print("booking form data>>>>>${jsonEncode(bookingModel)}>>>>");
+   // print("booking form data>>>>>${jsonEncode(bookingModel)}>>>>");
 
 
     if(bookingModel.status  == "success"){
-      isLoading = false;
+
       setState(() {
         Navigator.of(context)
             .pushReplacementNamed(MyServicesScreen.routeName);
@@ -155,7 +159,7 @@ class _BookingFormState extends State<BookingForm> {
 
     ).then((value) {
       setState(() {
-        print("time>>>>>${value?.hour}-${value?.minute}-${value?.periodOffset}");
+        //print("time>>>>>${value?.hour}-${value?.minute}-${value?.periodOffset}");
         String timeFormat  = "${value?.format(context)}";
 
 
@@ -234,6 +238,7 @@ class _BookingFormState extends State<BookingForm> {
 
 
 
+
   @override
   Widget build(BuildContext context) {
 
@@ -241,7 +246,7 @@ class _BookingFormState extends State<BookingForm> {
     Map<String, dynamic> argsPackage = ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>;
     var packageId = argsPackage['packageId'];
     var vehicleType = argsPackage['vehicleType'];
-    print("pId>>>>${packageId}>>>>${vehicleType}");
+   // print("pId>>>>${packageId}>>>>${vehicleType}");
     Size screenSize = MediaQuery.of(context).size;
 
     return Scaffold(
@@ -255,11 +260,10 @@ class _BookingFormState extends State<BookingForm> {
             Navigator.pop(context);
 
           },
-          child: const Icon(Icons.arrow_back)
-          ,),
+          child: const Icon(Icons.arrow_back)),
         title: const Text("Booking Information",style: TextStyle(color: Colors.white,fontSize: 20),),
       ),
-      body: Stack(
+      body: isLoading ? Center(child: CircularProgressIndicator()) :  Stack(
         children: [
           SingleChildScrollView(
             child: Column(
@@ -269,11 +273,11 @@ class _BookingFormState extends State<BookingForm> {
                   width: screenSize.width,
                   //height: screenSize.height,
                   decoration: const BoxDecoration(
-                    color: CustomColor.whiteColor,
-                    borderRadius: BorderRadius.only(
-                      topRight: Radius.circular(20),
-                      topLeft: Radius.circular(20),
-                    )
+                      color: CustomColor.whiteColor,
+                      borderRadius: BorderRadius.only(
+                        topRight: Radius.circular(20),
+                        topLeft: Radius.circular(20),
+                      )
                   ),
                   child: Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -282,11 +286,11 @@ class _BookingFormState extends State<BookingForm> {
                       children: [
                         const SizedBox(height: 15,),
                         vehicleType != 'four_wheeler' ?
-                         Text("Bike Service",style: TextStyle(
-                          fontSize: 30,
-                          fontWeight: FontWeight.w800
+                        Text("Bike Service",style: TextStyle(
+                            fontSize: 30,
+                            fontWeight: FontWeight.w800
                         ),):
-                         Text("Car Wash",style: TextStyle(
+                        Text("Car Wash",style: TextStyle(
                             fontSize: 30,
                             fontWeight: FontWeight.w800
                         ),),
@@ -296,47 +300,47 @@ class _BookingFormState extends State<BookingForm> {
                         const Text("Vehicle Name",style: TextStyle(fontSize: 20,fontWeight: FontWeight.w600),),
                         const SizedBox(height: 10,),
                         Container(
-                        decoration: BoxDecoration(
-                        boxShadow: const [
-                          BoxShadow(
-                            color: Color(0xffdcdcdc),
-                            blurRadius: 20,
-                          ),
-                        ],
-                        borderRadius: BorderRadius.circular(15.0),
-                      ),
-                      child: TextFormField(
-                        controller: _vehicNameController,
-
-                        decoration: InputDecoration(
-                          fillColor: Colors.white,
-                          filled: true,
-                          suffixIcon:
-
-                          vehicleType == 'four_wheeler' ?
-                          Icon(
-                            Icons.car_crash_sharp,
-                            color: Color(0xffc40000),
-                          ):Icon(Icons.directions_bike,color: Color(0xffc40000)),
-                          hintText: 'Enter Vehicle Name',
-                          enabledBorder: OutlineInputBorder(
+                          decoration: BoxDecoration(
+                            boxShadow: const [
+                              BoxShadow(
+                                color: Color(0xffdcdcdc),
+                                blurRadius: 20,
+                              ),
+                            ],
                             borderRadius: BorderRadius.circular(15.0),
-                            borderSide: const BorderSide(
-                              color: Colors.white,
-                              width: 3.0,
+                          ),
+                          child: TextFormField(
+                            controller: _vehicNameController,
+
+                            decoration: InputDecoration(
+                              fillColor: Colors.white,
+                              filled: true,
+                              suffixIcon:
+
+                              vehicleType == 'four_wheeler' ?
+                              Icon(
+                                Icons.car_crash_sharp,
+                                color: Color(0xffc40000),
+                              ):Icon(Icons.directions_bike,color: Color(0xffc40000)),
+                              hintText: 'Enter Vehicle Name',
+                              enabledBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(15.0),
+                                borderSide: const BorderSide(
+                                  color: Colors.white,
+                                  width: 3.0,
+                                ),
+                              ),
                             ),
                           ),
                         ),
-                      ),
-                    ),
                         const SizedBox(height: 25,),
                         const Text("Phone Number",style: TextStyle(fontSize: 20,fontWeight: FontWeight.w600),),
                         const SizedBox(height: 10,),
                         Container(
                           decoration: BoxDecoration(
                             boxShadow: [
-                               BoxShadow(
-                                 color: Color(0xffdcdcdc),
+                              BoxShadow(
+                                color: Color(0xffdcdcdc),
                                 blurRadius: 20,
                               ),
                             ],
@@ -497,20 +501,20 @@ class _BookingFormState extends State<BookingForm> {
                           children: [
                             const Text("Address",style: TextStyle(fontSize: 20,fontWeight: FontWeight.w600),),
                             Spacer(),
-                           InkWell(
-                             onTap: (){
-                               Navigator.pushNamed(context, AddAddressScreen.routeName).then((value) {
-                                 Address userAddress = value as Address;
-                                 setState(() {
-                                   addressId = userAddress.id;
-                                   _addressController.text = userAddress.fullAddress ?? "";
+                            InkWell(
+                              onTap: (){
+                                Navigator.pushNamed(context, AddAddressScreen.routeName).then((value) {
+                                  Address userAddress = value as Address;
+                                  setState(() {
+                                    addressId = userAddress.id;
+                                    _addressController.text = userAddress.fullAddress ?? "";
 
 
-                                 });
-                               });
-                             },
-                             child:   Icon(Icons.add,color: Color(0xffc40000),),
-                           ),
+                                  });
+                                });
+                              },
+                              child:   Icon(Icons.add,color: Color(0xffc40000),),
+                            ),
                           ],
                         ),
                         const SizedBox(height: 18,),
@@ -521,7 +525,7 @@ class _BookingFormState extends State<BookingForm> {
                           child: Container(
                             decoration: BoxDecoration(
                               boxShadow: [
-                                 BoxShadow(
+                                BoxShadow(
                                   color: Color(0xffdcdcdc),
                                   blurRadius: 20,
                                 ),
@@ -609,17 +613,17 @@ class _BookingFormState extends State<BookingForm> {
                             var address  = _addressController.text.toString();
 
                             Map<String, String> jsonInput = {
-                                "user_address_id": addressId.toString(),
-                                "package_id": packageId.toString(),
-                                "booked_date": serviceDate,
-                                "booked_time": serviceTime,
-                                "vehicle_type":vehicleType,
-                                "vehicle_name": vehicleName,
-                                "vehicle_number": vehicleNum,
-                                "instructions":"instructions",
-                                "payment_method":_radioSelected.toString(),
-                                "payment_details":"",
-                                "payment_status":"due",
+                              "user_address_id": addressId.toString(),
+                              "package_id": packageId.toString(),
+                              "booked_date": serviceDate,
+                              "booked_time": serviceTime,
+                              "vehicle_type":vehicleType,
+                              "vehicle_name": vehicleName,
+                              "vehicle_number": vehicleNum,
+                              "instructions":"instructions",
+                              "payment_method":_radioSelected.toString(),
+                              "payment_details":"",
+                              "payment_status":"due",
                             };
 
                             bool saveData = true;
@@ -627,7 +631,7 @@ class _BookingFormState extends State<BookingForm> {
                             if(vehicleName.isEmpty){
                               saveData = false;
                               Fluttertoast.showToast(msg: "Please Enter Vehicle Name");
-                               return;
+                              return;
                             }
 
                             if(phoneNumber.isEmpty){
@@ -664,11 +668,11 @@ class _BookingFormState extends State<BookingForm> {
                               _setBookingFormData(jsonInput);
                             }
 
-                            print("object${saveData}");
+                           // print("object${saveData}");
 
-                           print("object>>>>${_radioVal.toString()}>>>>");
+                            //print("object>>>>${_radioVal.toString()}>>>>");
 
-                            print("mapp>>>>>>>>>>&&&>>${jsonEncode(jsonInput)}>>>>>>>>>>>>");
+                            //print("mapp>>>>>>>>>>&&&>>${jsonEncode(jsonInput)}>>>>>>>>>>>>");
 
 
                           },
@@ -715,9 +719,10 @@ class _BookingFormState extends State<BookingForm> {
                         child: Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 24,vertical: 10),
                           child: Row(
+
                             children: [
                               Container(
-                                width:270,
+                                  width:screenSize.width / 2,
                                   padding: const EdgeInsets.all(10),
                                   decoration:  BoxDecoration(
                                     borderRadius: BorderRadius.circular(15),
@@ -739,13 +744,13 @@ class _BookingFormState extends State<BookingForm> {
                                       ,style: TextStyle(),),
                                   )
                               ),
-                              SizedBox(width: 6,),
+                              SizedBox(width: 3,),
                               Container(
                                 decoration: BoxDecoration(color: CustomColor.primaryColor,borderRadius: BorderRadius.circular(14)),
-                                  child: Padding(
-                                padding: const EdgeInsets.all(10.0),
-                                child: Text("Select",style: TextStyle(fontSize: 14,color: CustomColor.whiteColor),),
-                              ),
+                                child: Padding(
+                                  padding: const EdgeInsets.all(10.0),
+                                  child: Text("Select",style: TextStyle(fontSize: 14,color: CustomColor.whiteColor),),
+                                ),
                               ),
                             ],
                           ),
@@ -758,7 +763,6 @@ class _BookingFormState extends State<BookingForm> {
           const SizedBox(),
 
 
-
         ],
       ),
     );
@@ -766,6 +770,7 @@ class _BookingFormState extends State<BookingForm> {
 
   void _addressNullNavigate() {
 
+    print("addrelistr>>>>>>${jsonEncode(_addressList)}");
     if(_addressList != null){
       setState(() {
         _showAddresses = true;

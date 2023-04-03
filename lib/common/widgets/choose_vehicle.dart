@@ -36,22 +36,28 @@ class _CustomWheelerPopUpState extends State<CustomWheelerPopUp> {
            ),
           InkWell(
             onTap: (){
-              if(widget.packageList!.isEmpty){
-                Navigator.pop(context);
-                Navigator.pushNamed(context, BookingScreen.routeName,arguments: "two_wheeler",);
-              }
-              else{
-                var packageId = 0;
-                for(var i = 0;i<widget.packageList!.length;i++){
-                  if(widget.packageList![i].activeVehicleType == "two_wheeler"){
-                    packageId = widget.packageList![i].activePackId!;
-                    Navigator.pop(context);
-                    Navigator.pushNamed(context, BookingForm.routeName, arguments: {"packageId":packageId,"vehicleType":"two_wheeler"});
-                  }
-                }
-              }
+     print("srfr>>>>${widget.packageList!.length}");
+      if(widget.packageList!.isEmpty){
+        Navigator.pop(context);
+        Navigator.pushNamed(context, BookingScreen.routeName,arguments: "two_wheeler",);
+      }
+      else{
+        var packageId = 0;
+        for(var i = 0;i<widget.packageList!.length;i++){
+          if(widget.packageList![i].activeVehicleType == "two_wheeler"){
+            packageId = widget.packageList![i].activePackId!;
+            Navigator.pop(context);
+            Navigator.pushNamed(context, BookingForm.routeName, arguments: {"packageId":packageId,"vehicleType":"two_wheeler"});
+          }
+          else{
+            Navigator.pop(context);
+            Navigator.pushNamed(context, BookingScreen.routeName,arguments: "two_wheeler",);
+          }
+        }
+      }
 
-            },
+
+            },//
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20),
               child: Container(
