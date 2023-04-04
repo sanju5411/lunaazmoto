@@ -1,4 +1,5 @@
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hive_flutter/hive_flutter.dart';
@@ -19,6 +20,26 @@ Future<void> main() async {
   //var sharedPref = await SharedPreferences.getInstance();
   await Firebase.initializeApp();
 
+  FirebaseMessaging messaging  = FirebaseMessaging.instance;
+
+  NotificationSettings setting =  await messaging.requestPermission(
+    alert: true,
+    announcement: false,
+    badge: true,
+    carPlay: false,
+    criticalAlert: false,
+    provisional: false,
+    sound: true,
+  );
+  FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+    print('Got a message whilst in the foreground!');
+    print('Message data: ${message.data}');
+
+    if (message.notification != null) {
+      print('Message also contained a notification: ${message.notification}');
+    }
+  });
+    print("User granted permission: ${setting.authorizationStatus}");
   runApp(const MyApp());
 }
 

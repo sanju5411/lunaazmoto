@@ -13,6 +13,7 @@ import 'package:lunaaz_moto/models/customer/dashboard/banner.dart';
 import 'package:lunaaz_moto/models/customer/dashboard/dashboard.dart';
 import 'package:lunaaz_moto/models/customer/dashboard/happy_customer.dart';
 import 'package:lunaaz_moto/models/customer/packages/active_package.dart';
+import 'package:lunaaz_moto/models/customer/packages/package.dart';
 import 'package:lunaaz_moto/models/customer/service/service.dart';
 import 'package:lunaaz_moto/models/customer/service_booking_list/service_booking_list_model.dart';
 import 'package:lunaaz_moto/models/customer/service_model/service_model.dart';
@@ -47,6 +48,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
   List<Service> lastServices = [];
   String? imageData = "";
   List<ActivePackage> _activePackages = [];
+  Package? _popularPackage;
   int? packageId;
 
 
@@ -118,13 +120,21 @@ class _DashboardScreenState extends State<DashboardScreen> {
         if (_dashboard!.lastServices != null &&
             _dashboard!.lastServices!.isNotEmpty) {
           lastServices = _dashboard!.lastServices!;
-          _activePackages = _dashboard!.activePackages!;
+        _activePackages = _dashboard!.activePackages!;
+
 
         }
-       todayBookingCount = _dashboard!.todayBookings ?? 0;
+        if (_dashboard!.popularPackage != null) {
+          _popularPackage = _dashboard!.popularPackage!;
+        }
+        // if(_dashboard!.popularPackage != null ||_dashboard!.popularPackage != "" ){
+        //   _popularPackage = _dashboard!.popularPackage!;
+        //   print("popular package>>>>>><<<<<${_popularPackage}");
+        // }
 
+       todayBookingCount = _dashboard!.todayBookings ?? 0;
        totalBookingCount = _dashboard!.totalBookings ?? 0;
-       totalBookingCount = _dashboard!.totalBookings ?? 0;
+       // totalBookingCount = _dashboard!.totalBookings ?? 0;
 
         setState(() {
           loading = false;
@@ -326,12 +336,15 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
+
+
                       const SizedBox(height: 15,),
                       Padding(
                         padding: const EdgeInsets.only(top: 15,left: 20,),
                         child: Text("Our Popular Packages",style: TextStyle(fontWeight: FontWeight.w700,fontSize: 25),),
                       ),
                       const SizedBox(height: 15,),
+                      _popularPackage != null?
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 15),
                         child: Container(
@@ -353,47 +366,53 @@ class _DashboardScreenState extends State<DashboardScreen> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children:  [
                                 Row(
-                                  children: const [
+                                  children: [
                                     Text("Popular Package",style: TextStyle(color: CustomColor.whiteColor,fontSize: 23,fontWeight: FontWeight.w700),),
                                     Spacer(),
-                                    Icon(Icons.star,color: Colors.yellowAccent,)
+                                    ElevatedButton(
+                                      style: ElevatedButton.styleFrom(
+                                        backgroundColor: Colors.black, // background (button) color
+                                        foregroundColor: Colors.white, // foreground (text) color
+                                      ),
+                                      onPressed: () => print('pressed'),
+                                      child: const Text('Purchase Now'),
+                                    ),
                                   ],
                                 ),
                                 const SizedBox(height: 6,),
+                                Divider(height: 3,color: Color(0xffff536d),),
+                                const SizedBox(height: 8,),
                                 const Padding(
                                   padding: EdgeInsets.symmetric(horizontal: 4),
-                                  child: Divider(color: CustomColor.whiteColor,),
+                                  child: Divider(color: CustomColor.whiteColor,thickness: 3.0),
                                 ),
                                 const SizedBox(height: 6,),
-                                Row(children: const [
-                                  Text(
-                                    "4 Month",style: TextStyle(color: CustomColor.whiteColor,fontSize: 20),
-                                  ),
+                                Row(children:  [
+                                  Text("Package Name :-",style: TextStyle(fontSize: 20,color: CustomColor.whiteColor),),
                                   Spacer(),
                                   Text(
-                                    "12/4/2023",style: TextStyle(color: CustomColor.whiteColor,fontSize: 15),
+                                    _popularPackage!.packageName != null ? _popularPackage!.packageName.toString():"",style: TextStyle(color: CustomColor.whiteColor,fontSize: 18),
                                   ),
                                 ],),
                                 const SizedBox(height: 6,),
-                                Row(
-                                  children: [
-                                    const Text(
-                                      "1200/-",style: TextStyle(color: CustomColor.whiteColor,fontSize: 30),
-                                    ),
-                                    const Spacer(),
-                                    Container(
-                                      decoration: BoxDecoration(
-                                          borderRadius: BorderRadius.circular(10),
-                                          color: Colors.green
-                                      ),
-                                      child: const  Padding(
-                                        padding:  EdgeInsets.all(8.0),
-                                        child: Text(
-                                          "Book Now",style: TextStyle(color: CustomColor.whiteColor,fontSize: 15),
-                                        ),
-                                      ),
-                                    ),
-                                  ],),
+                                const SizedBox(height: 6,),
+                                Row(children:  [
+                                Text("Package Type :-",style: TextStyle(fontSize: 20,color: CustomColor.whiteColor),),
+                                  Spacer(),
+                                  Text(
+                                    _popularPackage!.packageType != null ? _popularPackage!.packageType.toString():"",style: TextStyle(color: CustomColor.whiteColor,fontSize: 18),
+                                  ),
+                                ],),
+                                const SizedBox(height: 6,),
+                                const SizedBox(height: 6,),
+                                Row(children:  [
+                                  Text("Package Price :-",style: TextStyle(fontSize: 20,color: CustomColor.whiteColor),),
+                                  Spacer(),
+                                  Text("₹ ${ _popularPackage!.packagePrice != null ? _popularPackage!.packagePrice.toString():""}"
+                                   ,style: TextStyle(color: CustomColor.whiteColor,fontSize: 18),
+                                  ),
+                                ],),
+                                const SizedBox(height: 6,),
 
 
                               ],
@@ -401,7 +420,18 @@ class _DashboardScreenState extends State<DashboardScreen> {
                           ),
 
                         ),
+                      ) : Padding(
+                        padding:  EdgeInsets.all(10.0),
+                        child: Container(
+                          decoration: BoxDecoration(color: const  Color(
+                              0xffff9b9b),borderRadius: BorderRadius.circular(10)),
+                            child: const Padding(
+                              padding:  EdgeInsets.symmetric(horizontal: 140,vertical: 15),
+                              child:  Text(textAlign: TextAlign.center,"comming Soon",style: TextStyle(fontSize: 20,color: CustomColor.whiteColor,fontWeight: FontWeight.w600),),
+                            ),
+                        ),
                       ),
+
                       const SizedBox(height: 25,),
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 10),

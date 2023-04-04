@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lottie/lottie.dart';
 import 'package:lunaaz_moto/constants/global_variables.dart';
 import 'package:lunaaz_moto/models/auth/user/user.dart';
 import 'package:lunaaz_moto/screens/auth/login_screen.dart';
@@ -23,7 +24,7 @@ class NavCusDrawer extends StatelessWidget {
 
         children: <Widget>[
           DrawerHeader(
-            child: Column(
+            child:   Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                  CircleAvatar(
@@ -66,8 +67,14 @@ class NavCusDrawer extends StatelessWidget {
             },
           ),
           ListTile(
-            leading: Icon(Icons.border_color),
+            leading: Icon(Icons.feedback),
             title: Text('Feedback'),
+            onTap: () => {Navigator.of(context).pop()},
+          ),
+          ListTile(
+          leading: const Icon(Icons.redeem),
+            title: const Text('Redeem Reward Point'),
+            trailing: Lottie.asset("assets/lotties/reward.json"),
             onTap: () => {Navigator.of(context).pop()},
           ),
           ListTile(

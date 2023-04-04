@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:introduction_screen/introduction_screen.dart';
+import 'package:lottie/lottie.dart';
 import 'package:lunaaz_moto/constants/global_variables.dart';
 import 'package:lunaaz_moto/screens/auth/login_screen.dart';
 
@@ -12,8 +13,8 @@ class IntroScreen extends StatelessWidget {
     Navigator.pushReplacementNamed(context, LoginScreen.routeName);
   }
 
-  Widget _buildImage(String assetName, [double width = 250]) {
-    return Image.asset('assets/images/$assetName', width: width);
+  Widget _buildImage(String assetName, [double width = 300]) {
+    return Lottie.asset('assets/lotties/$assetName', width: width);
   }
 
   @override
@@ -32,27 +33,27 @@ class IntroScreen extends StatelessWidget {
       key: introKey,
       globalBackgroundColor: CustomColor.backgroundColor,
       allowImplicitScrolling: true,
-      autoScrollDuration: 4000,
+      //autoScrollDuration: 4000,
       pages: [
         PageViewModel(
-          title: "Select your Car",
+          title: "Delivery Facility",
           body:
-              "You can select your or add up to 5 cars yours, family, friends.",
-          image: _buildImage('intro_first.png'),
+              "You can select your Package",
+          image: _buildImage('intro1_anim.json'),
           decoration: pageDecoration,
         ),
         PageViewModel(
-          title: "Choose Wash Package",
+          title: "Best Team",
           body:
-              "For each car select one for our package than you can add your add one.",
-          image: _buildImage('intro_sec.png'),
+              "We have best Emplyoes",
+          image: _buildImage('intro2_anim.json'),
           decoration: pageDecoration,
         ),
         PageViewModel(
           title: "Relax & Get Notified",
           body:
               "Relax & Get Notified Book an appointment with doctor.Chat with doctor via appoinment letter &  get consultant.",
-          image: _buildImage('int_third.png'),
+          image: _buildImage('intro3_anim.json'),
           decoration: pageDecoration,
         ),
       ],

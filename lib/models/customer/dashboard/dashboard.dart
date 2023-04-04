@@ -23,10 +23,10 @@ class Dashboard {
   String? message;
   List<DashboardBanner>? banners;
   List<User>? happyCustomers;
-  List<ActivePackage>? activePackages;
   int? todayBookings;
   List<Service>? lastServices;
   int? totalBookings;
+  List<ActivePackage>? activePackages;
   Package? popularPackage;
 
   factory Dashboard.fromJson(Map<String, dynamic> json) => Dashboard(
@@ -38,7 +38,7 @@ class Dashboard {
     todayBookings: json["today_bookings"],
     lastServices: json["last_services"] == null ? null : List<Service>.from(json["last_services"].map((x) => Service.fromJson(x))),
     totalBookings: json["total_bookings"],
-    popularPackage: json["popular_package"] == null ? null : Package.fromJson(json["popular_package"]),
+    popularPackage: Package.fromJson(json["popular_package"]),
   );
 
   Map<String, dynamic> toJson() => {
@@ -50,6 +50,6 @@ class Dashboard {
     "today_bookings": todayBookings,
     "last_services": lastServices == null ? null : List<Service>.from(lastServices!.map((x) => x.toJson())),
     "total_bookings": totalBookings,
-    "popular_package": popularPackage == null ? null : popularPackage!.toJson(),
+    "popular_package": popularPackage!.toJson(),
   };
 }

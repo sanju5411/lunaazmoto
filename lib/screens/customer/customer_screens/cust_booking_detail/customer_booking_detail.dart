@@ -58,7 +58,7 @@ class _CustomerBookingDetailState extends State<CustomerBookingDetail> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text("${bookingData.bookingUser?.name}",style: const TextStyle(fontSize: 18,color: CustomColor.whiteColor,fontWeight: FontWeight.w700),),
+                        Text(bookingData.bookingUser?.name != null ?"${bookingData.bookingUser?.name}":"${bookingData.bookingAddress?.name}",style: const TextStyle(fontSize: 18,color: CustomColor.whiteColor,fontWeight: FontWeight.w700),),
                         SizedBox(height: 5,),
 
                         Text("${bookingData.bookedDate}  @ ${bookingData.bookedTime}",style: const TextStyle(fontSize: 17,color: CustomColor.whiteColor,fontWeight: FontWeight.w600),),
@@ -125,7 +125,7 @@ class _CustomerBookingDetailState extends State<CustomerBookingDetail> {
                               mainAxisAlignment: MainAxisAlignment.start,
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children:  [
-                                Text("Name : ${bookingData.bookingUser?.name}",style: TextStyle(color:Colors.grey,fontWeight: FontWeight.w600,fontSize: 20),),
+                                Text(bookingData.bookingUser?.name != null ?"${bookingData.bookingUser?.name}":"${bookingData.bookingAddress?.name}",style: TextStyle(color:Colors.grey,fontWeight: FontWeight.w600,fontSize: 20),),
                                 const SizedBox(height: 8,),
                                 Text("Phone  :  ${bookingData.bookingUser?.countryCode}-${bookingData.bookingUser?.mobile}",style: TextStyle(color: Colors.grey,fontWeight: FontWeight.w600,fontSize: 20),),
                                 const SizedBox(height: 8,),
