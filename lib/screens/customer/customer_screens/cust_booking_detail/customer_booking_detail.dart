@@ -145,18 +145,12 @@ class _CustomerBookingDetailState extends State<CustomerBookingDetail> {
                             ],
                           ),
                           const SizedBox(height: 8,),
-                          Container(
-                            margin: EdgeInsets.symmetric(horizontal: 35),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                  Text("Address : ${bookingData.bookingAddress?.fullAddress}",style: TextStyle(color: Colors.grey,fontWeight: FontWeight.w600,fontSize: 18),),
-                                  SizedBox(height: 8,),
-
-                              ],
-                            ),
+                          Padding(
+                            padding: const EdgeInsets.all(10.0),
+                            child: Text("Address : ${bookingData.bookingAddress?.fullAddress}",style: TextStyle(color: Colors.grey,fontWeight: FontWeight.w600,fontSize: 18),),
                           ),
+                          SizedBox(height: 8,),
+
                           const SizedBox(height: 20,),
 
                         ],
@@ -167,22 +161,25 @@ class _CustomerBookingDetailState extends State<CustomerBookingDetail> {
             ),
             SizedBox(height: 26,),
 
-            Row(
-             mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text("Booking Status :-",style: TextStyle(fontSize: 20,color: Colors.black,fontWeight: FontWeight.w700),),
-                SizedBox(width: 6,),
-                Container(
-                  decoration: BoxDecoration(
-                      color: Color(0xffb5ffb1),
-                      borderRadius: BorderRadius.circular(14)
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Row(
+               mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Text("Booking Status :-",style: TextStyle(fontSize: 17,color: Colors.black,fontWeight: FontWeight.w700),),
+                  Spacer(),
+                  Container(
+                    decoration: BoxDecoration(
+                        color: Color(0xffb5ffb1),
+                        borderRadius: BorderRadius.circular(14)
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text("${bookingData.bookingStatus}",style: const TextStyle(fontSize: 18,color: Colors.black,fontWeight: FontWeight.w700),),
+                    ),
                   ),
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Text("${bookingData.bookingStatus}",style: const TextStyle(fontSize: 22,color: Colors.black,fontWeight: FontWeight.w700),),
-                  ),
-                ),
-              ],
+                ],
+              ),
             ),
 
           ],

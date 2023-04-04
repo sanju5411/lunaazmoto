@@ -9,7 +9,7 @@ import 'package:lunaaz_moto/screens/bike_delivery/deliver_navbar/deliver_navbar.
 import 'package:lunaaz_moto/screens/bike_delivery/total_booking_screen/total_booking_screen.dart';
 import 'package:lunaaz_moto/screens/customer/customer_screens/profile_screen/profile_screen.dart';
 import 'package:lunaaz_moto/services/shared_preferences_service.dart';
-
+import 'package:badges/badges.dart' as badges;
 import '../../../constants/global_variables.dart';
 import '../../../models/drivers/drivers_main_model.dart';
 import '../../../models/drivers/new_services.dart';
@@ -92,11 +92,15 @@ class _DeliveryDashboardState extends State<DeliveryDashboard> {
             ),
             centerTitle: true,
             actions: [
-              InkWell(
-                onTap: () => Navigator.pushNamed(context, ProfileScreen.routeName),
-                child: CircleAvatar(
-                  backgroundImage: NetworkImage(userImage),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: InkWell(
+                 // onTap: () => Navigator.pushNamed(context, ProfileScreen.routeName),
+                  child:  badges.Badge(
 
+                    badgeContent: Text('1',style: TextStyle(color: CustomColor.whiteColor),),
+                    child: Icon(Icons.notifications),
+                  )
                 ),
               ),
               const SizedBox(width: 15,)
@@ -271,30 +275,104 @@ class _DeliveryDashboardState extends State<DeliveryDashboard> {
                                        Navigator.pushNamed(context, BookingDetail.routeName,arguments: nextBooking[index]);
                                      },
                                      child: Padding(
-                                       padding: const EdgeInsets.symmetric(horizontal: 20),
+                                       padding: const EdgeInsets.symmetric(horizontal: 20,vertical: 16),
                                        child: Container(
-                                         margin: const EdgeInsets.all(8),
-                                         decoration: BoxDecoration(
-                                             color: Colors.white, // Your desired background color
-                                             borderRadius: BorderRadius.circular(10),
-                                             boxShadow: const [
-                                               BoxShadow(color: Color.fromRGBO(255, 164, 124,0.2), blurRadius: 10),
-                                             ]
+                                         //height: screenSize.height * 0.18,
+                                         width: screenSize.width,
+                                         decoration:  BoxDecoration(
+                                             color: CustomColor.whiteColor,
+                                             boxShadow: const
+                                             [
+                                               BoxShadow(
+                                                 color: Color(0xffe1e1e1),
+                                                 offset: Offset(
+                                                   1.0,
+                                                   1.0,
+                                                 ),
+                                                 blurRadius: 19.0,
+                                                 spreadRadius: 1.0,
+                                               ), //BoxShadow
+                                               BoxShadow(
+                                                 color: Colors.white,
+                                                 offset: Offset(0.0, 0.0),
+                                                 blurRadius: 0.0,
+                                                 spreadRadius: 0.0,
+                                               ), //BoxShadow
+                                             ],
+                                             borderRadius: BorderRadius.circular(20)
                                          ),
-                                         child: ListTile(
-                                           contentPadding:
-                                           const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
-                                           shape: RoundedRectangleBorder(
-                                             borderRadius: BorderRadius.circular(15),
-                                             side: const BorderSide(
-                                               color: Colors.black,
-                                             ),
+                                         child: Padding(
+                                           padding: const EdgeInsets.all(10.0),
+                                           child: Column(
+                                             crossAxisAlignment: CrossAxisAlignment.start,
+                                             children: [
+                                               Column(
+                                                 crossAxisAlignment: CrossAxisAlignment.start,
+                                                 children:  [
+                                                   const SizedBox(height: 4,),
+                                                   Row(
+                                                     children: [
+                                                       Text(nextBooking[index].bookingVehName != null ?
+                                                       nextBooking[index].bookingVehName!.toString():"",
+                                                         style: const TextStyle(fontSize: 20,fontWeight: FontWeight.w600),),
+                                                       Spacer(),
+                                                       Container(
+                                                         decoration: BoxDecoration(
+                                                             borderRadius: BorderRadius.circular(17),
+                                                             color: Color(
+                                                                 0xffffc0c0)),
+                                                         child: Padding(
+                                                           padding: const EdgeInsets.all(7.0),
+                                                           child: Text("${(nextBooking[index].status.toString())}",style: TextStyle(fontSize: 17,color: CustomColor.primaryColor,fontWeight: FontWeight.w700),),
+                                                         ),
+                                                       ),
+                                                     ],
+                                                   ),
+                                                   const SizedBox(height: 3,),
+                                                   Divider(color: Colors.black,),
+                                                   const SizedBox(height: 3,),
+                                                   Row(children: [
+                                                     const Text("Reference Number -",style: TextStyle(fontSize: 20),),
+                                                     const SizedBox(width: 7,),
+                                                     Text(nextBooking[index].bookingNumber.toString(),),
+                                                   ],
+                                                   ),
+                                                   SizedBox(height: 10,),
+                                                   Row(children: [
+                                                     const Text("Date -",style: TextStyle(fontSize: 20),),
+                                                     const SizedBox(width: 7,),
+                                                     Text(nextBooking[index].bookingDate.toString()),
+                                                   ],
+                                                   ),
+                                                 ],
+                                               ),
+                                               const SizedBox(height: 10,),
+
+                                               Row(children: [
+                                                 const Text("Vehicle No :-",style: TextStyle(fontSize: 20),),
+                                                 const SizedBox(width: 7,),
+                                                 Text((nextBooking[index].bookingVehNum.toString()),),
+                                               ],),
+                                               const SizedBox(height: 10,),
+                                               Row(children: [
+                                                 Text("Payment :-",style: TextStyle(fontSize: 19),),
+                                                 SizedBox(width: 5,),
+                                                 Text((nextBooking[index].bookingPaymentStatus.toString()),style: const TextStyle(color: Colors.blueAccent,fontWeight: FontWeight.w700,fontSize: 17),),
+
+
+                                               ],),
+                                               const SizedBox(height: 4,),
+                                               Divider(),
+                                               const SizedBox(height: 4,),
+                                               Align(
+                                                 alignment: Alignment.bottomCenter,
+                                                 child: Padding(
+                                                   padding: const EdgeInsets.all(2.0),
+                                                   child: Text("View Detail",style: TextStyle(fontSize: 18,color: Colors.cyan,fontWeight: FontWeight.w800),),
+                                                 ),
+                                               ),
+                                             ],
                                            ),
-                                           leading: CircleAvatar(
-                                             backgroundImage: NetworkImage(ApiConfig.baseUrl+nextBooking[index].bookingUser!.avatar.toString()), // No matter how big it is, it won't overflow
-                                           ),
-                                           title: Text("${nextBooking[index].bookingAddress?.name}",style: TextStyle(fontWeight: FontWeight.w600,fontSize: 15),),
-                                           subtitle: Text("${nextBooking[index].bookedDate}, ${nextBooking[index].bookedTime}",style: TextStyle(fontWeight: FontWeight.w500,fontSize: 12,color: Color(0xFF8C8FA5)),),
                                          ),
                                        ),
                                      ),

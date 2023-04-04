@@ -45,10 +45,22 @@ class _CustomWheelerPopUpState extends State<CustomWheelerPopUp> {
         var packageId = 0;
         for(var i = 0;i<widget.packageList!.length;i++){
           if(widget.packageList![i].activeVehicleType == "two_wheeler"){
-            packageId = widget.packageList![i].activePackId!;
-            Navigator.pop(context);
-            Navigator.pushNamed(context, BookingForm.routeName, arguments: {"packageId":packageId,"vehicleType":"two_wheeler"});
-          }
+            if(widget.packageList![i].activeStatus == "activated"){
+              packageId = widget.packageList![i].activePackId!;
+              Navigator.pop(context);
+              Navigator.pushNamed(context, BookingForm.routeName, arguments: {"packageId":packageId,"vehicleType":"two_wheeler"});
+
+            }
+            else if(widget.packageList![i].activeStatus == "completed"){
+              Navigator.pop(context);
+              Navigator.pushNamed(context, BookingScreen.routeName,arguments: "two_wheeler",);
+            }
+            // else if(widget.packageList![i].activeStatus == "completed"){
+            //   Navigator.pop(context);
+            //   Navigator.pushNamed(context, BookingScreen.routeName,arguments: "two_wheeler",);
+            // }
+            //
+                }
           else{
             Navigator.pop(context);
             Navigator.pushNamed(context, BookingScreen.routeName,arguments: "two_wheeler",);
@@ -70,9 +82,7 @@ class _CustomWheelerPopUpState extends State<CustomWheelerPopUp> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-
-
-                    Icon(Icons.pedal_bike,color: CustomColor.whiteColor,),
+                      Icon(Icons.pedal_bike,color: CustomColor.whiteColor,),
                       SizedBox(width: 20,),
                       Text("Bike Service",style: TextStyle(fontSize: 23,color: CustomColor.whiteColor),),
                   ],),
@@ -94,10 +104,22 @@ class _CustomWheelerPopUpState extends State<CustomWheelerPopUp> {
                    var packageId = 0;
                    for(var i = 0;i<widget.packageList!.length;i++){
                      if(widget.packageList![i].activeVehicleType == "four_wheeler"){
-                       packageId = widget.packageList![i].activePackId!;
-                       Navigator.pop(context);
-                       Navigator.pushNamed(context, BookingForm.routeName, arguments: {"packageId":packageId,"vehicleType":"four_wheeler"});
-                     }
+                       if(widget.packageList![i].activeStatus == "activated"){
+                         packageId = widget.packageList![i].activePackId!;
+                         Navigator.pop(context);
+                         Navigator.pushNamed(context, BookingForm.routeName, arguments: {"packageId":packageId,"vehicleType":"four_wheeler"});
+
+                       }
+                       else if(widget.packageList![i].activeStatus == "completed"){
+                         Navigator.pop(context);
+                         Navigator.pushNamed(context, BookingScreen.routeName,arguments: "four_wheeler",);
+                       }
+                       // else if(widget.packageList![i].activeStatus == "completed"){
+                       //   Navigator.pop(context);
+                       //   Navigator.pushNamed(context, BookingScreen.routeName,arguments: "two_wheeler",);
+                       // }
+                       //
+                           }
                      else{
                        Navigator.pop(context);
                        Navigator.pushNamed(context, BookingScreen.routeName,arguments: "four_wheeler",);

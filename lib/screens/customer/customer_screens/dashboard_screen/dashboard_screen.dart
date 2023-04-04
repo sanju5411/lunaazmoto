@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:core';
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:lunaaz_moto/common/widgets/choose_vehicle.dart';
@@ -223,7 +224,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 const SizedBox(height: 10,),
                 const Padding(
                   padding:  EdgeInsets.only(left: 20,top: 20,bottom: 10),
-                  child: Text("Our Happy Customers",style: TextStyle(fontWeight: FontWeight.w700,fontSize: 25),),),
+                  child: Text("Our Happy Customers",style: TextStyle(fontWeight: FontWeight.w700,fontSize: 19),),),
                 const SizedBox(height: 10,),
                 _happyCustomers.isNotEmpty
                     ? Column(
@@ -303,7 +304,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                     ),
                                   ),
                                   const SizedBox(height: 5),
-                                  Text((_happyCustomers[index].name == "") ?  "Unknown".toUpperCase() : _happyCustomers[index].name.toString().toUpperCase(),
+                                  Text((_happyCustomers[index].name == null) ?  "Unknown".toUpperCase() : _happyCustomers[index].name.toString().toUpperCase(),
                                     maxLines: 2,
                                     textAlign:
                                     TextAlign
@@ -341,7 +342,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                       const SizedBox(height: 15,),
                       Padding(
                         padding: const EdgeInsets.only(top: 15,left: 20,),
-                        child: Text("Our Popular Packages",style: TextStyle(fontWeight: FontWeight.w700,fontSize: 25),),
+                        child: Text("Our Popular Packages",style: TextStyle(fontWeight: FontWeight.w700,fontSize: 19),),
                       ),
                       const SizedBox(height: 15,),
                       _popularPackage != null?
@@ -367,7 +368,12 @@ class _DashboardScreenState extends State<DashboardScreen> {
                               children:  [
                                 Row(
                                   children: [
-                                    Text("Popular Package",style: TextStyle(color: CustomColor.whiteColor,fontSize: 23,fontWeight: FontWeight.w700),),
+                                    SizedBox(
+                                      width: 156,
+                                      child: AutoSizeText(
+                                        "Popular Package",style: TextStyle(color: CustomColor.whiteColor,fontSize: 18,fontWeight: FontWeight.w700),
+                                      ),
+                                    ),
                                     Spacer(),
                                     ElevatedButton(
                                       style: ElevatedButton.styleFrom(
@@ -541,7 +547,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                         children:  [
                                           Row(
                                             children:  [
-                                              Text("Current Package",style: TextStyle(color: CustomColor.whiteColor,fontSize: 23,fontWeight: FontWeight.w700),),
+                                              Text("Current Package",style: TextStyle(color: CustomColor.whiteColor,fontSize: 19,fontWeight: FontWeight.w700),),
                                               Spacer(),
                                               Row(
                                                 children: [
@@ -579,25 +585,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                             ),
                                           ],),
                                           const SizedBox(height: 6,),
-                                          // Row(
-                                          //   children: [
-                                          //     const Text(
-                                          //       "1200/-",style: TextStyle(color: CustomColor.whiteColor,fontSize: 30),
-                                          //     ),
-                                          //     const Spacer(),
-                                          //     Container(
-                                          //       decoration: BoxDecoration(
-                                          //           borderRadius: BorderRadius.circular(10),
-                                          //           color: Colors.red
-                                          //       ),
-                                          //       child: const  Padding(
-                                          //         padding:  EdgeInsets.all(8.0),
-                                          //         child: Text(
-                                          //           "UPGRADE",style: TextStyle(color: CustomColor.whiteColor,fontSize: 15),
-                                          //         ),
-                                          //       ),
-                                          //     ),
-                                          //   ],),
 
 
                                         ],
@@ -630,7 +617,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                         children:  [
                                           Row(
                                             children:  [
-                                              Text("Current Package",style: TextStyle(color: CustomColor.whiteColor,fontSize: 23,fontWeight: FontWeight.w700),),
+                                              Text("Current Package",style: TextStyle(color: CustomColor.whiteColor,fontSize: 19,fontWeight: FontWeight.w700),),
                                               Spacer(),
                                               Row(
                                                 children: [

@@ -1,8 +1,11 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:lunaaz_moto/constants/global_variables.dart';
+import 'package:lunaaz_moto/models/auth/user/user.dart';
 import 'package:lunaaz_moto/models/customer/service/service.dart';
 import 'package:lunaaz_moto/models/customer/service_booking_list/service_booking_list_model.dart';
 import 'package:lunaaz_moto/models/customer/service_model/service_model.dart';
+import 'package:lunaaz_moto/services/shared_preferences_service.dart';
 
 class MyServiceDetail extends StatefulWidget {
   static const String routeName = '/myservice_detail';
@@ -13,7 +16,12 @@ class MyServiceDetail extends StatefulWidget {
 }
 
 class _MyServiceDetailState extends State<MyServiceDetail> {
-  @override
+
+  Future<void> _onRefresh() async {
+    AuthUser authUser = await SharedPreferencesService.getAuthUserData();
+  }
+
+    @override
   Widget build(BuildContext context) {
     final bookingData = ModalRoute.of(context)?.settings.arguments as Service;
     print("<<<<<<<<<<${bookingData}>>>>>>>>>>>>>");
@@ -146,18 +154,13 @@ class _MyServiceDetailState extends State<MyServiceDetail> {
                             ],
                           ),
                           const SizedBox(height: 8,),
-                          Container(
-                            margin: EdgeInsets.symmetric(horizontal: 35),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(" ${bookingData.bookingAddress?.fullAddress}",style: TextStyle(color: Colors.grey,fontWeight: FontWeight.w600,fontSize: 18),),
-                                SizedBox(height: 8,),
 
-                              ],
-                            ),
+                          Padding(
+                            padding: const EdgeInsets.all(10.0),
+                            child: Text(" ${bookingData.bookingAddress?.fullAddress}",style: TextStyle(color: Colors.grey,fontWeight: FontWeight.w600,fontSize: 18),),
                           ),
+                          const SizedBox(height: 8,),
+
                           const SizedBox(height: 20,),
 
                         ],
@@ -167,22 +170,25 @@ class _MyServiceDetailState extends State<MyServiceDetail> {
               ),
             ),
             SizedBox(height: 30,),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text("Booking Status :-",style: TextStyle(fontSize: 20,color: Colors.black,fontWeight: FontWeight.w700),),
-                SizedBox(width: 6,),
-                Container(
-                  decoration: BoxDecoration(
-                      color: Color(0xffb5ffb1),
-                      borderRadius: BorderRadius.circular(14)
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text("Booking Status :-",style: TextStyle(fontSize: 17,color: Colors.black,fontWeight: FontWeight.w700),),
+                  Spacer(),
+                  Container(
+                    decoration: BoxDecoration(
+                        color: Color(0xffb5ffb1),
+                        borderRadius: BorderRadius.circular(14)
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: AutoSizeText("${bookingData.bookingStatus}",style: const TextStyle(fontSize: 18,color: Colors.black,fontWeight: FontWeight.w700),),
+                    ),
                   ),
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Text("${bookingData.bookingStatus}",style: const TextStyle(fontSize: 22,color: Colors.black,fontWeight: FontWeight.w700),),
-                  ),
-                ),
-              ],
+                ],
+              ),
             ),
             SizedBox(height: 20,),
 
