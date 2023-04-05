@@ -58,6 +58,8 @@ class SharedPreferencesService {
     }
   }
 
+
+
   static Future<AuthUser> getAuthUserData() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     AuthUser authUser = AuthUser(

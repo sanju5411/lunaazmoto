@@ -287,11 +287,15 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
                 const SizedBox(width: 20),
                 Flexible(
                   child: TextFormField(
+                    maxLength: 6,
+                    keyboardType: TextInputType.phone,
                     controller: _pincodeController,
+                    obscureText: false,
                     decoration:
                     CustomInputDecoration.textInputDecoration.copyWith(
                       labelText: 'Pincode',
                       hintText: 'Enter Your Pincode',
+                        counterText: "",
                     ),
 
                   ),

@@ -347,7 +347,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                       const SizedBox(height: 15,),
                       _popularPackage != null?
                       Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 15),
+                        padding: const EdgeInsets.symmetric(horizontal: 10),
                         child: Container(
 
                           decoration: BoxDecoration(
@@ -362,16 +362,16 @@ class _DashboardScreenState extends State<DashboardScreen> {
                               )
                           ),
                           child:  Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 24,vertical: 15),
+                            padding: const EdgeInsets.symmetric(horizontal: 20,vertical: 15),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children:  [
                                 Row(
                                   children: [
                                     SizedBox(
-                                      width: 156,
+                                      width: 140,
                                       child: AutoSizeText(
-                                        "Popular Package",style: TextStyle(color: CustomColor.whiteColor,fontSize: 18,fontWeight: FontWeight.w700),
+                                        "Popular Package",style: TextStyle(color: CustomColor.whiteColor,fontSize: 17,fontWeight: FontWeight.w700),
                                       ),
                                     ),
                                     Spacer(),
@@ -691,13 +691,13 @@ class _DashboardScreenState extends State<DashboardScreen> {
                        Row(
                         children: [
                           const Padding(
-                            padding:  EdgeInsets.only(left: 20,top: 20,bottom: 10),
+                            padding:  EdgeInsets.only(left: 18,top: 20,bottom: 10),
                             child: Text(" History",style: TextStyle(fontWeight: FontWeight.w700,fontSize: 25),),
                           ),
                           const Spacer(),
 
                           Padding(
-                            padding: const  EdgeInsets.symmetric(horizontal: 23),
+                            padding: const  EdgeInsets.symmetric(horizontal: 18),
                             child: Align(
                                 alignment: Alignment.centerRight,
                                 child: InkWell(
@@ -722,7 +722,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                   Navigator.pushNamed(context, CustomerBookingDetail.routeName,arguments: lastServices[index],);
                                   },
                                 child: Padding(
-                                  padding: const EdgeInsets.symmetric(horizontal: 20,vertical: 16),
+                                  padding: const EdgeInsets.symmetric(horizontal: 10,vertical: 16),
                                   child: Container(
                                     //height: screenSize.height * 0.18,
                                     width: screenSize.width,
@@ -759,9 +759,12 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                               const SizedBox(height: 4,),
                                               Row(
                                                 children: [
-                                                  Text(lastServices[index].bookingVehName != null ?
-                                                  lastServices[index].bookingVehName!.toString():"",
-                                                    style: const TextStyle(fontSize: 20,fontWeight: FontWeight.w600),),
+                                                  SizedBox(
+                                                    width: 120,
+                                                    child: AutoSizeText("${lastServices[index].bookingVehName != null ?
+                                                    lastServices[index].bookingVehName!.toString():""}",
+                                                      style: const TextStyle(fontSize: 20,fontWeight: FontWeight.w600),),
+                                                  ),
                                                   Spacer(),
                                                   Container(
                                                     decoration: BoxDecoration(

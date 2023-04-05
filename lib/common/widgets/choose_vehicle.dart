@@ -43,12 +43,14 @@ class _CustomWheelerPopUpState extends State<CustomWheelerPopUp> {
       }
       else{
         var packageId = 0;
+        var packageExpiryDate = "0";
         for(var i = 0;i<widget.packageList!.length;i++){
           if(widget.packageList![i].activeVehicleType == "two_wheeler"){
             if(widget.packageList![i].activeStatus == "activated"){
               packageId = widget.packageList![i].activePackId!;
+              packageExpiryDate = widget.packageList![i].activeEndDate!;
               Navigator.pop(context);
-              Navigator.pushNamed(context, BookingForm.routeName, arguments: {"packageId":packageId,"vehicleType":"two_wheeler"});
+              Navigator.pushNamed(context, BookingForm.routeName, arguments: {"packageId":packageId,"vehicleType":"two_wheeler","packageExpiryDate":packageExpiryDate});
 
             }
             else if(widget.packageList![i].activeStatus == "completed"){
@@ -102,12 +104,14 @@ class _CustomWheelerPopUpState extends State<CustomWheelerPopUp> {
                  }
                  else{
                    var packageId = 0;
+                   var packageExpiryDate = "0";
                    for(var i = 0;i<widget.packageList!.length;i++){
                      if(widget.packageList![i].activeVehicleType == "four_wheeler"){
                        if(widget.packageList![i].activeStatus == "activated"){
                          packageId = widget.packageList![i].activePackId!;
+                         packageExpiryDate = widget.packageList![i].activeEndDate!;
                          Navigator.pop(context);
-                         Navigator.pushNamed(context, BookingForm.routeName, arguments: {"packageId":packageId,"vehicleType":"four_wheeler"});
+                         Navigator.pushNamed(context, BookingForm.routeName, arguments: {"packageId":packageId,"vehicleType":"four_wheeler","packageExpiryDate":packageExpiryDate});
 
                        }
                        else if(widget.packageList![i].activeStatus == "completed"){

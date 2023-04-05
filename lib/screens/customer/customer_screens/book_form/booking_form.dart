@@ -37,6 +37,7 @@ class _BookingFormState extends State<BookingForm> {
   int? addressId = 0;
   String? address = "";
  Position? _currentPosition;
+ var endDate = "";
 
   bool isLoading = false;
 
@@ -135,15 +136,30 @@ class _BookingFormState extends State<BookingForm> {
   DateTime _dateTime = DateTime.now();
   void _showDatePicker() {
 
+    int year = 0;
+    int month= 0;
+    int day= 0;
+    if(endDate != "0"){
+      var parts = endDate.split('-');
+      year = int.parse(parts[2]);
+      month = int.parse(parts[1]);
+      day = int.parse(parts[0]);
+    }
+    else{
+      year = 2060;
+      month = 12;
+      day = 31;
+    }
+
     showDatePicker(
       currentDate: DateTime.now(),
       context: context,
       initialDate: DateTime.now(),
       firstDate: DateTime.now(),
-      lastDate: DateTime(2060),
+      lastDate: DateTime(year, month,day),
     ).then((value) {
       setState(() {
-        String dateFormat  = "${value!.year}-${value!.month}-${value!.day}";
+        String dateFormat  = "${value!.day}-${value!.month}-${value!.year}";
         _dateTime = value!;
 
         _serviceDateController.text = dateFormat.toString();
@@ -246,7 +262,8 @@ class _BookingFormState extends State<BookingForm> {
     Map<String, dynamic> argsPackage = ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>;
     var packageId = argsPackage['packageId'];
     var vehicleType = argsPackage['vehicleType'];
-   // print("pId>>>>${packageId}>>>>${vehicleType}");
+    endDate = argsPackage['packageExpiryDate'];
+    print("pId>>>>${packageId}>>>>${vehicleType}>>>>${endDate}");
     Size screenSize = MediaQuery.of(context).size;
 
     return Scaffold(
@@ -480,8 +497,13 @@ class _BookingFormState extends State<BookingForm> {
 
                               fillColor: Colors.white,
                               filled: true,
-                              suffixIcon: const Icon(
+                              suffixIcon:
+                              vehicleType != 'four_wheeler' ?
+                              const Icon(
                                 Icons.car_crash_rounded,
+                                color: Color(0xffc40000),
+                              ):Icon(
+                                Icons.pedal_bike,
                                 color: Color(0xffc40000),
                               ),
                               hintText: 'Enter your vehicle number',
@@ -559,47 +581,40 @@ class _BookingFormState extends State<BookingForm> {
 
 
                         const SizedBox(height: 20,),
-                        const Padding(
-                          padding: const EdgeInsets.only(left: 20),
-                          child: Text("We Accept only COD",style: TextStyle(color: Colors.red,fontSize: 17),),
-                        ),
+                        Text("We Accept only COD",style: TextStyle(color: Colors.red,fontSize: 17),),
                         const SizedBox(height: 10,),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 12,vertical: 2),
-                          child:  Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: [
-
-                              Radio(
-                                value: 2,
-                                groupValue: _radioSelected,
-                                activeColor: Colors.pink,
-                                onChanged: (value) {
-                                  setState(() {
-                                    _radioSelected = value as int?;
-                                    _radioVal  = 'Cash On Delivery';
-                                  });
-                                },
-                              ),
-                              Text('Cash On Delivery'),
-                              Spacer(),
-                              Radio(
-                                toggleable: false,
-                                value: 1,
-                                groupValue: _radioSelected,
-                                activeColor: Colors.blue,
-                                onChanged: (value) {
-                                  // setState(() {
-                                  //   _radioSelected = value as int;
-                                  //   _radioVal  = 'Online Cash';
-                                  // });
-                                },
-                              ),
-                              Text('Online Cash'),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            Radio(
+                              value: 2,
+                              groupValue: _radioSelected,
+                              activeColor: Colors.pink,
+                              onChanged: (value) {
+                                setState(() {
+                                  _radioSelected = value as int?;
+                                  _radioVal  = 'Cash On Delivery';
+                                });
+                              },
+                            ),
+                            Text('Cash On Delivery'),
+                            Spacer(),
+                            Radio(
+                              toggleable: false,
+                              value: 1,
+                              groupValue: _radioSelected,
+                              activeColor: Colors.blue,
+                              onChanged: (value) {
+                                // setState(() {
+                                //   _radioSelected = value as int;
+                                //   _radioVal  = 'Online Cash';
+                                // });
+                              },
+                            ),
+                            Text('Online Cash'),
 
 
-                            ],
-                          ),
+                          ],
                         ),
                         const SizedBox(height: 15,),
                         CustomButton(

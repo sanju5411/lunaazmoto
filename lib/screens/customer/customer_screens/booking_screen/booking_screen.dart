@@ -167,7 +167,7 @@ class _BookingScreenState extends State<BookingScreen> {
                                                     : _packages![index]
                                                         .packageName!,
                                                 style: TextStyle(
-                                                    fontSize: 40,
+                                                    fontSize: 30,
                                                     fontWeight:
                                                         FontWeight.w800,
                                                     color: CustomColor
@@ -180,7 +180,7 @@ class _BookingScreenState extends State<BookingScreen> {
                                               style: TextStyle(
                                                   color: CustomColor
                                                       .whiteColor,
-                                                  fontSize: 28,
+                                                  fontSize: 20,
                                                   fontWeight:
                                                   FontWeight
                                                       .w700),

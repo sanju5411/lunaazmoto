@@ -101,7 +101,7 @@ class _TotalBookingScreenState extends State<TotalBookingScreen> {
             margin: EdgeInsets.only(right: 10,top: 10),
             padding: const EdgeInsets.all(8.0,),
             child: InkWell(
-              // onTap: () => Navigator.pushNamed(context, ProfileScreen.routeName),
+              //onTap: () => Navigator.pushNamed(context, ProfileScreen.routeName),
                 child:  badges.Badge(
 
                   badgeContent: Text('1',style: TextStyle(color: CustomColor.whiteColor),),
