@@ -1,215 +1,309 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:lunaaz_moto/constants/global_variables.dart';
+import 'package:lunaaz_moto/models/drivers/new_services.dart';
+import 'package:badges/badges.dart' as badges;
 import 'package:lunaaz_moto/screens/service_centre/screens/CustomerBookingDetail/customer_booking_detail.dart';
-import 'package:lunaaz_moto/screens/service_centre/screens/vendor_dashboard/vendor_dashboard_screen.dart';
-import 'package:lunaaz_moto/screens/service_centre/screens/vendor_notification/vendor_notification.dart';
+
+import '../../../../models/drivers/booking_list_main_model.dart';
+import '../../../../services/api_service.dart';
 
 class CustomerCommonList extends StatefulWidget {
-  static const String routeName = '/customer_list';
-
-
-  const CustomerCommonList({Key? key, required this.appBartext,}) : super(key: key);
-
-  final String appBartext;
-
-
+  static const String routeName = '/total_booking_vehicle';
+  const CustomerCommonList({Key? key}) : super(key: key);
   @override
   State<CustomerCommonList> createState() => _CustomerCommonListState();
 }
 
 class _CustomerCommonListState extends State<CustomerCommonList> {
+  bool isApiCalled = false;
+  List<NewServices> newService = [];
+  bool isLoading = true;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+  }
+
+  getDataFromBookingApi(String type) async{
+
+    Map<String, String> jsonInput = {
+      "bookings" : type,
+    };
+
+    print('typee>>>${type}');
+    BookingListMainModel driverMainModel = await ApiService.getBookingListWithKeyServiceCenter(jsonInput: jsonEncode(jsonInput));
+    print("<----$type booking List--->${jsonEncode(driverMainModel)}");
+    if(driverMainModel.status == "success"){
+      setState(() {
+        isApiCalled = true;
+        newService = driverMainModel.bookings!;
+        isLoading = false;
+      });
+    }else{
+      setState(() {
+        isLoading = false;
+      });
+    }
+
+  }
+
   @override
   Widget build(BuildContext context) {
+    final appBarTitle = ModalRoute.of(context)?.settings.arguments as String;
+
+    print("Page Title :: $appBarTitle");
+    if(!isApiCalled){
+
+
+      String type = "";
+      if(appBarTitle == "Total Services"){
+        type = "total_bookings";
+      }else if(appBarTitle == "Pending Services"){
+        type = "total_inprocess";
+      }else if(appBarTitle == "In Progress Services"){
+        type = "total_inprocess";
+      }else if(appBarTitle == "Completed Services"){
+        type = "service_completed";
+      }
+      else if(appBarTitle == "Canceled Services"){
+        type = "total_inprocess";
+      }
+
+      if(type != "") getDataFromBookingApi(type);
+    }
+
     Size screenSize = MediaQuery.of(context).size;
-    //final args = ModalRoute.of(context)!.settings.arguments as ServiceDashboard;
+
     return Scaffold(
+      backgroundColor: CustomColor.primaryColor,
       appBar: AppBar(
-        backgroundColor: CustomColor.primaryColor,
+        title: Text(appBarTitle,style: TextStyle(fontSize: 19),),
         elevation: 0,
-        title: Text(widget.appBartext),
-        centerTitle: true,
+        backgroundColor: CustomColor.primaryColor,
         leading: InkWell(
           onTap: (){
             Navigator.pop(context);
           },
-            child: Icon(Icons.arrow_back_outlined,color: CustomColor.whiteColor,)),
+          child: const Icon(
+            Icons.arrow_back_outlined,color: CustomColor.whiteColor,
+          ),
+        ),
+        centerTitle: true,
         actions: [
-          InkWell(
-            onTap: (){
-              Navigator.pushNamed(context, VendorNotification.routeName);
-            },
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Icon(
-                Icons.notifications_active,color: CustomColor.whiteColor,),
+          Container(
+            margin: EdgeInsets.only(right: 10,top: 10),
+            padding: const EdgeInsets.all(8.0,),
+            child: InkWell(
+              //onTap: () => Navigator.pushNamed(context, ProfileScreen.routeName),
+                child:  badges.Badge(
+
+                  badgeContent: Text('1',style: TextStyle(color: CustomColor.whiteColor),),
+                  child: Icon(Icons.notifications),
+                )
             ),
-          )
+          ),
         ],
       ),
-      body: Container(
+      body: isLoading ? Container(
+        height: screenSize.height,
+        decoration: const BoxDecoration(
+          borderRadius: BorderRadius.only(topLeft: Radius.circular(20),topRight: Radius.circular(20)),
+          color: CustomColor.whiteColor,
+        ),
+        child: Center(
+          child: CircularProgressIndicator(),
+        ),
+      ): Container(
         width: screenSize.width,
-        decoration: BoxDecoration(
+        height: screenSize.height,
+        decoration: const BoxDecoration(
           borderRadius: BorderRadius.only(topLeft: Radius.circular(20),topRight: Radius.circular(20)),
           color: CustomColor.whiteColor,
         ),
         child: SingleChildScrollView(
-          physics:  ScrollPhysics(),
+          physics:  const ScrollPhysics(),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               SizedBox(height: 25,),
-              Padding(
-                padding: const EdgeInsets.all(20.0),
-                child: Text("Today",style: TextStyle(fontSize: 25,fontWeight: FontWeight.w600),),
-              ),
-              const SizedBox(height: 20,),
+              // Padding(
+              //   padding: const EdgeInsets.all(20.0),
+              //   child: Text("Today",style: TextStyle(fontSize: 25,fontWeight: FontWeight.w600),),
+              // ),
+              // const SizedBox(height: 20,),
+              // ListView.builder(
+              //     physics: const NeverScrollableScrollPhysics(),
+              //     shrinkWrap: true,
+              //     itemCount: 3,
+              //     itemBuilder: (BuildContext context, int index) {
+              //       return  Padding(
+              //         padding: const EdgeInsets.symmetric(horizontal: 20),
+              //         child: Container(
+              //           margin: const EdgeInsets.all(8),
+              //           decoration: BoxDecoration(
+              //               color: Colors.white, // Your desired background color
+              //               borderRadius: BorderRadius.circular(10),
+              //               boxShadow: const [
+              //                 BoxShadow(color: Color.fromRGBO(
+              //                     209, 249, 255, 0.5058823529411764), blurRadius: 10),
+              //               ]
+              //           ),
+              //           child:  InkWell(
+              //             onTap: (){
+              //               //Navigator.pushNamed(context, BookingDetail.routeName);
+              //             },
+              //             child: ListTile(
+              //               contentPadding:
+              //               const EdgeInsets.symmetric(vertical: 20, horizontal: 16),
+              //               shape: RoundedRectangleBorder(
+              //                 borderRadius: BorderRadius.circular(15),
+              //                 side: const BorderSide(
+              //                   color: Colors.black,
+              //                 ),
+              //               ),
+              //               leading: const CircleAvatar(
+              //                 backgroundImage: NetworkImage("https://assets.pokemon.com/assets/cms2/img/pokedex/detail/043.png"), // No matter how big it is, it won't overflow
+              //               ),
+              //               title: const Text("Rimma Roy",style: TextStyle(fontWeight: FontWeight.w600,fontSize: 15),),
+              //               subtitle: const Text("09 JAN 2022, 8am - 10am",style: TextStyle(fontWeight: FontWeight.w500,fontSize: 12,color: Color(0xFF8C8FA5)),),
+              //               trailing: Column(
+              //                 children: [
+              //                   Icon(Icons.remove_red_eye,color: Colors.cyan,),
+              //                   SizedBox(height: 10,),
+              //                   Text("New Booking",style: TextStyle(color: Colors.deepPurpleAccent),)
+              //                 ],
+              //               ),
+              //             ),
+              //           ),
+              //         ),
+              //       );
+              //     }),
+              // const SizedBox(height: 35,),
+              // Padding(
+              //   padding: const EdgeInsets.all(20.0),
+              //   child: Text("Yesterday",style: TextStyle(fontSize: 25,fontWeight: FontWeight.w600),),
+              // ),
+              // const SizedBox(height: 20,),
               ListView.builder(
                   physics: const NeverScrollableScrollPhysics(),
                   shrinkWrap: true,
-                  itemCount: 3,
+                  itemCount: newService.length,
                   itemBuilder: (BuildContext context, int index) {
-                    return  Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 13),
+                    return  Container(
+                      decoration: BoxDecoration(
+                          color: Colors.white, // Your desired background color
+                          borderRadius: BorderRadius.circular(10),
+                          boxShadow: const [
+                            BoxShadow(color: Color.fromRGBO(255, 164, 124,0.2), blurRadius: 10),
+                          ]
+                      ),
                       child: InkWell(
                         onTap: (){
-                          Navigator.pushNamed(context, CustomerBookingInfo.routeName);
+                          Navigator.pushNamed(context, CustomerBookingInfo.routeName,arguments: newService[index]);
                         },
-                        child: Container(
-                          margin: const EdgeInsets.all(8),
-                          decoration: BoxDecoration(
-                              color: Colors.white, // Your desired background color
-                              borderRadius: BorderRadius.circular(10),
-                              boxShadow: const [
-                                BoxShadow(color: Color.fromRGBO(255, 164, 124,0.2), blurRadius: 10),
-                              ]
-                          ),
-                          child: Row(
-                            children: [
-                              Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: const CircleAvatar(
-                                  backgroundImage: NetworkImage("https://assets.pokemon.com/assets/cms2/img/pokedex/detail/043.png"), // No matter how big it is, it won't overflow
-                                ),
-                              ),
-                              SizedBox(),
-                              Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Row(
-                                      children: [
-                                        Text("Customer Name",style: TextStyle(fontSize: 17,fontWeight: FontWeight.w700),),
-                                        SizedBox(width: 5,),
-                                        Container(
-                                          decoration: BoxDecoration(
-                                              borderRadius: BorderRadius.circular(17),
-                                              color: Color(0xffe4eeff)
-                                          ),
-                                          child: Padding(
-                                            padding: const EdgeInsets.all(8.0),
-                                            child: Text("Pending",style: TextStyle(fontSize: 14,color: Color(
-                                                0xff1D3A70),),),
-                                          ),
-                                        )
-                                      ],
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 20,vertical: 16),
+                          child: Container(
+                            //height: screenSize.height * 0.18,
+                            width: screenSize.width,
+                            decoration:  BoxDecoration(
+                                color: CustomColor.whiteColor,
+                                boxShadow: const
+                                [
+                                  BoxShadow(
+                                    color: Color(0xffe1e1e1),
+                                    offset: Offset(
+                                      1.0,
+                                      1.0,
                                     ),
-                                    SizedBox(height: 6,),
-                                    Text("Vehicle Number",style: TextStyle(fontSize: 18,color: Colors.black54),),
-                                    SizedBox(height: 6,),
-                                    Text("Driver Details",style: TextStyle(fontSize: 1,color: Colors.black54),),
-                                    SizedBox(height: 6,),
-                                    Row(
-                                      children: [
-                                        Text("09 JAN 2022, 8am - 10am",style: TextStyle(fontSize: 1,color: Colors.black45),),
-                                        SizedBox(width: 8,),
+                                    blurRadius: 19.0,
+                                    spreadRadius: 1.0,
+                                  ), //BoxShadow
+                                  BoxShadow(
+                                    color: Colors.white,
+                                    offset: Offset(0.0, 0.0),
+                                    blurRadius: 0.0,
+                                    spreadRadius: 0.0,
+                                  ), //BoxShadow
+                                ],
+                                borderRadius: BorderRadius.circular(20)
+                            ),
+                            child: Padding(
+                              padding: const EdgeInsets.all(10.0),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children:  [
+                                      const SizedBox(height: 4,),
+                                      Row(
+                                        children: [
+                                          Text(newService[index].bookingVehName != null ?
+                                          newService[index].bookingVehName!.toString():"",
+                                            style: const TextStyle(fontSize: 20,fontWeight: FontWeight.w600),),
+                                          Spacer(),
+                                          Container(
+                                            decoration: BoxDecoration(
+                                                borderRadius: BorderRadius.circular(17),
+                                                color: Color(
+                                                    0xffffc0c0)),
+                                            child: Padding(
+                                              padding: const EdgeInsets.all(7.0),
+                                              child: Text("${(newService[index].status.toString())}",style: TextStyle(fontSize: 17,color: CustomColor.primaryColor,fontWeight: FontWeight.w700),),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                      const SizedBox(height: 3,),
+                                      Divider(color: Colors.black,),
+                                      const SizedBox(height: 3,),
+                                      Row(children: [
+                                        const Text("Reference Number -",style: TextStyle(fontSize: 20),),
+                                        const SizedBox(width: 7,),
+                                        Text(newService[index].bookingNumber.toString(),),
+                                      ],
+                                      ),
+                                      SizedBox(height: 10,),
+                                      Row(children: [
+                                        const Text("Date -",style: TextStyle(fontSize: 20),),
+                                        const SizedBox(width: 7,),
+                                        Text(newService[index].bookingDate.toString()),
+                                      ],
+                                      ),
+                                    ],
+                                  ),
+                                  const SizedBox(height: 10,),
 
-                                        Text("View Details -->",style: TextStyle(color: CustomColor.primaryColor,fontSize: 19),)
-                                      ],
-                                    ),
-                                    SizedBox(height: 10,),
+                                  Row(children: [
+                                    const Text("Vehicle No :-",style: TextStyle(fontSize: 20),),
+                                    const SizedBox(width: 7,),
+                                    Text((newService[index].bookingVehNum.toString()),),
                                   ],),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    );
-                  }),
-              const SizedBox(height: 35,),
-              Padding(
-                padding: const EdgeInsets.all(20.0),
-                child: Text("Yesterday",style: TextStyle(fontSize: 25,fontWeight: FontWeight.w600),),
-              ),
-              const SizedBox(height: 20,),
-              ListView.builder(
-                  physics: const NeverScrollableScrollPhysics(),
-                  shrinkWrap: true,
-                  itemCount: 7,
-                  itemBuilder: (BuildContext context, int index) {
-                    return  InkWell(
-                      onTap: (){
-                        Navigator.pushNamed(context, CustomerBookingInfo.routeName);
-                      },
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 10),
-                        child: Container(
-                          margin: const EdgeInsets.all(8),
-                          decoration: BoxDecoration(
-                              color: Colors.white, // Your desired background color
-                              borderRadius: BorderRadius.circular(10),
-                              boxShadow: const [
-                                BoxShadow(color: Color.fromRGBO(255, 164, 124,0.2), blurRadius: 10),
-                              ]
-                          ),
-                          child: Row(
-                            children: [
-                              Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: const CircleAvatar(
-                                  backgroundImage: NetworkImage("https://assets.pokemon.com/assets/cms2/img/pokedex/detail/043.png"), // No matter how big it is, it won't overflow
-                                ),
-                              ),
-                              SizedBox(),
-                              Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Row(
-                                      children: [
-                                        Text("Customer Name",style: TextStyle(fontSize: 17,fontWeight: FontWeight.w700),),
-                                        SizedBox(width: 5,),
-                                        Container(
-                                          decoration: BoxDecoration(
-                                              borderRadius: BorderRadius.circular(17),
-                                              color: Color(0xffe4eeff)
-                                          ),
-                                          child: Padding(
-                                            padding: const EdgeInsets.all(8.0),
-                                            child: Text("Pending",style: TextStyle(fontSize: 14,color: Color(
-                                                0xff1D3A70),),),
-                                          ),
-                                        )
-                                      ],
-                                    ),
-                                    SizedBox(height: 6,),
-                                    Text("Vehicle Number",style: TextStyle(fontSize: 18,color: Colors.black54),),
-                                    SizedBox(height: 6,),
-                                    Text("Driver Details",style: TextStyle(fontSize: 1,color: Colors.black54),),
-                                    SizedBox(height: 6,),
-                                    Row(
-                                      children: [
-                                        Text("09 JAN 2022, 8am - 10am",style: TextStyle(fontSize: 1,color: Colors.black45),),
-                                        SizedBox(width: 8,),
+                                  const SizedBox(height: 10,),
+                                  Row(children: [
+                                    Text("Payment :-",style: TextStyle(fontSize: 19),),
+                                    SizedBox(width: 5,),
+                                    Text((newService[index].bookingPaymentStatus.toString()),style: const TextStyle(color: Colors.blueAccent,fontWeight: FontWeight.w700,fontSize: 17),),
 
-                                        Text("View Details -->",style: TextStyle(color: CustomColor.primaryColor,fontSize: 19),)
-                                      ],
-                                    ),
-                                    SizedBox(height: 10,),
+
                                   ],),
+                                  const SizedBox(height: 4,),
+                                  Divider(),
+                                  const SizedBox(height: 4,),
+                                  Align(
+                                    alignment: Alignment.bottomCenter,
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(2.0),
+                                      child: Text("View Detail",style: TextStyle(fontSize: 18,color: Colors.cyan,fontWeight: FontWeight.w800),),
+                                    ),
+                                  ),
+                                ],
                               ),
-                            ],
+                            ),
                           ),
                         ),
                       ),

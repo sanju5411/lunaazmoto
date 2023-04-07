@@ -136,7 +136,7 @@ Route<dynamic> generateRoute(RouteSettings routeSettings) {
 
     case CustomerCommonList.routeName:
       return CustomPageRoute(
-        child:  const CustomerCommonList(appBartext: '',),
+        child:  const CustomerCommonList(),
         routeSettings: routeSettings,
       );
 

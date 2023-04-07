@@ -118,7 +118,7 @@ class _MyServicesScreenState extends State<MyServicesScreen> {
                           padding: const EdgeInsets.all(15.0),
                           child: SizedBox(
                             width: screenSize.width * 0.8,
-                            child: const AutoSizeText(
+                            child: AutoSizeText(
                               maxLines: 2,
                               "Ongoing Services",style: TextStyle(
                                 fontWeight: FontWeight.w800,

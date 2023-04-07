@@ -237,8 +237,7 @@ class _BookingDetailState extends State<BookingDetail> {
 
     print("BookingDetailState===>${jsonEncode(_bookingData)}");
     Size screenSize = MediaQuery.of(context).size;
-
-
+    
     return  Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(

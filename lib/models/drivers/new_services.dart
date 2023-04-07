@@ -6,6 +6,7 @@ import '../customer/service_model/package_model/package_model.dart';
 class NewServices {
   int? bookingId;
   AuthUser? bookingUser;
+  AuthUser? bookingDriver;
   UserAddress? bookingAddress;
   BookingPackage? bookingPackage;
   var bookingCenter;
@@ -33,6 +34,7 @@ class NewServices {
   NewServices(
       {this.bookingId,
         this.bookingUser,
+        this.bookingDriver,
         this.bookingAddress,
         this.bookingPackage,
         this.bookingCenter,
@@ -61,6 +63,10 @@ class NewServices {
     bookingId = json['booking_id'];
     bookingUser = json['booking_user'] != null
         ? AuthUser.fromJson(json['booking_user'])
+        : null;
+
+    bookingDriver = json['booking_driver'] != null
+        ? AuthUser.fromJson(json['booking_driver'])
         : null;
 
     bookingAddress = json['booking_address']!= null
@@ -99,6 +105,9 @@ class NewServices {
     data['booking_id'] = bookingId;
     if (bookingUser != null) {
       data['booking_user'] = bookingUser!.toJson();
+    }
+    if(bookingDriver != null){
+      data['booking_driver'] = bookingDriver!.toJson();
     }
     if(bookingAddress != null){
       data['booking_address'] = bookingAddress;

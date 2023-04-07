@@ -1,6 +1,12 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:lunaaz_moto/common/widgets/custom_button.dart';
 import 'package:lunaaz_moto/constants/global_variables.dart';
+import 'package:lunaaz_moto/models/customer/service_booking_list/service_booking_list_model.dart';
+import 'package:lunaaz_moto/models/drivers/new_services.dart';
+import 'package:lunaaz_moto/services/api_service.dart';
 
 class CustomerBookingInfo extends StatefulWidget {
 
@@ -13,10 +19,38 @@ class CustomerBookingInfo extends StatefulWidget {
 }
 
 class _CustomerBookingInfoState extends State<CustomerBookingInfo> {
+
+  int? _bookingId = 0;
+  bool isLoading = false;
+
+  changeBookingStatus(String status, int bookingId) async{
+    Map<String, String> jsonInput = {
+      "status" : status,
+    };
+    BookingList bookingList = await ApiService.changeServiceStatus(bookingId : bookingId,jsonInput: jsonEncode(jsonInput));
+    print("Change Booking Status--->${jsonEncode(bookingList)}");
+    if(bookingList.status == "success"){
+      setState(() {
+
+      });
+      //getBookingDetailsFromApi(bookingId);
+      Fluttertoast.showToast(msg: "${bookingList.message}");
+    }else if(bookingList.status == null){
+
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
 
     Size screenSize = MediaQuery.of(context).size;
+    final _bookingData = ModalRoute.of(context)?.settings.arguments as NewServices;
+    var bookingId = _bookingData.bookingId;
+    print("bkkID>>>>>${_bookingId}");
+
+    if(isgettingProfile){
+      getBookingDetailsFromApi(bookingId!);
+    }
 
     return  Scaffold(
       appBar: AppBar(
