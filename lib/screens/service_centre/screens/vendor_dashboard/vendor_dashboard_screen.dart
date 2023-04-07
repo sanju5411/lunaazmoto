@@ -41,8 +41,8 @@ class _ServiceDashboardState extends State<ServiceDashboard> {
     ServiceCentersMainModel serviceCentersMainModel = await ApiService.getServiceCenterDashboardData();
     if(serviceCentersMainModel.status == "success"){
       setState(() {
-        totalServiceCount = serviceCentersMainModel.newServices!;
-        pendingServiceCount = 0;
+        totalServiceCount = serviceCentersMainModel.totalServices!;
+        pendingServiceCount = serviceCentersMainModel.newServices!;
         inProcessServiceCount = serviceCentersMainModel.inProccessServices!;
         completedServiceCount = serviceCentersMainModel.completedServices!;
         canceledServiceCount = serviceCentersMainModel.todayRejectedServices!;
