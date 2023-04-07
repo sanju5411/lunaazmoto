@@ -18,6 +18,7 @@ import 'package:lunaaz_moto/screens/customer/customer_screens/profile_screen/pro
 import 'package:lunaaz_moto/screens/customer/customer_screens/side_navbar/side_navbar.dart';
 import 'package:lunaaz_moto/screens/intro/intro_screen.dart';
 import 'package:lunaaz_moto/screens/service_centre/screens/CustomerBookingDetail/customer_booking_detail.dart';
+import 'package:lunaaz_moto/screens/service_centre/screens/CustomerBookingDetail/service_completed.dart';
 import 'package:lunaaz_moto/screens/service_centre/screens/customer_list/customer_common_list.dart';
 import 'package:lunaaz_moto/screens/service_centre/screens/vendor_dashboard/vendor_dashboard_screen.dart';
 import 'package:lunaaz_moto/screens/service_centre/screens/vendor_notification/vendor_notification.dart';
@@ -151,6 +152,12 @@ Route<dynamic> generateRoute(RouteSettings routeSettings) {
         child:  const CustomerBookingInfo(),
         routeSettings: routeSettings,
       );
+
+    case ServiceCenterBookingDone.routeName:
+        return CustomPageRoute(
+          child: const ServiceCenterBookingDone(),
+          routeSettings: routeSettings,
+        );
 
 
 

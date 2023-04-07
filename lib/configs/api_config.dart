@@ -14,11 +14,13 @@ class ApiConfig {
   static const String saveBookingForm = "customers/booking/create";
   static const String bookinglist = "customers/bookings";
   static const String bookingChangeStatus = "drivers/bookings/change-status";
+  static const String bookingChangeStatusServiceCenter = "service-center/bookings/change-status";
   static const String bookingListWithKeyDriver = "drivers/bookings";
   static const String bookingListWithKeyServiceCenter = "service-center/bookings";
   static const String serviceCenterList = "drivers/service-centers";
   static const String assingCenter = "drivers/bookings/assing-center";
   static const String bookingDetails = "drivers/bookings/detail";
+  static const String bookingDetailsSC = "service-center/bookings/detail";
   static const String getAddress = "customers/user-addresses";
   static const String saveAddress = "customers/user-addresses/save";
   // static const String offers = "offers";

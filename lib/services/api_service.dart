@@ -267,6 +267,27 @@ class ApiService {
     }
   }
 
+  static Future<BookingList> changeServiceStatusServiceCenter({required var bookingId, required Object jsonInput}) async {
+    Uri uri = Uri.parse('${ApiConfig.apiV1}/${ApiConfig.bookingChangeStatusServiceCenter}/$bookingId');
+    String token = await SharedPreferencesService.getApiToken();
+    headers.addAll({'Authorization': 'Bearer $token'});
+
+    try {
+      var res = await post(
+          uri,
+          headers: headers,
+          body : jsonInput
+      );
+      print("BOOKING_LIST_ERROR>>> $uri");
+      print("BOOKING_LIST_ERROR>>> $jsonInput");
+      var json = jsonDecode(res.body);
+      return BookingList.fromJson(json);
+    } catch (e) {
+      print("BOOKING_LIST_ERROR>>> $e");
+      return BookingList();
+    }
+  }
+
   static Future<BookingListMainModel> getBookingListWithKey({required Object jsonInput}) async {
     Uri uri = Uri.parse('${ApiConfig.apiV1}/${ApiConfig.bookingListWithKeyDriver}');
     String token = await SharedPreferencesService.getApiToken();
@@ -355,6 +376,25 @@ class ApiService {
       var res = await get(
           uri,
           headers: headers,
+      );
+      var json = jsonDecode(res.body);
+      return BookingDetailsMainModel.fromJson(json);
+    } catch (e) {
+      print("BOOKING_LIST_ERROR>>> $e");
+      return BookingDetailsMainModel();
+    }
+
+  }
+
+  static Future<BookingDetailsMainModel> getBookingDetailsServiceCenter({required var bookingId}) async{
+    Uri uri = Uri.parse('${ApiConfig.apiV1}/${ApiConfig.bookingDetailsSC}/$bookingId');
+    String token = await SharedPreferencesService.getApiToken();
+    headers.addAll({'Authorization': 'Bearer $token'});
+
+    try {
+      var res = await get(
+        uri,
+        headers: headers,
       );
       var json = jsonDecode(res.body);
       return BookingDetailsMainModel.fromJson(json);

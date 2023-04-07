@@ -12,11 +12,11 @@ class ServiceCentersMainModel {
   int? todayRejectedServices;
   List<NewServices>? nextServices;
 
-  ServiceCentersMainModel(
-      {this.status,
+  ServiceCentersMainModel({
+        this.status,
         this.message,
         this.newServices,
-       this.totalServices
+        this.totalServices,
         this.inProccessServices,
         this.completedServices,
         this.todayRejectedServices,
@@ -26,7 +26,7 @@ class ServiceCentersMainModel {
     status = json['status'];
     message = json['message'];
     newServices = json['new_services'];
-    totalServices = json['totalServices'];
+    totalServices = json['total_services'];
     inProccessServices = json['in_proccess_services'];
     completedServices = json['completed_services'];
     todayRejectedServices = json['today_rejected_services'];
@@ -43,7 +43,7 @@ class ServiceCentersMainModel {
     data['status'] = status;
     data['message'] = message;
     data['new_services'] = newServices;
-    data['totalServices'] = totalServices;
+    data['total_services'] = totalServices;
     data['in_proccess_services'] = inProccessServices;
     data['completed_services'] = completedServices;
     data['today_rejected_services'] = todayRejectedServices;

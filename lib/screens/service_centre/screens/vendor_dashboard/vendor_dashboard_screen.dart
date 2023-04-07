@@ -15,6 +15,8 @@ import 'package:lunaaz_moto/screens/service_centre/screens/navVendorBar/vendor_n
 import 'package:lunaaz_moto/services/api_service.dart';
 import 'package:badges/badges.dart' as badges;
 
+import '../CustomerBookingDetail/service_completed.dart';
+
 class ServiceDashboard extends StatefulWidget {
   static const String routeName = '/service_centre';
 
@@ -39,6 +41,7 @@ class _ServiceDashboardState extends State<ServiceDashboard> {
   void _setServiceDashData() async {
 
     ServiceCentersMainModel serviceCentersMainModel = await ApiService.getServiceCenterDashboardData();
+    print("Service Centers Main Model--->${jsonEncode(serviceCentersMainModel)}");
     if(serviceCentersMainModel.status == "success"){
       setState(() {
         totalServiceCount = serviceCentersMainModel.totalServices!;
@@ -158,9 +161,13 @@ class _ServiceDashboardState extends State<ServiceDashboard> {
                           margin: const EdgeInsets.symmetric(horizontal: 20),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: const [
+                            children: [
                               Text("Today’s Process",style: TextStyle(fontWeight: FontWeight.bold,fontSize: 20),),
-                              Text("See all",style: TextStyle(fontWeight: FontWeight.w600,fontSize: 15,color: Color(0xFF820000)),),
+                              GestureDetector(
+                                onTap: (){
+
+                                },
+                                child: Text("See all",style: TextStyle(fontWeight: FontWeight.w600,fontSize: 15,color: Color(0xFF820000)),)),
                             ],
                           )
                       ),
@@ -395,9 +402,13 @@ class _ServiceDashboardState extends State<ServiceDashboard> {
                           margin: const EdgeInsets.symmetric(horizontal: 20),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: const [
+                            children: [
                               Text("Next Booking",style: TextStyle(fontWeight: FontWeight.bold,fontSize: 20),),
-                              Text("See all",style: TextStyle(fontWeight: FontWeight.w600,fontSize: 15,color: Color(0xFF820000)),),
+                              GestureDetector(
+                                  onTap: (){
+
+                                  },
+                                  child: Text("See all",style: TextStyle(fontWeight: FontWeight.w600,fontSize: 15,color: Color(0xFF820000)),)),
                             ],
                           )
                       ),

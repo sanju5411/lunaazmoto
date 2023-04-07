@@ -67,9 +67,8 @@ class _CustomerCommonListState extends State<CustomerCommonList> {
         type = "today_inprocess";
       }else if(appBarTitle == "Completed Services"){
         type = "today_completed";
-      }
-      else if(appBarTitle == "Canceled Services"){
-        type = "new_booking";
+      }else if(appBarTitle == "Canceled Services"){
+        type = "today_cancelled";
       }
 
       if(type != "") getDataFromBookingApi(type);
