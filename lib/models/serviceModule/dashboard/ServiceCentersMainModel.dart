@@ -6,6 +6,7 @@ class ServiceCentersMainModel {
   String? status;
   String? message;
   int? newServices;
+  int? totalServices;
   int? inProccessServices;
   int? completedServices;
   int? todayRejectedServices;
@@ -15,6 +16,7 @@ class ServiceCentersMainModel {
       {this.status,
         this.message,
         this.newServices,
+       this.totalServices
         this.inProccessServices,
         this.completedServices,
         this.todayRejectedServices,
@@ -24,6 +26,7 @@ class ServiceCentersMainModel {
     status = json['status'];
     message = json['message'];
     newServices = json['new_services'];
+    totalServices = json['totalServices'];
     inProccessServices = json['in_proccess_services'];
     completedServices = json['completed_services'];
     todayRejectedServices = json['today_rejected_services'];
@@ -40,6 +43,7 @@ class ServiceCentersMainModel {
     data['status'] = status;
     data['message'] = message;
     data['new_services'] = newServices;
+    data['totalServices'] = totalServices;
     data['in_proccess_services'] = inProccessServices;
     data['completed_services'] = completedServices;
     data['today_rejected_services'] = todayRejectedServices;
