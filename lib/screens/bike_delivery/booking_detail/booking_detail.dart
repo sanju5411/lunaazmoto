@@ -299,7 +299,7 @@ class _BookingDetailState extends State<BookingDetail> {
                               borderRadius: BorderRadius.all(Radius.circular(10)),
                               color: Color(0xFFE8F0FF)
                           ),
-                          child: Text("${_bookingData.status}",style: TextStyle(color: Color(0xFF1D3A70)),))
+                          child: Text("${bookingData?.status}",style: TextStyle(color: Color(0xFF1D3A70)),))
                   ),
                 ),
               ),
