@@ -442,7 +442,7 @@ class _CustomerBookingInfoState extends State<CustomerBookingInfo> {
                             child: CustomButton(
                               text: 'Start Service',
                               onTap: () {
-                                changeBookingStatus("", bookingId!);
+                                changeBookingStatus("processed", bookingId!);
                               },
                             ),
                           ),
