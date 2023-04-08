@@ -46,7 +46,7 @@ class _BookingFormState extends State<BookingForm> {
   final TextEditingController _serviceDateController = TextEditingController();
   final TextEditingController _serviceTimeController   = TextEditingController();
   final TextEditingController _vehicleNumController     = TextEditingController();
-  final TextEditingController _addressController        =     TextEditingController();
+  final TextEditingController  addressController        =     TextEditingController();
 
   bool _showAddresses = false;
   bool _validate = false;
@@ -60,44 +60,23 @@ class _BookingFormState extends State<BookingForm> {
 
     //_phoneController.text = _userMob!.mobile = "";
 
-    _addressController.text = "";
+    addressController.text = "";
 
 
 
 
     super.initState();
-    getServiceCenterListFromApi();
+   // getServiceCenterListFromApi();
     getProfileData();
 
   }
 
-  getServiceCenterListFromApi() async{
-   setState(() {
-     isLoading = true;
-   });
-    AuthAddress _userAddress = await ApiService.getAddressListD();
-    //print("object>>>>>${jsonEncode(_userAddress)}");
-    if(_userAddress.status != null){
-     // print("hhhh123546>>>");
-      setState(() {
-        isLoading = false;
-        _addressList = _userAddress.  addresses;
-      });
 
-
-
-    }else{
-
-    }
-  }
 
 
 
 
   getProfileData() async{
-
-
-
 
     var userData =  await SharedPreferencesService.getAuthUserData();
     setState(() {
@@ -115,7 +94,7 @@ class _BookingFormState extends State<BookingForm> {
 
     BookingModel bookingModel = await ApiService.setBookingForm(jsonInput: jsonEncode(jsonInput));
 
-   // print("booking form data>>>>>${jsonEncode(bookingModel)}>>>>");
+    print("booking form data>>>>>${jsonEncode(bookingModel)}>>>>");
 
 
     if(bookingModel.status  == "success"){
@@ -159,7 +138,7 @@ class _BookingFormState extends State<BookingForm> {
       lastDate: DateTime(year, month,day),
     ).then((value) {
       setState(() {
-        String dateFormat  = "${value!.day}-${value!.month}-${value!.year}";
+        String dateFormat  = "${value!.year}-${value!.month}-${value!.day}";
         _dateTime = value!;
 
         _serviceDateController.text = dateFormat.toString();
@@ -194,62 +173,8 @@ class _BookingFormState extends State<BookingForm> {
   }
 
 
-  // @override
-  // void dispose() {
-  //   _vehicNameController.dispose();
-  //   _phoneController.dispose();
-  //   _serviceDateController.dispose();
-  //   _serviceTimeController.dispose();
-  //   _vehicleNumController.dispose();
-  //   _addressController.dispose();
-  //   super.dispose();
-  // }
 
 
-
-  Future<bool> _handleLocationPermission() async {
-    bool serviceEnabled;
-    LocationPermission permission;
-
-    serviceEnabled = await Geolocator.isLocationServiceEnabled();
-    if (!serviceEnabled) {
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-          content: Text(
-              'Location services are disabled. Please enable the services')));
-      return false;
-    }
-    permission = await Geolocator.checkPermission();
-    if (permission == LocationPermission.denied) {
-      permission = await Geolocator.requestPermission();
-      if (permission == LocationPermission.denied) {
-        ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Location permissions are denied')));
-        return false;
-      }
-    }
-    if (permission == LocationPermission.deniedForever) {
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-          content: Text(
-              'Location permissions are permanently denied, we cannot request permissions.')));
-      return false;
-    }
-    return true;
-  }
-
-
-  Future<void> _getCurrentPosition() async {
-    final hasPermission = await _handleLocationPermission();
-
-    if (!hasPermission) return;
-    await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high)
-        .then((Position position) {
-      setState(() => _currentPosition = position);
-    }).catchError((e) {
-      debugPrint(e);
-    });
-  }
-
-  // Group Value for Radio Button.
   int id = 1;
 
 
@@ -500,10 +425,10 @@ class _BookingFormState extends State<BookingForm> {
                               suffixIcon:
                               vehicleType != 'four_wheeler' ?
                               const Icon(
-                                Icons.car_crash_rounded,
+                                Icons.pedal_bike,
                                 color: Color(0xffc40000),
                               ):Icon(
-                                Icons.pedal_bike,
+                                Icons.car_crash,
                                 color: Color(0xffc40000),
                               ),
                               hintText: 'Enter your vehicle number',
@@ -529,7 +454,7 @@ class _BookingFormState extends State<BookingForm> {
                                   Address userAddress = value as Address;
                                   setState(() {
                                     addressId = userAddress.id;
-                                    _addressController.text = userAddress.fullAddress ?? "";
+                                    addressController.text = userAddress.fullAddress ?? "";
 
 
                                   });
@@ -556,7 +481,7 @@ class _BookingFormState extends State<BookingForm> {
                             ),
                             child: TextFormField(
                               enabled: false,
-                              controller: _addressController,
+                              controller: addressController,
                               decoration: InputDecoration(
 
                                 fillColor: Colors.white,
@@ -625,7 +550,7 @@ class _BookingFormState extends State<BookingForm> {
                             var serviceDate  = _serviceDateController.text.toString();
                             var serviceTime  = _serviceTimeController.text.toString();
                             var vehicleNum  = _vehicleNumController.text.toString();
-                            var address  = _addressController.text.toString();
+                            var address  = addressController.text.toString();
 
                             Map<String, String> jsonInput = {
                               "user_address_id": addressId.toString(),
@@ -673,11 +598,11 @@ class _BookingFormState extends State<BookingForm> {
                               return;
                             }
 
-                            // if(address.isEmpty){
-                            //   saveData = false;
-                            //   Fluttertoast.showToast(msg: "Please Enter Address");
-                            //   return;
-                            // }
+                            if(address.isEmpty){
+                              saveData = false;
+                              Fluttertoast.showToast(msg: "Please Enter Address");
+                              return;
+                            }
 
                             if(saveData){
                               _setBookingFormData(jsonInput);
@@ -728,7 +653,7 @@ class _BookingFormState extends State<BookingForm> {
                           });
                           addressId = _addressList![index].id;
                           address =  _addressList![index].fullAddress;
-                          _addressController.text = address!;
+                          addressController.text = address!;
 
                         },
                         child: Padding(
@@ -796,7 +721,7 @@ class _BookingFormState extends State<BookingForm> {
         Address userAddress = value as Address;
         setState(() {
           addressId = userAddress.id;
-          _addressController.text = userAddress.fullAddress ?? "";
+          addressController.text = userAddress.fullAddress ?? "";
 
         });
       });

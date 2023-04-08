@@ -69,7 +69,7 @@ class ProfileScreenState extends State<ProfileScreen> {
       if (profile.user != null) {
         setState(() {
           _userData = profile.user!;
-          print("profile data>>>>>>>${jsonEncode(_authUser)}");
+         // print("profile data>>>>>>>${jsonEncode(_authUser)}");
         });
       }
     }

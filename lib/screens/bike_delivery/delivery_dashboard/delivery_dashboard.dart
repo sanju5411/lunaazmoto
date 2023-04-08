@@ -60,10 +60,10 @@ class _DeliveryDashboardState extends State<DeliveryDashboard> {
     DriverMainModel driverMainModel = await ApiService.getDriverDashboardData();
     print("Drive Main Model---->${jsonEncode(driverMainModel)}");
     setState(() {
-      todayNewBooking = driverMainModel.todayBookings;
-      totalBooking = driverMainModel.totalBookings;
-      todayDelivered = driverMainModel.todayDeliveredBookings;
-      todayPickUp = driverMainModel.todayPickedBookings;
+      todayNewBooking = driverMainModel.todayBookings!;
+      totalBooking = driverMainModel.totalBookings!;
+      todayDelivered = driverMainModel.todayDeliveredBookings!;
+      todayPickUp = driverMainModel.todayPickedBookings!;
       nextBooking = driverMainModel.newServices!;
     });
   }
