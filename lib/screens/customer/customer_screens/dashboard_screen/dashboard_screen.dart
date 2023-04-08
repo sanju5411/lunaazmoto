@@ -421,6 +421,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                 const SizedBox(height: 6,),
 
 
+
                               ],
                             ),
                           ),
@@ -799,7 +800,22 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                               ),
                                             ],
                                           ),
-                                          const SizedBox(height: 10,),
+                                          const SizedBox(height: 8,),
+                                          Row(
+                                            children: [
+                                               lastServices[index].bookingVehType == "four_wheeler" ?
+                                              Row(children: [
+                                                const Text("Service Type :-",style: TextStyle(fontSize: 20),),
+                                                const SizedBox(width: 7,),
+                                                Text("Car",),
+                                              ],):  Row(children: [
+                                                const Text("Service Type :-",style: TextStyle(fontSize: 20),),
+                                                const SizedBox(width: 7,),
+                                                Text("Bike"),
+                                              ],),
+                                            ],
+                                          ),
+                                          const SizedBox(height: 8,),
 
                                           Row(children: [
                                             const Text("Vehicle No :-",style: TextStyle(fontSize: 20),),

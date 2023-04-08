@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -46,7 +45,7 @@ class _BookingFormState extends State<BookingForm> {
   final TextEditingController _serviceDateController = TextEditingController();
   final TextEditingController _serviceTimeController   = TextEditingController();
   final TextEditingController _vehicleNumController     = TextEditingController();
-  final TextEditingController  addressController        =     TextEditingController();
+  final TextEditingController _addressController        =     TextEditingController();
 
   bool _showAddresses = false;
   bool _validate = false;
@@ -60,23 +59,44 @@ class _BookingFormState extends State<BookingForm> {
 
     //_phoneController.text = _userMob!.mobile = "";
 
-    addressController.text = "";
+    _addressController.text = "";
 
 
 
 
     super.initState();
-   // getServiceCenterListFromApi();
+    getServiceCenterListFromApi();
     getProfileData();
 
+  }
+
+  getServiceCenterListFromApi() async{
+   setState(() {
+     isLoading = true;
+   });
+    AuthAddress _userAddress = await ApiService.getAddressListD();
+    print("object>>>>>${jsonEncode(_userAddress)}");
+    if(_userAddress.status != null){
+      print("hhhh123546>>>");
+      setState(() {
+        isLoading = false;
+        _addressList = _userAddress.  addresses;
+      });
+
+
+
+    }else{
+
+    }
   }
 
 
 
 
-
-
   getProfileData() async{
+
+
+
 
     var userData =  await SharedPreferencesService.getAuthUserData();
     setState(() {
@@ -408,8 +428,8 @@ class _BookingFormState extends State<BookingForm> {
                         const SizedBox(height: 10,),
                         Container(
                           decoration: BoxDecoration(
-                            boxShadow: [
-                              const BoxShadow(
+                            boxShadow: const [
+                               BoxShadow(
                                 color: Color(0xffdcdcdc),
                                 blurRadius: 20,
                               ),
@@ -419,7 +439,6 @@ class _BookingFormState extends State<BookingForm> {
                           child: TextFormField(
                             controller: _vehicleNumController,
                             decoration: InputDecoration(
-
                               fillColor: Colors.white,
                               filled: true,
                               suffixIcon:
@@ -454,7 +473,7 @@ class _BookingFormState extends State<BookingForm> {
                                   Address userAddress = value as Address;
                                   setState(() {
                                     addressId = userAddress.id;
-                                    addressController.text = userAddress.fullAddress ?? "";
+                                    _addressController.text = userAddress.fullAddress ?? "";
 
 
                                   });
@@ -481,7 +500,7 @@ class _BookingFormState extends State<BookingForm> {
                             ),
                             child: TextFormField(
                               enabled: false,
-                              controller: addressController,
+                              controller: _addressController,
                               decoration: InputDecoration(
 
                                 fillColor: Colors.white,
@@ -550,7 +569,7 @@ class _BookingFormState extends State<BookingForm> {
                             var serviceDate  = _serviceDateController.text.toString();
                             var serviceTime  = _serviceTimeController.text.toString();
                             var vehicleNum  = _vehicleNumController.text.toString();
-                            var address  = addressController.text.toString();
+                            var address  = _addressController.text.toString();
 
                             Map<String, String> jsonInput = {
                               "user_address_id": addressId.toString(),
@@ -653,7 +672,7 @@ class _BookingFormState extends State<BookingForm> {
                           });
                           addressId = _addressList![index].id;
                           address =  _addressList![index].fullAddress;
-                          addressController.text = address!;
+                          _addressController.text = address!;
 
                         },
                         child: Padding(
@@ -721,7 +740,7 @@ class _BookingFormState extends State<BookingForm> {
         Address userAddress = value as Address;
         setState(() {
           addressId = userAddress.id;
-          addressController.text = userAddress.fullAddress ?? "";
+          _addressController.text = userAddress.fullAddress ?? "";
 
         });
       });

@@ -125,15 +125,17 @@ class _BookingScreenState extends State<BookingScreen> {
                       scrollDirection: Axis.horizontal,
                       itemBuilder:
                           (BuildContext context, int index) {
-                        return Stack(
-                          children: [
-                            InkWell(
-                              onTap: () {
-                                Navigator.pushNamed(
-                                    context, BookingForm.routeName,
-                                    arguments: {"packageId":_packages![index].packageId,"vehicleType":appBarTitle,"packageExpiryDate": _packages![index].packageEndDate});
-                              },
-                              child: Padding(
+                        return InkWell(
+
+                            onTap: () {
+                              Navigator.pushNamed(
+                                  context, BookingForm.routeName,
+                                  arguments: {"packageId":_packages![index].packageId,"vehicleType":appBarTitle,"packageExpiryDate": _packages![index].packageEndDate});
+                            },
+                       
+                          child: Stack(
+                            children: [
+                              Padding(
                                 padding: const EdgeInsets.all(20.0),
                                 child: Container(
                                   width: 280,
@@ -278,42 +280,34 @@ class _BookingScreenState extends State<BookingScreen> {
                                   ),
                                 ),
                               ),
-                            ),
 
-                            Positioned(
-                              bottom:0,
-                              left:70,
-                              right:70,
-                              child: Container(
-                                decoration: BoxDecoration(
-                                  border: Border.all(color: Color(0xffe30000),width: 2),
-                                  borderRadius:
-                                  BorderRadius.only(topRight: Radius.circular(27),bottomLeft: Radius.circular(27)),
-                                  gradient: const LinearGradient(
-                                    begin: Alignment.topRight,
-                                    end: Alignment.bottomLeft,
-                                    colors: [
-                                      Color(0xffff859f),
-                                      Color(0xffff859f),
-                                      Color(0xffff859f),
-                                    ],
+                              Positioned(
+                                bottom:0,
+                                left:70,
+                                right:70,
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    border: Border.all(color: Color(0xffe30000),width: 2),
+                                    borderRadius:
+                                    BorderRadius.only(topRight: Radius.circular(27),bottomLeft: Radius.circular(27)),
+                                    gradient: const LinearGradient(
+                                      begin: Alignment.topRight,
+                                      end: Alignment.bottomLeft,
+                                      colors: [
+                                        Color(0xffff859f),
+                                        Color(0xffff859f),
+                                        Color(0xffff859f),
+                                      ],
+                                    ),
                                   ),
-                                ),
-                                child: InkWell(
-                                  onTap:(){
-                                    Navigator.pushNamed(
-                                        context, BookingForm.routeName,
-                                        arguments: {"packageId":_packages![index].packageId,"vehicleType":appBarTitle});
-
-                                  },
                                   child: Padding(
                                     padding: const EdgeInsets.symmetric(horizontal: 20,vertical: 12),
                                     child: Center(child: Text("Select",style: TextStyle(color: CustomColor.whiteColor,fontSize: 20),)),
                                   ),
-                                ),
-                              )
-                              ,),
-                          ],
+                                )
+                                ,),
+                            ],
+                          ),
                         );
                       }),
                 )

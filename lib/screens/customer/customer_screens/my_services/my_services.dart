@@ -216,7 +216,21 @@ class _MyServicesScreenState extends State<MyServicesScreen> {
                                       const SizedBox(height: 8,),
 
 
-                                    SizedBox(height: 8,),
+                                    Row(
+                                      children: [
+                                        onGoingList[index].bookingVehType == "four_wheeler" ?
+                                        Row(children: [
+                                          const Text("Service Type :-",style: TextStyle(fontSize: 20),),
+                                          const SizedBox(width: 7,),
+                                          Text("Car",),
+                                        ],):  Row(children: [
+                                          const Text("Service Type :-",style: TextStyle(fontSize: 20),),
+                                          const SizedBox(width: 7,),
+                                          Text("Bike"),
+                                        ],),
+                                      ],
+                                    ),
+                                    const SizedBox(height: 8,),
                                     Text("Payment :- ${(onGoingList[index].bookingPaymentStatus.toString())}",style: TextStyle(fontSize: 20),),
                                     SizedBox(height: 8,),
                                     Row(children: [
@@ -332,6 +346,20 @@ class _MyServicesScreenState extends State<MyServicesScreen> {
                                       children: [
                                         Text("Date :-  ",style: TextStyle(fontSize: 20),),
                                         Text(lastBookings[index].bookingDate.toString()),
+                                      ],
+                                    ),
+                                    Row(
+                                      children: [
+                                        lastBookings[index].bookingVehType == "four_wheeler" ?
+                                        Row(children: [
+                                          const Text("Service Type :-",style: TextStyle(fontSize: 20),),
+                                          const SizedBox(width: 7,),
+                                          Text("Car",),
+                                        ],):  Row(children: [
+                                          const Text("Service Type :-",style: TextStyle(fontSize: 20),),
+                                          const SizedBox(width: 7,),
+                                          Text("Bike"),
+                                        ],),
                                       ],
                                     ),
                                     const SizedBox(height: 8,),
