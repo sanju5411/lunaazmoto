@@ -36,24 +36,21 @@ class IntroScreen extends StatelessWidget {
       //autoScrollDuration: 4000,
       pages: [
         PageViewModel(
-          title: "Delivery Facility",
-          body:
-              "You can select your Package",
+          title: "Book your bike service schedule",
+          body: "",
           image: _buildImage('intro1_anim.json'),
           decoration: pageDecoration,
         ),
         PageViewModel(
-          title: "Best Team",
-          body:
-              "We have best Emplyoes",
-          image: _buildImage('intro2_anim.json'),
+          title: "book the bike service online.",
+          body: "",
+          image: _buildImage('intro22_anim.json'),
           decoration: pageDecoration,
         ),
         PageViewModel(
-          title: "Relax & Get Notified",
-          body:
-              "Relax & Get Notified Book an appointment with doctor.Chat with doctor via appoinment letter &  get consultant.",
-          image: _buildImage('intro3_anim.json'),
+          title: "chouse best package for bike service",
+          body: "",
+           image: _buildImage('intro3_anim.json'),
           decoration: pageDecoration,
         ),
       ],
