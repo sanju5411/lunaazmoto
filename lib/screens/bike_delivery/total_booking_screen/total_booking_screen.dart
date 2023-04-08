@@ -58,7 +58,7 @@ class _TotalBookingScreenState extends State<TotalBookingScreen> {
 
     final appBarTitle = ModalRoute.of(context)?.settings.arguments as String;
 
-    print("Page Title :: $appBarTitle");
+    print("Page Title-1 :: $isApiCalled");
 
     if(!isApiCalled){
 

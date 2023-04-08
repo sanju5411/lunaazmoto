@@ -10,7 +10,7 @@ import '../../../../models/drivers/booking_list_main_model.dart';
 import '../../../../services/api_service.dart';
 
 class CustomerCommonList extends StatefulWidget {
-  static const String routeName = '/total_booking_vehicle';
+  static const String routeName = '/total_booking_service_center';
   const CustomerCommonList({Key? key}) : super(key: key);
   @override
   State<CustomerCommonList> createState() => _CustomerCommonListState();
@@ -55,7 +55,7 @@ class _CustomerCommonListState extends State<CustomerCommonList> {
   Widget build(BuildContext context) {
     final appBarTitle = ModalRoute.of(context)?.settings.arguments as String;
 
-    print("Page Title :: $appBarTitle");
+    print("Page Title-2 :: $appBarTitle");
     if(!isApiCalled){
       String type = "";
       if(appBarTitle == "Total Services"){
