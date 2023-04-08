@@ -155,21 +155,12 @@ class _ServiceDashboardState extends State<ServiceDashboard> {
                       )
                   ),
                   child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       const SizedBox(height: 40,),
                       Container(
                           margin: const EdgeInsets.symmetric(horizontal: 20),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text("Today’s Process",style: TextStyle(fontWeight: FontWeight.bold,fontSize: 20),),
-                              GestureDetector(
-                                onTap: (){
-
-                                },
-                                child: Text("See all",style: TextStyle(fontWeight: FontWeight.w600,fontSize: 15,color: Color(0xFF820000)),)),
-                            ],
-                          )
+                          child:Text("Today’s Process",style: TextStyle(fontWeight: FontWeight.bold,fontSize: 20),),
                       ),
                       const SizedBox(height: 20,),
 
@@ -406,7 +397,11 @@ class _ServiceDashboardState extends State<ServiceDashboard> {
                               Text("Next Booking",style: TextStyle(fontWeight: FontWeight.bold,fontSize: 20),),
                               GestureDetector(
                                   onTap: (){
-
+                                     if(newService.length > 0){
+                                       Navigator.pushNamed(
+                                           context, CustomerCommonList.routeName,
+                                           arguments: "New Services");
+                                     }
                                   },
                                   child: Text("See all",style: TextStyle(fontWeight: FontWeight.w600,fontSize: 15,color: Color(0xFF820000)),)),
                             ],
@@ -417,7 +412,7 @@ class _ServiceDashboardState extends State<ServiceDashboard> {
                         ListView.builder(
                             physics: const NeverScrollableScrollPhysics(),
                             shrinkWrap: true,
-                            itemCount: 4,
+                            itemCount: newService.length,
                             itemBuilder: (BuildContext context, int index) {
                               return  GestureDetector(
                                 onTap: (){
@@ -457,7 +452,7 @@ class _ServiceDashboardState extends State<ServiceDashboard> {
                                           margin: EdgeInsets.all(10.0),
                                           child: CircleAvatar(
                                             radius: 30,
-                                            backgroundImage: NetworkImage(ApiConfig.baseUrl+newService[index].bookingUser!.avatar.toString()),
+                                            backgroundImage: NetworkImage(ApiConfig.baseUrl+newService![index].bookingUser!.avatar.toString()),
                                           ),
                                         ),
                                         Column(

@@ -20,6 +20,7 @@ class _CustomerCommonListState extends State<CustomerCommonList> {
   bool isApiCalled = false;
   List<NewServices> newService = [];
   bool isLoading = true;
+  bool isFirstTime = true;
 
   @override
   void initState() {
@@ -56,22 +57,29 @@ class _CustomerCommonListState extends State<CustomerCommonList> {
 
     print("Page Title :: $appBarTitle");
     if(!isApiCalled){
-
-
       String type = "";
       if(appBarTitle == "Total Services"){
         type = "total_bookings";
       }else if(appBarTitle == "Pending Services"){
-        type = "new_booking";
+        type = "new_bookings";
       }else if(appBarTitle == "In Progress Services"){
         type = "today_inprocess";
       }else if(appBarTitle == "Completed Services"){
         type = "today_completed";
       }else if(appBarTitle == "Canceled Services"){
         type = "today_cancelled";
+      }else if(appBarTitle == "New Services"){
+        type = "new_bookings";
       }
 
-      if(type != "") getDataFromBookingApi(type);
+      if(type != ""){
+        if(isFirstTime){
+          setState(() {
+            isFirstTime = false;
+          });
+          getDataFromBookingApi(type);
+        }
+      }
     }
 
     Size screenSize = MediaQuery.of(context).size;
