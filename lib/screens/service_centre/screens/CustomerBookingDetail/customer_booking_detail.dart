@@ -60,10 +60,16 @@ class _CustomerBookingInfoState extends State<CustomerBookingInfo> {
       setState(() {
         isApiCalled = true;
         bookingData = detailsMainModel.bookingDetail!;
-        // if(bookingData!.bookingStatus == ""){
-        //   startButtonVisibility = true;
-        //   stopButtonVisibility = true;
-        // }
+        if(bookingData!.bookingStatus == "dropped_at_vendor"){
+          startButtonVisibility = true;
+          stopButtonVisibility = false;
+        }else if(bookingData!.bookingStatus == 'proccessed'){
+          startButtonVisibility = false;
+          stopButtonVisibility = true;
+        }else{
+          startButtonVisibility = false;
+          stopButtonVisibility = false;
+        }
         print("hhhhgggghhhg>>>>${jsonEncode(bookingData)}");
         isLoading = false;
       });
@@ -400,7 +406,7 @@ class _CustomerBookingInfoState extends State<CustomerBookingInfo> {
                               fontWeight: FontWeight.w600,
                               fontSize: 15),
                         ),
-                          SizedBox(
+                        SizedBox(
                           height: 25,
                         ),
                         Text(
