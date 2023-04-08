@@ -459,7 +459,7 @@ class _ServiceDashboardState extends State<ServiceDashboard> {
                                           margin: EdgeInsets.all(10.0),
                                           child: CircleAvatar(
                                             radius: 30,
-                                            backgroundImage: NetworkImage(ApiConfig.baseUrl+newService[index].bookingUser!.avatar.toString()),
+                                            //backgroundImage: NetworkImage(ApiConfig.baseUrl+newService[index].bookingUser!.avatar.toString()),
                                           ),
                                         ),
                                         Column(
@@ -469,7 +469,7 @@ class _ServiceDashboardState extends State<ServiceDashboard> {
                                             SizedBox(height: 5,),
                                             Row(
                                               children: [
-                                                Text("${newService[index].bookingAddress?.name}",style: TextStyle(fontWeight: FontWeight.w600,fontSize: 16,color: Colors.black),),
+                                                Text("${newService[index].bookingAddress!.name}",style: TextStyle(fontWeight: FontWeight.w600,fontSize: 16,color: Colors.black),),
                                                 SizedBox(width: 100,),
                                                 Container(
                                                   decoration: BoxDecoration(
@@ -489,7 +489,7 @@ class _ServiceDashboardState extends State<ServiceDashboard> {
                                               (newService[index].bookingPackage!.packageFeaturesName!.toString()).toString(),
                                               textStyle: TextStyle(fontWeight: FontWeight.w600,fontSize: 13,color: Color(0xFF848484)),
                                             ),
-                                            Text("${newService[index].bookingDriver!.name}",style: TextStyle(fontWeight: FontWeight.w600,fontSize: 13,color: Color(0xFF848484)),),
+                                            Text( newService[index].bookingDriver != null? newService[index].bookingCenter!.shopName.toString():"",style: TextStyle(fontWeight: FontWeight.w600,fontSize: 13,color: Color(0xFF848484)),),
                                             Text("${newService[index].bookedDate}",style: TextStyle(fontWeight: FontWeight.w600,fontSize: 13,color: Color(0xFF848484)),),
                                             Row(
                                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
