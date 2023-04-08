@@ -15,6 +15,7 @@ import 'package:lunaaz_moto/screens/service_centre/screens/navVendorBar/vendor_n
 import 'package:lunaaz_moto/services/api_service.dart';
 import 'package:badges/badges.dart' as badges;
 
+import '../CustomerBookingDetail/customer_booking_detail.dart';
 import '../CustomerBookingDetail/service_completed.dart';
 
 class ServiceDashboard extends StatefulWidget {
@@ -418,7 +419,7 @@ class _ServiceDashboardState extends State<ServiceDashboard> {
                             itemBuilder: (BuildContext context, int index) {
                               return  GestureDetector(
                                 onTap: (){
-
+                                  Navigator.pushNamed(context, CustomerBookingInfo.routeName,arguments: newService[index]);
                                 },
                                 child: Padding(
                                   padding:  EdgeInsets.symmetric(horizontal: 10,vertical: 16),
