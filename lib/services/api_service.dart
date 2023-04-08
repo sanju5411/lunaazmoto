@@ -26,6 +26,7 @@ import 'package:profile/profile.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../models/drivers/drivers_main_model.dart';
+import '../models/serviceModule/dashboard/ServiceCentersMainModel.dart';
 
 Map<String, String> headers = {
   'Content-type': 'application/json',
@@ -268,8 +269,49 @@ class ApiService {
     }
   }
 
+  static Future<BookingList> changeServiceStatusServiceCenter({required var bookingId, required Object jsonInput}) async {
+    Uri uri = Uri.parse('${ApiConfig.apiV1}/${ApiConfig.bookingChangeStatusServiceCenter}/$bookingId');
+    String token = await SharedPreferencesService.getApiToken();
+    headers.addAll({'Authorization': 'Bearer $token'});
+
+    try {
+      var res = await post(
+          uri,
+          headers: headers,
+          body : jsonInput
+      );
+      print("BOOKING_LIST_ERROR>>> $uri");
+      print("BOOKING_LIST_ERROR>>> $jsonInput");
+      var json = jsonDecode(res.body);
+      return BookingList.fromJson(json);
+    } catch (e) {
+      print("BOOKING_LIST_ERROR>>> $e");
+      return BookingList();
+    }
+  }
+
   static Future<BookingListMainModel> getBookingListWithKey({required Object jsonInput}) async {
     Uri uri = Uri.parse('${ApiConfig.apiV1}/${ApiConfig.bookingListWithKeyDriver}');
+    String token = await SharedPreferencesService.getApiToken();
+    headers.addAll({'Authorization': 'Bearer $token'});
+
+    try {
+      var res = await post(
+          uri,
+          headers: headers,
+          body : jsonInput
+      );
+
+      var json = jsonDecode(res.body);
+      return BookingListMainModel.fromJson(json);
+    } catch (e) {
+      print("BOOKING_LIST_ERROR>>> $e");
+      return BookingListMainModel();
+    }
+  }
+
+  static Future<BookingListMainModel> getBookingListWithKeyServiceCenter({required Object jsonInput}) async {
+    Uri uri = Uri.parse('${ApiConfig.apiV1}/${ApiConfig.bookingListWithKeyServiceCenter}');
     String token = await SharedPreferencesService.getApiToken();
     headers.addAll({'Authorization': 'Bearer $token'});
 
@@ -346,6 +388,25 @@ class ApiService {
 
   }
 
+  static Future<BookingDetailsMainModel> getBookingDetailsServiceCenter({required var bookingId}) async{
+    Uri uri = Uri.parse('${ApiConfig.apiV1}/${ApiConfig.bookingDetailsSC}/$bookingId');
+    String token = await SharedPreferencesService.getApiToken();
+    headers.addAll({'Authorization': 'Bearer $token'});
+
+    try {
+      var res = await get(
+        uri,
+        headers: headers,
+      );
+      var json = jsonDecode(res.body);
+      return BookingDetailsMainModel.fromJson(json);
+    } catch (e) {
+      print("BOOKING_LIST_ERROR>>> $e");
+      return BookingDetailsMainModel();
+    }
+
+  }
+
   static Future<AuthAddress> getAddressListD() async{
     Uri uri = Uri.parse('${ApiConfig.apiV1}/${ApiConfig.getAddress}');
     String token = await SharedPreferencesService.getApiToken();
@@ -382,6 +443,26 @@ class ApiService {
     } catch (e) {
       print("SET_ADDRESS_ERROR>>> $e");
       return AuthAddress();
+    }
+  }
+
+  static Future<ServiceCentersMainModel> getServiceCenterDashboardData() async {
+    Uri uri = Uri.parse('${ApiConfig.apiV1}/${ApiConfig.serviceCenterDashboard}');
+    String token = await SharedPreferencesService.getApiToken();
+    headers.addAll({'Authorization': 'Bearer $token'});
+
+    print("Dashboard token--->$token");
+
+    try {
+      var res = await get(
+        uri,
+        headers: headers,
+      );
+      var json = jsonDecode(res.body);
+      return ServiceCentersMainModel.fromJson(json);
+    } catch (e) {
+      print("DASHBOARD_API_ERROR>>> $e");
+      return ServiceCentersMainModel();
     }
   }
 

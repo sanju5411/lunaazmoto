@@ -2,13 +2,20 @@ import 'dart:convert';
 
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:lunaaz_moto/configs/api_config.dart';
 import 'package:lunaaz_moto/constants/global_variables.dart';
+import 'package:lunaaz_moto/models/drivers/new_services.dart';
+import 'package:lunaaz_moto/models/serviceModule/dashboard/ServiceCentersMainModel.dart';
 import 'package:lunaaz_moto/models/service_center/service_centers.dart';
 import 'package:lunaaz_moto/screens/customer/customer_screens/profile_screen/profile_screen.dart';
 import 'package:lunaaz_moto/screens/service_centre/screens/customer_list/customer_common_list.dart';
 import 'package:lunaaz_moto/screens/service_centre/screens/navVendorBar/vendor_nav_bar.dart';
 import 'package:lunaaz_moto/services/api_service.dart';
 import 'package:badges/badges.dart' as badges;
+
+import '../CustomerBookingDetail/service_completed.dart';
 
 class ServiceDashboard extends StatefulWidget {
   static const String routeName = '/service_centre';
@@ -22,31 +29,40 @@ class ServiceDashboard extends StatefulWidget {
 
 class _ServiceDashboardState extends State<ServiceDashboard> {
 
+  int totalServiceCount = 0;
+  int pendingServiceCount = 0;
+  int inProcessServiceCount = 0;
+  int completedServiceCount = 0;
+  int canceledServiceCount = 0;
+  List<NewServices> newService = [];
+
 
 
   void _setServiceDashData() async {
 
-    //ServiceCenters _serviceCenters = await ApiService.getServiceDashboard("service-center");
-   // print("service dashboard data>>>>>${jsonEncode(_serviceCenters)}>>>>");
+    ServiceCentersMainModel serviceCentersMainModel = await ApiService.getServiceCenterDashboardData();
+    print("Service Centers Main Model--->${jsonEncode(serviceCentersMainModel)}");
+    if(serviceCentersMainModel.status == "success"){
+      setState(() {
+        totalServiceCount = serviceCentersMainModel.totalServices!;
+        pendingServiceCount = serviceCentersMainModel.newServices!;
+        inProcessServiceCount = serviceCentersMainModel.inProccessServices!;
+        completedServiceCount = serviceCentersMainModel.completedServices!;
+        canceledServiceCount = serviceCentersMainModel.todayRejectedServices!;
+        newService = serviceCentersMainModel.nextServices!;
+      });
+    }
+   print("service dashboard data>>>>>${jsonEncode(serviceCentersMainModel)}>>>>");
 
 
-    // if(bookingList.status  == "success"){
-    //   onGoingList = bookingList!.onGoingBookings!;
-    //   lastBookings = bookingList!.bookings!;
-    //   setState(() {
-    //     loading = false;
-    //   });
-    // }
+
 
   }
 
   @override
   void initState() {
-
-   // _setServiceDashData();
-
     super.initState();
-    //  WidgetsBinding.instance.addObserver(this);
+    _setServiceDashData();
   }
 
 
@@ -133,7 +149,6 @@ class _ServiceDashboardState extends State<ServiceDashboard> {
               ),
               const SizedBox(height: 25,),
               Container(
-                  width: screenSize.width,
                   decoration: const BoxDecoration(
                       color: CustomColor.whiteColor,
                       borderRadius: BorderRadius.only(
@@ -148,49 +163,58 @@ class _ServiceDashboardState extends State<ServiceDashboard> {
                           margin: const EdgeInsets.symmetric(horizontal: 20),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: const [
+                            children: [
                               Text("Today’s Process",style: TextStyle(fontWeight: FontWeight.bold,fontSize: 20),),
-                              Text("See all",style: TextStyle(fontWeight: FontWeight.w600,fontSize: 15,color: Color(0xFF820000)),),
+                              GestureDetector(
+                                onTap: (){
+
+                                },
+                                child: Text("See all",style: TextStyle(fontWeight: FontWeight.w600,fontSize: 15,color: Color(0xFF820000)),)),
                             ],
                           )
                       ),
                       const SizedBox(height: 20,),
 
-
                       Padding(
                        padding: const EdgeInsets.symmetric(horizontal: 10),
-                       child: Row(children: [
+                       child: Row(
+                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                         children: [
                          InkWell(
                            onTap: (){
-                             Navigator.push(context, MaterialPageRoute(builder: (context) => CustomerCommonList( appBartext: "New Services",),),);
-                             // Navigator.pushNamed(context, CustomerCommonList.routeName, arguments: Text("gggg"));
+                             if(totalServiceCount != 0) {
+                               Navigator.pushNamed(
+                                   context, CustomerCommonList.routeName,
+                                   arguments: "Total Services");
+                             }else{
+                               Fluttertoast.showToast(msg: "No Bookings Found");
+                             }
                            },
                            child: Stack(
                              children: [
                                Positioned(
                                  left: 20,
-
                                    child: Container(
-                                 decoration: BoxDecoration(borderRadius: BorderRadius.circular(13),color: Color(0xff712AFD)),
+                                 decoration: BoxDecoration(borderRadius: BorderRadius.circular(13),color: Color(0xFF712AFD)),
                                  child: Padding(
                                    padding: const EdgeInsets.all(12),
-                                   child: Text("45",style: TextStyle(color: CustomColor.whiteColor,fontSize: 20),),
+                                   child: Text("$totalServiceCount",style: TextStyle(color: CustomColor.whiteColor,fontSize: 20),),
                                  ),
                                )),
                                Padding(
                                  padding: const EdgeInsets.symmetric(vertical: 30),
                                  child: Container(
-                                     height: 90,
-                                     width: screenSize.width * 0.4,
+                                     height: 110,
+                                     width: screenSize.width * 0.45,
                                      decoration:  BoxDecoration(
-                                         border: Border.all(color: const Color(0xff712AFD)),
+                                         border: Border.all(color: const Color(0xFF712AFD)),
                                          borderRadius: const BorderRadius.all(Radius.circular(16))
                                      ),
                                      child:  Align(
                                          alignment: Alignment.bottomLeft,
                                          child: Padding(
-                                           padding: const EdgeInsets.all(10.0),
-                                           child: Text("New\nServices",textAlign: TextAlign.center,style: TextStyle(fontSize: 17,fontWeight: FontWeight.w500),),
+                                           padding: const EdgeInsets.symmetric(vertical: 15.0,horizontal: 25),
+                                           child: Text("Total\nServices",style: TextStyle(fontSize: 21,fontWeight: FontWeight.w500),),
                                          ))
 
                                  ),
@@ -198,38 +222,40 @@ class _ServiceDashboardState extends State<ServiceDashboard> {
                              ],
                            ),
                          ),
-                         Spacer(),
+
                          InkWell(
                            onTap: (){
-                             Navigator.push(context, MaterialPageRoute(builder: (context) => CustomerCommonList( appBartext: "New Services",),),);
-                             // Navigator.pushNamed(context, CustomerCommonList.routeName, arguments: Text("gggg"));
+                             if(pendingServiceCount != 0){
+                             Navigator.pushNamed(context, CustomerCommonList.routeName,arguments: "Pending Services");
+                             }else{
+                               Fluttertoast.showToast(msg: "No Bookings Found");
+                             }
                            },
                            child: Stack(
                              children: [
                                Positioned(
                                    left: 20,
-
                                    child: Container(
-                                     decoration: BoxDecoration(borderRadius: BorderRadius.circular(13),color: Color(0xffFBB01E)),
+                                     decoration: BoxDecoration(borderRadius: BorderRadius.circular(13),color: Color(0xFFFBB01E)),
                                      child: Padding(
                                        padding: const EdgeInsets.all(12),
-                                       child: Text("45",style: TextStyle(color: CustomColor.whiteColor,fontSize: 20),),
+                                       child: Text("$pendingServiceCount",style: TextStyle(color: CustomColor.whiteColor,fontSize: 20),),
                                      ),
                                    )),
                                Padding(
                                  padding: const EdgeInsets.symmetric(vertical: 30),
                                  child: Container(
-                                     height: 90,
-                                     width: screenSize.width * 0.4,
+                                     height: 110,
+                                     width: screenSize.width * 0.45,
                                      decoration:  BoxDecoration(
-                                         border: Border.all(color: const Color(0xffFBB01E)),
+                                         border: Border.all(color: const Color(0xFFFBB01E)),
                                          borderRadius: const BorderRadius.all(Radius.circular(16))
                                      ),
                                      child:  Align(
                                          alignment: Alignment.bottomLeft,
                                          child: Padding(
-                                           padding: const EdgeInsets.all(10.0),
-                                           child: Text("New\nServices",textAlign: TextAlign.center,style: TextStyle(fontSize: 17,fontWeight: FontWeight.w500),),
+                                           padding: const EdgeInsets.symmetric(vertical: 15.0,horizontal: 25),
+                                           child: Text("Pending\nServices",style: TextStyle(fontSize: 21,fontWeight: FontWeight.w500),),
                                          ))
 
                                  ),
@@ -239,31 +265,34 @@ class _ServiceDashboardState extends State<ServiceDashboard> {
                          ),
                        ],),
                      ),
-                      SizedBox(height: 20,),
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 10),
-                        child: Row(children: [
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
                           InkWell(
                             onTap: (){
-                              Navigator.push(context, MaterialPageRoute(builder: (context) => CustomerCommonList( appBartext: "New Services",),),);
-                              // Navigator.pushNamed(context, CustomerCommonList.routeName, arguments: Text("gggg"));
+                              if(inProcessServiceCount != 0){
+                              Navigator.pushNamed(context, CustomerCommonList.routeName,arguments: "In Progress Services");
+                              }else{
+                                Fluttertoast.showToast(msg: "No Bookings Found");
+                              }
                             },
                             child: Stack(
                               children: [
                                 Positioned(
                                     left: 20,
-
                                     child: Container(
                                       decoration: BoxDecoration(borderRadius: BorderRadius.circular(13),color: Color(0xff31BE40)),
                                       child: Padding(
                                         padding: const EdgeInsets.all(12),
-                                        child: Text("45",style: TextStyle(color: CustomColor.whiteColor,fontSize: 20),),
+                                        child: Text("$inProcessServiceCount",style: TextStyle(color: CustomColor.whiteColor,fontSize: 20),),
                                       ),
                                     )),
                                 Padding(
                                   padding: const EdgeInsets.symmetric(vertical: 30),
                                   child: Container(
-                                      height: 90,
+                                      height: 110,
                                       width: screenSize.width * 0.280,
                                       decoration:  BoxDecoration(
                                           border: Border.all(color: const Color(0xff31BE40)),
@@ -272,8 +301,8 @@ class _ServiceDashboardState extends State<ServiceDashboard> {
                                       child:  Align(
                                           alignment: Alignment.bottomLeft,
                                           child: Padding(
-                                            padding: const EdgeInsets.all(10.0),
-                                            child: Text("New\nServices",textAlign: TextAlign.center,style: TextStyle(fontSize: 17,fontWeight: FontWeight.w500),),
+                                            padding: const EdgeInsets.only(bottom: 25,left: 20),
+                                            child: Text("In Process\nServices",style: TextStyle(fontSize: 16,fontWeight: FontWeight.w600),),
                                           ))
 
                                   ),
@@ -281,39 +310,41 @@ class _ServiceDashboardState extends State<ServiceDashboard> {
                               ],
                             ),
                           ),
-                          Spacer(),
+
                           InkWell(
                             onTap: (){
-                              Navigator.push(context, MaterialPageRoute(builder: (context) => CustomerCommonList( appBartext: "New Services",),),);
-                              // Navigator.pushNamed(context, CustomerCommonList.routeName, arguments: Text("gggg"));
+                              if(completedServiceCount != 0){
+                                Navigator.pushNamed(context, CustomerCommonList.routeName,arguments: "Completed Services");
+                              }else{
+                                Fluttertoast.showToast(msg: "No Bookings Found");
+                              }
                             },
                             child: Stack(
                               children: [
                                 Positioned(
                                     left: 20,
-
                                     child: Container(
                                       decoration: BoxDecoration(borderRadius: BorderRadius.circular(13),color: Color(
-                                          0xfffd8f72)),
+                                          0xFFFF623A)),
                                       child: Padding(
                                         padding: const EdgeInsets.all(12),
-                                        child: Text("45",style: TextStyle(color: CustomColor.whiteColor,fontSize: 20),),
+                                        child: Text("$completedServiceCount",style: TextStyle(color: CustomColor.whiteColor,fontSize: 20),),
                                       ),
                                     )),
                                 Padding(
                                   padding: const EdgeInsets.symmetric(vertical: 30),
                                   child: Container(
-                                      height: 90,
-                                      width: screenSize.width * 0.280,
+                                      height: 110,
+                                      width: screenSize.width * 0.315,
                                       decoration:  BoxDecoration(
-                                          border: Border.all(color: const Color(0xfffd8f72)),
+                                          border: Border.all(color: const Color(0xFFFF623A)),
                                           borderRadius: const BorderRadius.all(Radius.circular(16))
                                       ),
                                       child:  Align(
                                           alignment: Alignment.bottomLeft,
                                           child: Padding(
-                                            padding: const EdgeInsets.all(10.0),
-                                            child: Text("New\nServices",textAlign: TextAlign.center,style: TextStyle(fontSize: 17,fontWeight: FontWeight.w500),),
+                                            padding: const EdgeInsets.only(bottom: 20,left: 20),
+                                            child: Text("Completed\nService",style: TextStyle(fontSize: 17,fontWeight: FontWeight.w600),),
                                           ))
 
                                   ),
@@ -321,38 +352,43 @@ class _ServiceDashboardState extends State<ServiceDashboard> {
                               ],
                             ),
                           ),
-                          Spacer(),
+
                           InkWell(
                             onTap: (){
-                              Navigator.push(context, MaterialPageRoute(builder: (context) => CustomerCommonList( appBartext: "New Services",),),);
-                              // Navigator.pushNamed(context, CustomerCommonList.routeName, arguments: Text("gggg"));
+                              if(canceledServiceCount != 0) {
+                                Navigator.pushNamed(
+                                    context, CustomerCommonList.routeName,
+                                    arguments: "Canceled Services");
+                              }else{
+                                Fluttertoast.showToast(msg: "No Bookings Found");
+                              }
                             },
                             child: Stack(
                               children: [
                                 Positioned(
                                     left: 20,
-
                                     child: Container(
-                                      decoration: BoxDecoration(borderRadius: BorderRadius.circular(13),color: Color(0xffFF623A)),
+                                      decoration: BoxDecoration(borderRadius: BorderRadius.circular(13),color: Color(
+                                          0xFFFF2121)),
                                       child: Padding(
                                         padding: const EdgeInsets.all(12),
-                                        child: Text("45",style: TextStyle(color: CustomColor.whiteColor,fontSize: 20),),
+                                        child: Text("$canceledServiceCount",style: TextStyle(color: CustomColor.whiteColor,fontSize: 20),),
                                       ),
                                     )),
                                 Padding(
                                   padding: const EdgeInsets.symmetric(vertical: 30),
                                   child: Container(
-                                      height: 90,
-                                      width: screenSize.width  * 0.280,
+                                      height: 110,
+                                      width: screenSize.width * 0.280,
                                       decoration:  BoxDecoration(
-                                          border: Border.all(color: const Color(0xffFF623A)),
+                                          border: Border.all(color: const Color(0xFFFF2121)),
                                           borderRadius: const BorderRadius.all(Radius.circular(16))
                                       ),
                                       child:  Align(
                                           alignment: Alignment.bottomLeft,
                                           child: Padding(
-                                            padding: const EdgeInsets.all(10.0),
-                                            child: Text("New\nServices",textAlign: TextAlign.center,style: TextStyle(fontSize: 17,fontWeight: FontWeight.w500),),
+                                            padding: const EdgeInsets.only(bottom: 20,left: 20),
+                                            child: Text("Canceled\nService",style: TextStyle(fontSize: 17,fontWeight: FontWeight.w600),),
                                           ))
 
                                   ),
@@ -363,130 +399,130 @@ class _ServiceDashboardState extends State<ServiceDashboard> {
                         ],),
                       ),
 
-
-
                       const SizedBox(height: 20,),
                       Container(
                           margin: const EdgeInsets.symmetric(horizontal: 20),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: const [
+                            children: [
                               Text("Next Booking",style: TextStyle(fontWeight: FontWeight.bold,fontSize: 20),),
-                              Text("See all",style: TextStyle(fontWeight: FontWeight.w600,fontSize: 15,color: Color(0xFF820000)),),
+                              GestureDetector(
+                                  onTap: (){
+
+                                  },
+                                  child: Text("See all",style: TextStyle(fontWeight: FontWeight.w600,fontSize: 15,color: Color(0xFF820000)),)),
                             ],
                           )
                       ),
                       const SizedBox(height: 20,),
-                      ListView.builder(
-                          physics: const NeverScrollableScrollPhysics(),
-                          shrinkWrap: true,
-                          itemCount: 4,
-                          itemBuilder: (BuildContext context, int index) {
-                            return  Padding(
-                              padding: const EdgeInsets.symmetric(horizontal: 10,vertical: 16),
-                              child: Container(
-                                //height: screenSize.height * 0.18,
-                                width: screenSize.width,
-                                decoration:  BoxDecoration(
-                                    color: CustomColor.whiteColor,
-                                    boxShadow: const
-                                    [
-                                      BoxShadow(
-                                        color: Color(0xffe1e1e1),
-                                        offset: Offset(
-                                          1.0,
-                                          1.0,
-                                        ),
-                                        blurRadius: 19.0,
-                                        spreadRadius: 1.0,
-                                      ), //BoxShadow
-                                      BoxShadow(
-                                        color: Colors.white,
-                                        offset: Offset(0.0, 0.0),
-                                        blurRadius: 0.0,
-                                        spreadRadius: 0.0,
-                                      ), //BoxShadow
-                                    ],
-                                    borderRadius: BorderRadius.circular(20)
-                                ),
+                      if(newService.isNotEmpty)...[
+                        ListView.builder(
+                            physics: const NeverScrollableScrollPhysics(),
+                            shrinkWrap: true,
+                            itemCount: 4,
+                            itemBuilder: (BuildContext context, int index) {
+                              return  GestureDetector(
+                                onTap: (){
+
+                                },
                                 child: Padding(
-                                  padding: const EdgeInsets.all(10.0),
-                                  child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      Column(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                        children:  [
-                                          const SizedBox(height: 4,),
-                                          Row(
-                                            children: [
-                                              SizedBox(
-                                                width: 120,
-                                                child: AutoSizeText("ccccccc",
-                                                  style: const TextStyle(fontSize: 20,fontWeight: FontWeight.w600),),
-                                              ),
-                                              Spacer(),
-                                              Container(
-                                                decoration: BoxDecoration(
-                                                    borderRadius: BorderRadius.circular(17),
-                                                    color: Color(
-                                                        0xffffc0c0)),
-                                                child: Padding(
-                                                  padding: const EdgeInsets.all(7.0),
-                                                  child: Text("etaebaeg",style: TextStyle(fontSize: 17,color: CustomColor.primaryColor,fontWeight: FontWeight.w700),),
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                          const SizedBox(height: 3,),
-                                          Divider(color: Colors.black,),
-                                          const SizedBox(height: 3,),
-                                          Row(children: [
-                                            const Text("Reference Number -",style: TextStyle(fontSize: 20),),
-                                            const SizedBox(width: 7,),
-                                            Text("zbbabgagawgga"),
-                                          ],
-                                          ),
-                                          SizedBox(height: 10,),
-                                          Row(children: [
-                                            const Text("Date -",style: TextStyle(fontSize: 20),),
-                                            const SizedBox(width: 7,),
-                                            Text("zhthahahraear"),
-                                          ],
-                                          ),
+                                  padding:  EdgeInsets.symmetric(horizontal: 10,vertical: 16),
+                                  child: Container(
+                                    decoration:  BoxDecoration(
+                                        color: CustomColor.whiteColor,
+                                        boxShadow: const
+                                        [
+                                          BoxShadow(
+                                            color: Color(0xffe1e1e1),
+                                            offset: Offset(
+                                              1.0,
+                                              1.0,
+                                            ),
+                                            blurRadius: 19.0,
+                                            spreadRadius: 1.0,
+                                          ), //BoxShadow
+                                          BoxShadow(
+                                            color: Colors.white,
+                                            offset: Offset(0.0, 0.0),
+                                            blurRadius: 0.0,
+                                            spreadRadius: 0.0,
+                                          ), //BoxShadow
                                         ],
-                                      ),
-                                      const SizedBox(height: 10,),
-
-                                      Row(children: [
-                                        const Text("Vehicle No :-",style: TextStyle(fontSize: 20),),
-                                        const SizedBox(width: 7,),
-                                        Text("bdzdbbzsSVSgvrDrd"),
-                                      ],),
-                                      const SizedBox(height: 10,),
-                                      Row(children: [
-                                        Text("Payment :-",style: TextStyle(fontSize: 19),),
-                                        SizedBox(width: 5,),
-                                        Text("dddbbrbrdgrr",style: const TextStyle(color: Colors.blueAccent,fontWeight: FontWeight.w700,fontSize: 17),),
-
-
-                                      ],),
-                                      const SizedBox(height: 4,),
-                                      Divider(),
-                                      const SizedBox(height: 4,),
-                                      Align(
-                                        alignment: Alignment.bottomCenter,
-                                        child: Padding(
-                                          padding: const EdgeInsets.all(2.0),
-                                          child: Text("View Detail",style: TextStyle(fontSize: 18,color: Colors.cyan,fontWeight: FontWeight.w800),),
+                                        borderRadius: BorderRadius.circular(20)
+                                    ),
+                                    child: Row(
+                                      mainAxisSize: MainAxisSize.max,
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      crossAxisAlignment: CrossAxisAlignment.center,
+                                      children: [
+                                        Container(
+                                          margin: EdgeInsets.all(10.0),
+                                          child: CircleAvatar(
+                                            radius: 30,
+                                            backgroundImage: NetworkImage(ApiConfig.baseUrl+newService[index].bookingUser!.avatar.toString()),
+                                          ),
                                         ),
-                                      ),
-                                    ],
+                                        Column(
+                                          mainAxisAlignment: MainAxisAlignment.start,
+                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          children: [
+                                            SizedBox(height: 5,),
+                                            Row(
+                                              children: [
+                                                Text("${newService[index].bookingAddress?.name}",style: TextStyle(fontWeight: FontWeight.w600,fontSize: 16,color: Colors.black),),
+                                                SizedBox(width: 100,),
+                                                Container(
+                                                  decoration: BoxDecoration(
+                                                      color: Color(0xFFE8F0FF),
+                                                      border: Border.all(
+                                                        color: Color(0xFFE8F0FF),
+                                                      ),
+                                                      borderRadius: BorderRadius.all(Radius.circular(15))
+                                                  ),
+                                                  padding: const EdgeInsets.all(8.0),
+                                                  child: Text("Pending",style: TextStyle(color: Color(0xFF1D3A70)),),
+                                                ),
+                                              ],
+                                            ),
+                                            Text("${newService[index].bookingVehName}",style: TextStyle(fontWeight: FontWeight.w600,fontSize: 14,color: Color(0xFF646464)),),
+                                            HtmlWidget(
+                                              (newService[index].bookingPackage!.packageFeaturesName!.toString()).toString(),
+                                              textStyle: TextStyle(fontWeight: FontWeight.w600,fontSize: 13,color: Color(0xFF848484)),
+                                            ),
+                                            Text("${newService[index].bookingDriver!.name}",style: TextStyle(fontWeight: FontWeight.w600,fontSize: 13,color: Color(0xFF848484)),),
+                                            Text("${newService[index].bookedDate}",style: TextStyle(fontWeight: FontWeight.w600,fontSize: 13,color: Color(0xFF848484)),),
+                                            Row(
+                                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                              children: [
+                                                Text("${newService[index].bookedTime}",style: TextStyle(fontWeight: FontWeight.w600,fontSize: 13,color: Color(0xFF848484)),),
+                                                SizedBox(width: 100,),
+                                                Row(
+                                                  crossAxisAlignment: CrossAxisAlignment.end,
+                                                  mainAxisAlignment: MainAxisAlignment.end,
+                                                  children: [
+                                                    Text("View Details",style: TextStyle(color: Color(0xFF820000)),),
+                                                    Icon(Icons.arrow_forward,color: Color(0xFF820000),)
+                                                  ],
+                                                ),
+                                              ],
+                                            ),
+                                            SizedBox(height: 10,),
+                                          ],
+                                        ),
+                                      ],
+                                    ),
                                   ),
                                 ),
-                              ),
-                            );
-                          }),
+                              );
+                            }),
+                      ]else...[
+                        SizedBox(
+                          height: 100,
+                          child: Align(
+                            child: Text("No Service For Now",style: TextStyle(color: Colors.red,fontSize: 18,fontWeight: FontWeight.w500),),
+                          ),
+                        )
+                      ]
                     ],
                   )
               ),

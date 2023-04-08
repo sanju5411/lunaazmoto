@@ -24,6 +24,8 @@ class CustomColor {
 
   static const primaryDividerColor = Color.fromRGBO(65, 65, 65, 1.0);
   static const secondaryDividerColor = Color.fromRGBO(169, 169, 169, 1.0);
+  
+  static const doneTextColor = Color(0xFF37393A);
 }
 
 class CustomStyle {

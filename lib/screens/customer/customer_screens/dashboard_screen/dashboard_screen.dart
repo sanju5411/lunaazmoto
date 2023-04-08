@@ -368,7 +368,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                               children:  [
                                 Row(
                                   children: [
-                                    SizedBox(
+                                    const SizedBox(
                                       width: 140,
                                       child: AutoSizeText(
                                         "Popular Package",style: TextStyle(color: CustomColor.whiteColor,fontSize: 17,fontWeight: FontWeight.w700),
@@ -377,8 +377,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                     Spacer(),
                                     ElevatedButton(
                                       style: ElevatedButton.styleFrom(
-                                        backgroundColor: Colors.black, // background (button) color
-                                        foregroundColor: Colors.white, // foreground (text) color
+                                        primary: Colors.black, // background (button) color
+                                        onSurface: Colors.white, // foreground (text) color
                                       ),
                                       onPressed: () => print('pressed'),
                                       child: const Text('Purchase Now'),
