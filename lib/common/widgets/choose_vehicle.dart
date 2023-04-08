@@ -34,77 +34,76 @@ class _CustomWheelerPopUpState extends State<CustomWheelerPopUp> {
            SizedBox(
              height: 8,
            ),
-          InkWell(
-            onTap: (){
-     print("srfr>>>>${widget.packageList!.length}");
-      if(widget.packageList!.isEmpty){
-        Navigator.pop(context);
-        Navigator.pushNamed(context, BookingScreen.routeName,arguments: "two_wheeler",);
-      }
-      else{
-        var packageId = 0;
-        var packageExpiryDate = "0";
-        for(var i = 0;i<widget.packageList!.length;i++){
-          if(widget.packageList![i].activeVehicleType == "two_wheeler"){
-            if(widget.packageList![i].activeStatus == "activated"){
-              packageId = widget.packageList![i].activePackId!;
-              packageExpiryDate = widget.packageList![i].activeEndDate!;
-              Navigator.pop(context);
-              Navigator.pushNamed(context, BookingForm.routeName, arguments: {"packageId":packageId,"vehicleType":"two_wheeler","packageExpiryDate":packageExpiryDate});
+             InkWell(
+               onTap: (){
+                 //print("ttttttt>>>>${widget.packageList!.length}");
+                 if(widget.packageList!.length < 0){
+                   print("jjjjjj>>>>");
+                   Navigator.pop(context);
+                   Navigator.pushNamed(context, BookingScreen.routeName,arguments: "two_wheeler",);
+                 }
+                 else{
+                   var packageId = 0;
+                   var packageExpiryDate =  "0";
+                   for(var i = 0;i<widget.packageList!.length;i++){
+                     if(widget.packageList![i].activeVehicleType == "two_wheeler"){
+                       print("Status>>>${widget.packageList![i].activeStatus}");
+                       if(widget.packageList![i].activeStatus == "activated"){
+                         packageId = widget.packageList![i].activePackId!;
+                         packageExpiryDate = widget.packageList![i].activeEndDate!;
+                         Navigator.pop(context);
+                         Navigator.pushNamed(context, BookingForm.routeName, arguments: {"packageId":packageId,"vehicleType":"two_wheeler","packageExpiryDate":packageExpiryDate});
+                         return;
+                       }
+                       else if(widget.packageList![i].activeStatus == "completed"){
+                         Navigator.pop(context);
+                         Navigator.pushNamed(context, BookingScreen.routeName,arguments: "two_wheeler",);
+                       }
+                       // else if(widget.packageList![i].activeStatus == "completed"){
+                       //   Navigator.pop(context);
+                       //   Navigator.pushNamed(context, BookingScreen.routeName,arguments: "two_wheeler",);
+                       // }
+                       //
+                     }
+                   }
 
-            }
-            else if(widget.packageList![i].activeStatus == "completed"){
-              Navigator.pop(context);
-              Navigator.pushNamed(context, BookingScreen.routeName,arguments: "two_wheeler",);
-            }
-            // else if(widget.packageList![i].activeStatus == "completed"){
-            //   Navigator.pop(context);
-            //   Navigator.pushNamed(context, BookingScreen.routeName,arguments: "two_wheeler",);
-            // }
-            //
-                }
-          else{
-            Navigator.pop(context);
-            Navigator.pushNamed(context, BookingScreen.routeName,arguments: "two_wheeler",);
-          }
-        }
-      }
+                 }
+               },
+               child: Padding(
+                 padding: const EdgeInsets.symmetric(horizontal: 20),
+                 child: Container(
+                   decoration: BoxDecoration(
+                       borderRadius: BorderRadius.circular(17),
+                       color: const Color(0xffff5050),
+                   ),
+                   child: Padding(
+                     padding: const EdgeInsets.all(8.0),
+                     child: Row(
+                       mainAxisAlignment: MainAxisAlignment.center,
+                       children: const [
 
 
-            },//
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20),
-              child: Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(17),
-                  color: Color(0xffff5050)
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Icon(Icons.pedal_bike,color: CustomColor.whiteColor,),
-                      SizedBox(width: 20,),
-                      Text("Bike Service",style: TextStyle(fontSize: 23,color: CustomColor.whiteColor),),
-                  ],),
-                ),
-              ),
-            ),
-          ),
+                         Icon(Icons.car_crash,color: CustomColor.whiteColor,),
+                         SizedBox(width: 20,),
+                         Text("Bike Service",style: TextStyle(fontSize: 23,color: CustomColor.whiteColor),),
+                        ],),
+                   ),
+                 ),
+               ),
+             ),
            SizedBox(
              height: 10,
            ),
              InkWell(
                onTap: (){
-                 print("srfr>>>>${widget.packageList!.length}");
+                 print("wwwwwww>>>>${widget.packageList!.length}");
                  if(widget.packageList!.isEmpty){
                    Navigator.pop(context);
                    Navigator.pushNamed(context, BookingScreen.routeName,arguments: "four_wheeler",);
                  }
                  else{
-                   var packageId = 0;
-                   var packageExpiryDate = "0";
+                   var packageId = 1;
+                   var packageExpiryDate =  "0";
                    for(var i = 0;i<widget.packageList!.length;i++){
                      if(widget.packageList![i].activeVehicleType == "four_wheeler"){
                        if(widget.packageList![i].activeStatus == "activated"){
@@ -112,17 +111,19 @@ class _CustomWheelerPopUpState extends State<CustomWheelerPopUp> {
                          packageExpiryDate = widget.packageList![i].activeEndDate!;
                          Navigator.pop(context);
                          Navigator.pushNamed(context, BookingForm.routeName, arguments: {"packageId":packageId,"vehicleType":"four_wheeler","packageExpiryDate":packageExpiryDate});
-
+                         return;
                        }
                        else if(widget.packageList![i].activeStatus == "completed"){
                          Navigator.pop(context);
                          Navigator.pushNamed(context, BookingScreen.routeName,arguments: "four_wheeler",);
                        }
+
                        // else if(widget.packageList![i].activeStatus == "completed"){
                        //   Navigator.pop(context);
                        //   Navigator.pushNamed(context, BookingScreen.routeName,arguments: "two_wheeler",);
                        // }
                        //
+
                            }
                      else{
                        Navigator.pop(context);

@@ -10,6 +10,7 @@ class Package {
     this.packageStatus,
     this.packageFeaturesName,
     this.packageBenefits,
+    this.packageEndDate,
   });
 
   int? packageId;
@@ -20,6 +21,7 @@ class Package {
   String? packageStatus;
   String? packageFeaturesName;
   List<PackageBenefit>? packageBenefits;
+  String? packageEndDate;
 
   factory Package.fromJson(Map<String, dynamic> json) => Package(
     packageId: json["package_id"],
@@ -30,6 +32,7 @@ class Package {
     packageStatus: json["package_status"],
     packageFeaturesName: json["package_features_name"],
     packageBenefits: json["package_benefits"] == null ? null : List<PackageBenefit>.from(json["package_benefits"].map((x) => PackageBenefit.fromJson(x))),
+    packageEndDate: json['package_end_date'],
   );
 
   Map<String, dynamic> toJson() => {
@@ -41,5 +44,6 @@ class Package {
     "package_status": packageStatus,
     "package_features_name": packageFeaturesName,
     "package_benefits": packageBenefits == null ? null : List<dynamic>.from(packageBenefits!.map((x) => x.toJson())),
+    "package_end_date" : packageEndDate,
   };
 }

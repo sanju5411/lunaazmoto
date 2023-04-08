@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart';
 import 'package:lunaaz_moto/configs/api_config.dart';
 import 'package:lunaaz_moto/models/auth/login/login.dart';
@@ -55,6 +56,7 @@ class ApiService {
       return Login.fromJson(json);
     } catch (e) {
       debugPrint("LOGIN_API_ERROR>>> $e");
+      Fluttertoast.showToast(msg: "Network Connection Problem");
       return Login();
     }
   }

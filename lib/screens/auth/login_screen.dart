@@ -112,8 +112,11 @@ class _LoginScreenState extends State<LoginScreen> {
                               padding: const EdgeInsets.symmetric(
                                   vertical: 2.0, horizontal: 20.0),
                               child: TextField(
+                                maxLength: 10,
                                 controller: phoneController,
+                                obscureText: false,
                                 decoration: const InputDecoration(
+                                  counterText: "",
                                     hintText: "Enter Mobile Number",
                                     hintStyle:
                                     TextStyle(color: CustomColor.primaryColor),
@@ -290,9 +293,9 @@ class _LoginScreenState extends State<LoginScreen> {
 
   _loginCheck() async {
     if (_isLoading) return;
-    print("_loginCheck() called");
+   // print("_loginCheck() called");
     if (_mobileNumber.isEmpty) {
-      print("_loginCheck() is Empty");
+     // print("_loginCheck() is Empty");
       Fluttertoast.showToast(msg: "Enter mobile number");
       return;
     }
@@ -306,7 +309,7 @@ class _LoginScreenState extends State<LoginScreen> {
       _isLoading = true;
     });
     LoginCheck loginCheck = await ApiService.loginCheck(jsonInput: jsonEncode(jsonInput));
-    print("login check api>>>>>${jsonEncode(loginCheck)}");
+   // print("login check api>>>>>${jsonEncode(loginCheck)}");
     if (loginCheck.status == "not-registered") {
       SharedPreferencesService.setRegistered(registered: false);
 
@@ -379,8 +382,8 @@ class _LoginScreenState extends State<LoginScreen> {
       'user_type': userType,
     };
 
-    print("jsonEncode(jsonInput)${jsonEncode(jsonInput)}");
-    print("map fcm token>>>>>>>(jsonInput)${jsonEncode(jsonInput)}>>>>>>>");
+   // print("jsonEncode(jsonInput)${jsonEncode(jsonInput)}");
+    // print("map fcm token>>>>>>>(jsonInput)${jsonEncode(jsonInput)}>>>>>>>");
     setState(() {
       _isLoading = true;
     });

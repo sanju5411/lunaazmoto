@@ -1,5 +1,5 @@
 import 'dart:convert';
-
+import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
 import 'package:geocoding/geocoding.dart';
@@ -32,6 +32,11 @@ class _BookingScreenState extends State<BookingScreen> {
   bool loading = true;
   String? _currentAddress;
   Position? _currentPosition;
+
+
+
+
+
 
   TextEditingController _pLocation = TextEditingController();
 
@@ -71,6 +76,7 @@ class _BookingScreenState extends State<BookingScreen> {
     if (isPackage) {
       getAllPackagesList(appBarTitle);
     }
+
 
     Size screenSize = MediaQuery.of(context).size;
     return Scaffold(
@@ -125,7 +131,7 @@ class _BookingScreenState extends State<BookingScreen> {
                               onTap: () {
                                 Navigator.pushNamed(
                                     context, BookingForm.routeName,
-                                    arguments: {"packageId":_packages![index].packageId,"vehicleType":appBarTitle});
+                                    arguments: {"packageId":_packages![index].packageId,"vehicleType":appBarTitle,"packageExpiryDate": _packages![index].packageEndDate});
                               },
                               child: Padding(
                                 padding: const EdgeInsets.all(20.0),
