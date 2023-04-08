@@ -485,7 +485,7 @@ class _ServiceDashboardState extends State<ServiceDashboard> {
                                               (newService[index].bookingPackage!.packageFeaturesName!.toString()).toString(),
                                               textStyle: TextStyle(fontWeight: FontWeight.w600,fontSize: 13,color: Color(0xFF848484)),
                                             ),
-                                            Text( newService[index].bookingDriver != null? newService[index].bookingCenter!.shopName.toString():"",style: TextStyle(fontWeight: FontWeight.w600,fontSize: 13,color: Color(0xFF848484)),),
+                                            Text("${newService[index].bookingDriver!.name}",style: TextStyle(fontWeight: FontWeight.w600,fontSize: 13,color: Color(0xFF848484)),),
                                             Text("${newService[index].bookedDate}",style: TextStyle(fontWeight: FontWeight.w600,fontSize: 13,color: Color(0xFF848484)),),
                                             Row(
                                               mainAxisAlignment: MainAxisAlignment.spaceBetween,

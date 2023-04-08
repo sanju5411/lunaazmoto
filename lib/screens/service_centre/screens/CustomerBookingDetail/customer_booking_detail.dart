@@ -400,7 +400,7 @@ class _CustomerBookingInfoState extends State<CustomerBookingInfo> {
                               fontWeight: FontWeight.w600,
                               fontSize: 15),
                         ),
-                        SizedBox(
+                          SizedBox(
                           height: 25,
                         ),
                         Text(
@@ -442,7 +442,7 @@ class _CustomerBookingInfoState extends State<CustomerBookingInfo> {
                             child: CustomButton(
                               text: 'Start Service',
                               onTap: () {
-                                changeBookingStatus("", bookingId!);
+                                changeBookingStatus("proccessed", bookingId!);
                               },
                             ),
                           ),
