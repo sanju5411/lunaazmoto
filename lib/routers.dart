@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:lunaaz_moto/common/builders/custom_page_route.dart';
+import 'package:lunaaz_moto/screens/NotificationListage.dart';
 import 'package:lunaaz_moto/screens/auth/login_screen.dart';
 import 'package:lunaaz_moto/screens/auth/otp_screen.dart';
 import 'package:lunaaz_moto/screens/bike_delivery/booking_detail/booking_detail.dart';
@@ -158,6 +159,12 @@ Route<dynamic> generateRoute(RouteSettings routeSettings) {
           child: const ServiceCenterBookingDone(),
           routeSettings: routeSettings,
         );
+
+    case NotificationListPage.routeName:
+      return CustomPageRoute(
+        child: const NotificationListPage(),
+        routeSettings: routeSettings,
+      );
 
 
 

@@ -26,6 +26,7 @@ import 'package:path/path.dart';
 import 'package:profile/profile.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../models/Notification/NotificationMainModel.dart';
 import '../models/drivers/drivers_main_model.dart';
 import '../models/serviceModule/dashboard/ServiceCentersMainModel.dart';
 
@@ -486,6 +487,27 @@ class ApiService {
       return ChooseVehModel();
     }
   }
+
+  static Future<NotificationMainModel> getNotificationData() async {
+    Uri uri = Uri.parse('${ApiConfig.apiV1}/${ApiConfig.notifications}');
+    String token = await SharedPreferencesService.getApiToken();
+    headers.addAll({'Authorization': 'Bearer $token'});
+
+    print("Dashboard token--->$token");
+
+    try {
+      var res = await get(
+        uri,
+        headers: headers,
+      );
+      var json = jsonDecode(res.body);
+      return NotificationMainModel.fromJson(json);
+    } catch (e) {
+      print("Notification>>> $e");
+      return NotificationMainModel();
+    }
+  }
+
 
 
 
