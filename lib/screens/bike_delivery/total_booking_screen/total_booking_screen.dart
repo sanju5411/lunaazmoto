@@ -76,7 +76,7 @@ class _TotalBookingScreenState extends State<TotalBookingScreen> {
       else if(appBarTitle == "Today Booking"){
         type = "today_new_bookings";
       }
-
+      print("<<<<<<<<<<<object>>>>>>>>>>>${type}");
       if(type != "") getDataFromBookingApi(type);
     }
 

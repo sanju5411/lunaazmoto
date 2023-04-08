@@ -23,6 +23,7 @@ class ApiConfig {
   static const String bookingDetailsSC = "service-center/bookings/detail";
   static const String getAddress = "customers/user-addresses";
   static const String saveAddress = "customers/user-addresses/save";
+  static const String chooseVeh = "customers/active/packages";
   // static const String offers = "offers";
   // static const String offerSearch = "offer/search";
   // static const String terms = "term";

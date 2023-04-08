@@ -8,6 +8,7 @@ import 'package:lunaaz_moto/configs/api_config.dart';
 import 'package:lunaaz_moto/models/auth/login/login.dart';
 import 'package:lunaaz_moto/models/auth/login/login_check.dart';
 import 'package:lunaaz_moto/models/auth/user/user.dart';
+import 'package:lunaaz_moto/models/choose_vehicle_model/choose_vehicle_model.dart';
 import 'package:lunaaz_moto/models/customer/booking_model/booking_model.dart';
 import 'package:lunaaz_moto/models/customer/dashboard/dashboard.dart';
 import 'package:lunaaz_moto/models/customer/service_booking_list/service_booking_list_model.dart';
@@ -463,6 +464,26 @@ class ApiService {
     } catch (e) {
       print("DASHBOARD_API_ERROR>>> $e");
       return ServiceCentersMainModel();
+    }
+  }
+
+  static Future<ChooseVehModel> setChooseVeh({required Object jsonInput}) async {
+    Uri uri = Uri.parse('${ApiConfig.apiV1}/${ApiConfig.chooseVeh}');
+    String token = await SharedPreferencesService.getApiToken();
+    headers.addAll({'Authorization': 'Bearer $token'});
+
+    try {
+      var res = await post(
+          uri,
+          headers: headers,
+          body : jsonInput
+      );
+
+      var json = jsonDecode(res.body);
+      return ChooseVehModel.fromJson(json);
+    } catch (e) {
+      print("CHOOSE_VEH_ERROR>>> $e");
+      return ChooseVehModel();
     }
   }
 
