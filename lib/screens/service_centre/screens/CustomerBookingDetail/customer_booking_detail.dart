@@ -223,7 +223,7 @@ class _CustomerBookingInfoState extends State<CustomerBookingInfo> {
                   ),
                   Container(
                     width: screenSize.width,
-                    height: screenSize.height,
+                    //height: screenSize.height,
                     padding: EdgeInsets.symmetric(horizontal: 25.0),
                     decoration: BoxDecoration(
                         color: CustomColor.whiteColor,

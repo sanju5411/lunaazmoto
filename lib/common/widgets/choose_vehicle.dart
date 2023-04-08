@@ -96,10 +96,9 @@ class _CustomWheelerPopUpState extends State<CustomWheelerPopUp> {
                 ),
 
 
-                SizedBox(
+                const SizedBox(
                   height: 10,
                 ),
-
 
                 InkWell(
                   onTap: (){

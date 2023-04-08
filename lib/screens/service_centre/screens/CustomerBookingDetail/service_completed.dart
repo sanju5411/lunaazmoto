@@ -59,7 +59,7 @@ class _ServiceCenterBookingDone extends State<ServiceCenterBookingDone>{
                 style: TextStyle(fontWeight: FontWeight.w400,fontSize: 18,color: CustomColor.doneTextColor),),
               SizedBox(height: 40,),
               Padding(
-                padding: const EdgeInsets.only(right: 0),
+                padding: const EdgeInsets.all(8.0),
                 child: CustomButton(
                   text: 'Request to pickup',
                   onTap: () {
