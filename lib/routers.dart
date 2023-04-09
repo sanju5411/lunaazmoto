@@ -30,7 +30,7 @@ Route<dynamic> generateRoute(RouteSettings routeSettings) {
   final arguments = routeSettings.arguments;
   switch (routeSettings.name) {
     case IntroScreen.routeName:
-      return CusNotificationListPagetomPageRoute(
+      return CustomPageRoute(
         child:  IntroScreen(),
         routeSettings: routeSettings,
       );
