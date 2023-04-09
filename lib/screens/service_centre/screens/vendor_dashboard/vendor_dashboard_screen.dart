@@ -9,6 +9,7 @@ import 'package:lunaaz_moto/constants/global_variables.dart';
 import 'package:lunaaz_moto/models/drivers/new_services.dart';
 import 'package:lunaaz_moto/models/serviceModule/dashboard/ServiceCentersMainModel.dart';
 import 'package:lunaaz_moto/models/service_center/service_centers.dart';
+import 'package:lunaaz_moto/screens/NotificationListage.dart';
 import 'package:lunaaz_moto/screens/customer/customer_screens/profile_screen/profile_screen.dart';
 import 'package:lunaaz_moto/screens/service_centre/screens/customer_list/customer_common_list.dart';
 import 'package:lunaaz_moto/screens/service_centre/screens/navVendorBar/vendor_nav_bar.dart';
@@ -85,9 +86,8 @@ class _ServiceDashboardState extends State<ServiceDashboard> {
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: InkWell(
-                // onTap: () => Navigator.pushNamed(context, ProfileScreen.routeName),
+                 onTap: () => Navigator.pushNamed(context, NotificationListPage.routeName),
                   child:  badges.Badge(
-
                     badgeContent: Text('1',style: TextStyle(color: CustomColor.whiteColor),),
                     child: Icon(Icons.notifications),
                   )

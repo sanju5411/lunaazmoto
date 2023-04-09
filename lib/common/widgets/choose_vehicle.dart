@@ -49,8 +49,9 @@ class _CustomWheelerPopUpState extends State<CustomWheelerPopUp> {
                           if(widget.packageList![i].activeStatus == "activated"){
                             packageId = widget.packageList![i].activePackId!;
                             packageExpiryDate = widget.packageList![i].activeEndDate!;
-                            Navigator.pop(context);
+
                             Navigator.pushNamed(context, BookingForm.routeName, arguments: {"packageId":packageId,"vehicleType":"two_wheeler","packageExpiryDate":packageExpiryDate});
+                            Navigator.pop(context);
                             // return;
                           }
                           else if(widget.packageList![i].activeStatus == "completed"){
