@@ -555,6 +555,7 @@ class _BookingDetailState extends State<BookingDetail> {
                                 onChanged: (value){
                                   serviceCenterId = serviceCenters?.singleWhere((e)=>e.shopName==value).shopId;
                                   print("serviceCenterId--->$serviceCenterId");
+                                  assingServiceCenterForService(bookingId);
                                 },
                               ),
                             ),
@@ -595,41 +596,7 @@ class _BookingDetailState extends State<BookingDetail> {
                             ),
                           ),
                           SizedBox(height: 10,),
-                          Visibility(
-                            visible: showServiceCenter,
-                            child: GestureDetector(
-                              onTap: (){
-                                if(serviceCenterId != 0){
-                                  assingServiceCenterForService(bookingId);
-                                }else{
-                                  Fluttertoast.showToast(msg: "Please select service center");
-                                }
-                              },
-                              child: Container(
-                                decoration: BoxDecoration(
-                                    color: CustomColor.primaryColor,
-                                    border: Border.all(
-                                      color: CustomColor.primaryColor,
-                                    ),
-                                    borderRadius: BorderRadius.all(Radius.circular(15))
-                                ),
-                                height: 40,
-                                width: screenSize.width,
-                                margin: EdgeInsets.symmetric(horizontal: 40),
-                                child: Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: const [
 
-                                      Text("Submit",style: TextStyle(color: Color(0xFFFFFFFF)),)
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-                          SizedBox(height: 10,),
                           Visibility(
                             visible: dropedShowView,
                             child: GestureDetector(
