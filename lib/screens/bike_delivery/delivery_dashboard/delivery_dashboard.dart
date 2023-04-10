@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:lunaaz_moto/configs/api_config.dart';
 import 'package:lunaaz_moto/models/auth/user/user.dart';
+import 'package:lunaaz_moto/screens/NotificationListage.dart';
 import 'package:lunaaz_moto/screens/bike_delivery/booking_detail/booking_detail.dart';
 import 'package:lunaaz_moto/screens/bike_delivery/deliver_navbar/deliver_navbar.dart';
 import 'package:lunaaz_moto/screens/bike_delivery/total_booking_screen/total_booking_screen.dart';
@@ -95,7 +96,7 @@ class _DeliveryDashboardState extends State<DeliveryDashboard> {
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: InkWell(
-                 // onTap: () => Navigator.pushNamed(context, ProfileScreen.routeName),
+                 onTap: () => Navigator.pushNamed(context, NotificationListPage.routeName),
                   child:  badges.Badge(
 
                     badgeContent: Text('1',style: TextStyle(color: CustomColor.whiteColor),),
